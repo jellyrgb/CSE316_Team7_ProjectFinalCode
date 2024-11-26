@@ -1,0 +1,16 @@
+.header-container {
+    background-color: #000000;
+    color: white;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 150px; /* Navbar width */
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+  
+.header-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
