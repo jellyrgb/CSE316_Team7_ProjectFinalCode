@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 function MyTama() {
 
+  // 임시 세팅. 
   const [status, setStatus] = useState({
     hunger: 50,
     happiness: 80,
@@ -53,7 +54,7 @@ function MyTama() {
 
   return (
     <div className="my-pet-page">
-      <main className="main-content">
+      <main className="MyTama-content">
         <div className="pet-Inventory">
           {/* Pet Display */}
           <div className="pet-display">
