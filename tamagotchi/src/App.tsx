@@ -5,7 +5,7 @@ import './App.css'
 
 import Home from "./pages/Home.tsx";
 import Shop from "./pages/Shop.tsx";
-import Travel from "./pages/Travel.tsx";
+import Work from "./pages/Work.tsx";
 import MyTama from "./pages/MyTama.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Header from "./components/Header.tsx";
@@ -18,7 +18,7 @@ function App() {
       <Routes>  
         <Route path="/" element={<><Header title="Home page" /><Home /></>} />
         <Route path="/shop" element={<><Header title="Shop" /><Shop /></>} />
-        <Route path="/travel" element={<><Header title="Travel" /><Travel /></>} />
+        <Route path="/work" element={<><Header title="Work" /><Work /></>} />
         <Route path="/tamagotchi" element={<><Header title="<Name>'s Home" /><MyTama /></>} />
       </Routes>
     </Router>

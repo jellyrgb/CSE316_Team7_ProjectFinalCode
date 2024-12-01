@@ -9,7 +9,7 @@ function Navbar() {
         <li className="menu-item"><a href="/about">About</a></li>
         <li className="menu-item"><a href="/tamagotchi">My Tamagotchi</a></li>
         <li className="menu-item"><a href="/shop">Shop</a></li>
-        <li className="menu-item"><a href="/travel">Travel</a></li>
+        <li className="menu-item"><a href="/work">Work</a></li>
       </ul>
     </nav>
   );
