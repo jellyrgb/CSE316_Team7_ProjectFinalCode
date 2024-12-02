@@ -1,0 +1,39 @@
+.fullscreen-home {
+    position: relative;
+    height: 90vh;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-left: 150px;
+}
+
+.fullscreen-home img {
+    /* 절대 위치 지정 */
+    width: 350px;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 15%;
+    margin-left: 10%;
+}
+
+.fullscreen-home p {
+    display: flex;
+    width: auto;
+    white-space: nowrap;
+    padding: 20px 20px;
+}
+
+.fullscreen-home button {
+    display: flex;
+    width: auto;
+    white-space: nowrap;
+    padding: 20px 20px;
+}
+
+.btnAndBalance {
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 10px 50px
+}
+
+
