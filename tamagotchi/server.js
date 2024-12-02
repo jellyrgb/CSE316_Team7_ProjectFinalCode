@@ -105,7 +105,7 @@ app.put('/api/user/:id/balance', async (req, res) => {
   }
 });
 
-// Add item to user inventory
+// Get user inventory data
 app.get('/api/user/:id/inventory', async (req, res) => {
   const userId = req.params.id;
   const query = `
@@ -124,25 +124,27 @@ app.get('/api/user/:id/inventory', async (req, res) => {
   }
 });
 
-// Get user inventory data
-app.get('/api/user/:id/inventory', (req, res) => {
+// Add item to inventory
+app.post('/api/user/:id/inventory', async (req, res) => {
   const userId = req.params.id;
-  const query = `
-    SELECT item.id, item.type, item.image_source, item.stat, item.buy_price, item.sell_price, user_inventory.quantity
-    FROM user_inventory
-    JOIN item ON user_inventory.item_id = item.id
-    WHERE user_inventory.user_id = ?
-  `;
+  const { itemId, quantity } = req.body;
 
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Error fetching inventory data:', err);
-      res.status(500).send('Error fetching inventory data');
-      return;
+  try {
+    const [existingItem] = await db.query('SELECT * FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    
+    if (existingItem.length > 0) {
+      const query = 'UPDATE user_inventory SET quantity = quantity + ? WHERE user_id = ? AND item_id = ?';
+      await db.query(query, [quantity, userId, itemId]);
+      return res.sendStatus(200);
     }
 
-    res.json(results);
-  });
+    const query = 'INSERT INTO user_inventory (user_id, item_id, quantity) VALUES (?, ?, ?)';
+    await db.query(query, [userId, itemId, quantity]);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Error adding item to inventory:', err);
+    res.status(500).json({ error: 'Failed to add item to inventory' });
+  }
 });
 
 // Get pet data

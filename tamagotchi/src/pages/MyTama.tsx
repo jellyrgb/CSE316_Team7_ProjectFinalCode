@@ -1,7 +1,7 @@
 import "../css/MyTama.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useUserContext } from "../context/UserContext";
+import { Tamagotchi, useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
 
@@ -18,10 +18,13 @@ interface InventoryItem {
 function MyTama() {
   const { user, pets, loading } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [activePet, setActivePet] = useState(pets.find((pet) => pet.is_active));
+  const [activePet, setActivePet] = useState<Tamagotchi | null>();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const activePet = pets.find((pet) => pet.is_active);
+    setActivePet(activePet);
+
     const fetchInventory = async () => {
       if (!user && !loading) {
         navigate("/signIn");
