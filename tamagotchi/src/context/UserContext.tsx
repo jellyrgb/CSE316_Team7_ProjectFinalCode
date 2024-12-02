@@ -9,7 +9,7 @@ interface User {
   creation_date: string;
 }
 
-interface Tamagotchi {
+export interface Tamagotchi {
   id: number;
   name: string;
   image_source: string;
@@ -18,6 +18,8 @@ interface Tamagotchi {
   fun: number;
   is_sick: boolean;
   adoption_date: string;
+  is_active: boolean;
+  user_id: number;
 }
 
 interface UserContextType {
