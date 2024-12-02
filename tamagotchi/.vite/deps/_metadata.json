@@ -1,0 +1,55 @@
+{
+  "hash": "f110add1",
+  "configHash": "15c1c60b",
+  "lockfileHash": "5a9e193d",
+  "browserHash": "384ce3c9",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "a9fe5dcb",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "d42b8f29",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "0e4886ad",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "5b7aa31c",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "eeabf0a6",
+      "needsInterop": false
+    },
+    "crypto-js/sha256.js": {
+      "src": "../../node_modules/crypto-js/sha256.js",
+      "file": "crypto-js_sha256__js.js",
+      "fileHash": "2b6868f7",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-YEGEUSQR": {
+      "file": "chunk-YEGEUSQR.js"
+    },
+    "chunk-7JZAKNLV": {
+      "file": "chunk-7JZAKNLV.js"
+    },
+    "chunk-2TUXWMP5": {
+      "file": "chunk-2TUXWMP5.js"
+    }
+  }
+}

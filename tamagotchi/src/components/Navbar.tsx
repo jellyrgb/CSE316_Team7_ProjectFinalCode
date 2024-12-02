@@ -3,7 +3,8 @@ import "../css/Navbar.css";
 function Navbar() {
   return (
     <nav className="navbar-container">
-      <div className="navbar-logo">Name</div>
+      <img src="/logos/logo.webp" alt="logo" className="navbar-logo" />
+      <div className="navbar-title">My Pet Simulator</div>
       <ul className="menu-list">
         <li className="menu-item"><a href="/">Home</a></li>
         <li className="menu-item"><a href="/tamagotchi">My Pet</a></li>
