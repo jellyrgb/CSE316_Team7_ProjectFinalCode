@@ -8,6 +8,7 @@ import Shop from "./pages/Shop.tsx";
 import Work from "./pages/Work.tsx";
 import MyPage from "./pages/MyPage.tsx"
 import MyTama from "./pages/MyTama.tsx";
+import SignUp from "./pages/SignUp.tsx";
 import Test from "./pages/Test.tsx";
 
 import Navbar from "./components/Navbar.tsx";
@@ -29,6 +30,7 @@ function App() {
             <Route path="/work" element={<><Header title="Work" /><Work /></>} />
             <Route path="/tamagotchi" element={<><Header title="<Name>'s Home" /><MyTama /></>} />
             <Route path="/profile" element={<><Header title="My Profile Card" /><MyPage /></>} />
+            <Route path="/signUp" element={<><Header title="Sign Up Page" /><SignUp /></>} />
             <Route path="/test" element={<><Header title="Test" /><Test /></>} />
           </Routes>
         </Router>

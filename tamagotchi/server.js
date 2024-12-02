@@ -1,10 +1,15 @@
 import express from 'express';
 import { createConnection } from 'mysql2';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config(); // .env 파일 로드
 
 const app = express();
-const port = 5000;
-const password = 'leesin'; // 비밀번호 바꿔서 테스트
+app.use(express.json());
+app.use(cors());
+const port = 5001;
+const password = '12345678'; // 비밀번호 바꿔서 테스트
 
 const db = createConnection({
   host: 'localhost',
@@ -45,6 +50,55 @@ app.get('/api/user/:id', (req, res) => {
 
     res.json(results[0]);
   });
+});
+
+
+app.post('/api/user', (req, res) => {
+    const { username, password, profile_image, balance } = req.body;
+    if (!username || !password || !profile_image || balance===null) {
+        console.error('Missing required fields:', { username, password, profile_image, balance });
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+    else{
+        console.log("not missing");
+    }    
+
+    // Check if email already exists
+    const checkQuery = 'SELECT * FROM user WHERE username = ?';
+    db.query(checkQuery, [username], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error' });
+        }
+
+        if (results.length > 0) {
+            return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        // Insert new user
+        const insertQuery = 'INSERT INTO user (username, password, profile_image, balance) VALUES (?, ?, ?, ?)';
+        db.query(insertQuery, [username, password, profile_image, balance], (err, results) => {
+            
+            if (err) {
+                console.error('Error inserting user:', err);
+                return res.status(500).json({ message: 'Failed to create user...' });
+            }
+
+            res.status(201).json({ message: 'User registered successfully' });
+        });
+    });
+});
+
+app.get('/api/user', (req, res) => {
+    const selectQuery = "SELECT * FROM user";
+    db.query(selectQuery, (err, results) => {
+        if (err) {
+            console.error("Error in getting register:", err);
+            res.status(500).send('Error in getting register...');
+            return;
+        }
+        res.json(results); 
+    });
 });
 
 // Update user balance
