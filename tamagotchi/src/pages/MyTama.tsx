@@ -16,6 +16,7 @@ interface InventoryItem {
 function MyTama() {
   const { user, pets } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [activePet, setActivePet] = useState(pets.find((pet) => pet.is_active));
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -36,11 +37,68 @@ function MyTama() {
     return <div>Loading...</div>;
   }
 
-  const pet = pets.find((pet) => pet.is_active);
+  const pet = activePet;
 
   if (!pet) {
     return <div>No active pet found</div>;
   }
+
+  const handleItemClick = (item: InventoryItem) => {
+    let updatedPet = { ...pet };
+
+    switch (item.type) {
+      case 1: // Food
+        updatedPet.hunger = Math.min(updatedPet.hunger + item.stat, 100);
+        break;
+      case 2: // Toy
+        updatedPet.fun = Math.min(updatedPet.fun + item.stat, 100);
+        break;
+      case 3: // Misc
+        updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
+        break;
+      case 4: // Medicine
+        updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
+        break;
+      default:
+        break;
+    }
+
+    setActivePet(updatedPet);
+
+    // Update the pet status
+    axios.put(`http://localhost:5000/api/pet/${pet.id}`, updatedPet)
+      .catch(error => console.error("Error updating pet status:", error));
+
+    // Update the inventory
+    axios.post(`http://localhost:5000/api/user/${user.id}/inventory/use`, { itemId: item.id })
+      .catch(error => console.error("Error updating inventory:", error));
+
+    setInventory(prevInventory => {
+      const updatedInventory = prevInventory.map(invItem => {
+        if (invItem.id === item.id) {
+          return { ...invItem, quantity: invItem.quantity - 1 };
+        }
+        return invItem;
+      }).filter(invItem => invItem.quantity > 0);
+
+      return updatedInventory;
+    });
+  };
+
+  const getEmoji = (type: number) => {
+    switch (type) {
+      case 1:
+        return "🍖";
+      case 2:
+        return "🚀";
+      case 3:
+        return "✨";
+      case 4:
+        return "💊";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="my-tama fullscreen">
@@ -74,10 +132,10 @@ function MyTama() {
           <div className="inventory-items">
             {inventory.map((item) =>
               Array.from({ length: item.quantity }).map((_, index) => (
-                <div key={`${item.id}-${index}`} className="inventory-item">
+                <div key={`${item.id}-${index}`} className="inventory-item" onClick={() => handleItemClick(item)}>
                   <img src={item.image_source} />
                   <div className="item-info">
-                    <span>Stat: {item.stat}</span>
+                    <span>{getEmoji(item.type)}{item.type === 4 ? ` ${item.stat}%` : `+${item.stat}`}</span>
                   </div>
                 </div>
               ))

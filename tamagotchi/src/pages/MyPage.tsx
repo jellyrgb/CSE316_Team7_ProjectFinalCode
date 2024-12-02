@@ -39,7 +39,7 @@ function MyPage() {
         <div className="pets-container">
           {pets.map(pet => (
             <div key={pet.id} className="pet-card">
-              <img src={pet.image_source} alt={pet.name} className="pet-image" />
+              <img src={pet.image_source} alt={pet.name} className="profile-pet-image" />
               <div className="pet-info">
                 <h4>{pet.name}</h4>
                 <p>Adopted on {formatDate(pet.adoption_date)}</p>

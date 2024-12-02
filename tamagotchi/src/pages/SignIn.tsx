@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { hashutil } from '../hashutil/typescript/Hashutil.ts';
+import { hashutil } from '../hashutil/Hashutil.ts';
 import "../css/SignUp.css";
 import { API_BASE_URL } from '../config.tsx';
 
@@ -69,24 +69,23 @@ function SignIn({ }) {
 
     return (
         <div>
-                <div id="SignIn">
-                    <div className="sign-container">
-                        <h2>Sign In</h2>
-                        <form className="sign-form" onSubmit={handleSubmit}>
-                            <label htmlFor="username">User Name</label>
-                            <input type="username" id="username" onChange={handleName} value={username}/>
+            <div id="SignIn">
+                <div className="sign-container">
+                    <h2>Sign In</h2>
+                    <form className="sign-form" onSubmit={handleSubmit}>
+                        <label htmlFor="username">User Name</label>
+                        <input type="username" id="username" onChange={handleName} value={username}/>
 
-                            <label htmlFor="password">Password</label>
-                            <input type="password" id="password" onChange={handlePassWord} value={password}/>
+                        <label htmlFor="password">Password</label>
+                        <input type="password" id="password" onChange={handlePassWord} value={password}/>
 
-                            <div className="button-group">
-                            <button type="submit">Sign in</button>
-                            <button type="button"><a href="/signUp">Sign up</a></button>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="button-group">
+                        <button type="submit">Sign in</button>
+                        <button type="button"><a href="/signUp">Sign up</a></button>
+                        </div>
+                    </form>
                 </div>
-
+            </div>
         </div>
     );
 }
