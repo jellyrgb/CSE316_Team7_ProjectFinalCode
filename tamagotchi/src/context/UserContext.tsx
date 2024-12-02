@@ -25,6 +25,7 @@ interface UserContextType {
   pets: Tamagotchi[];
   loading: boolean;
   error: string | null;
+  setUser: (user: User | null) => void;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -32,6 +33,7 @@ const UserContext = createContext<UserContextType>({
   pets: [],
   loading: true,
   error: null,
+  setUser: () => {},
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -59,7 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, pets, loading, error }}>
+    <UserContext.Provider value={{ user, pets, loading, error, setUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -20,6 +20,7 @@ const db = createConnection({
 });
 
 app.use(cors());
+app.use(express.json());
 
 // Connect to db
 db.connect((err) => {
@@ -98,6 +99,40 @@ app.get('/api/user', (req, res) => {
         }
         res.json(results); 
     });
+});
+
+// Update user balance
+app.put('/api/user/:id/balance', (req, res) => {
+  const userId = req.params.id;
+  const { balance } = req.body;
+  const query = 'UPDATE user SET balance = ? WHERE id = ?';
+
+  db.query(query, [balance, userId], (err, results) => {
+    if (err) {
+      console.error('Error updating user balance:', err);
+      res.status(500).send('Error updating user balance');
+      return;
+    }
+
+    res.sendStatus(200);
+  });
+});
+
+// Add item to user inventory
+app.post('/api/user/:id/inventory', (req, res) => {
+  const userId = req.params.id;
+  const { itemId, quantity } = req.body;
+  const query = 'INSERT INTO user_inventory (user_id, item_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?';
+
+  db.query(query, [userId, itemId, quantity, quantity], (err, results) => {
+    if (err) {
+      console.error('Error adding item to inventory:', err);
+      res.status(500).send('Error adding item to inventory');
+      return;
+    }
+
+    res.sendStatus(200);
+  });
 });
 
 // Get pet data
