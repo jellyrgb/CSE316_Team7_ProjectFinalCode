@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../css/MyTama.css";
 import { useUserContext } from "../context/UserContext";
 import axios from "axios";
+import { API_BASE_URL } from '../config.tsx';
 
 interface InventoryItem {
   id: number;
@@ -22,7 +23,7 @@ function MyTama() {
     const fetchInventory = async () => {
       if (user) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/user/${user.id}/inventory`);
+          const response = await axios.get(`${API_BASE_URL}/api/user/${user.id}/inventory`);
           setInventory(response.data);
         } catch (error) {
           console.error("Error fetching inventory:", error);
@@ -66,11 +67,11 @@ function MyTama() {
     setActivePet(updatedPet);
 
     // Update the pet status
-    axios.put(`http://localhost:5000/api/pet/${pet.id}`, updatedPet)
+    axios.put(`${API_BASE_URL}/api/pet/${pet.id}`, updatedPet)
       .catch(error => console.error("Error updating pet status:", error));
 
     // Update the inventory
-    axios.post(`http://localhost:5000/api/user/${user.id}/inventory/use`, { itemId: item.id })
+    axios.post(`${API_BASE_URL}/api/user/${user.id}/inventory/use`, { itemId: item.id })
       .catch(error => console.error("Error updating inventory:", error));
 
     setInventory(prevInventory => {

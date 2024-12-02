@@ -45,13 +45,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-        console.log(user);
+      console.log(user);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!user) return;
+      //if (!user) return;
       try {
-        const userResponse = await axios.get(`${API_BASE_URL}/api/user/${user.id}`);
+        const userResponse = await axios.get(`${API_BASE_URL}/api/user/2`);
         setUser(userResponse.data);
 
         const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userResponse.data.id}/tamagotchis`);

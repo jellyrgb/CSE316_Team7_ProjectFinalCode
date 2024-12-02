@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/Shop.css";
 import { useShopContext } from "../context/ShopContext";
 import { useUserContext } from "../context/UserContext";
+import { API_BASE_URL } from '../config.tsx';
 
 function Shop() {
   const { items, loading, error } = useShopContext();
@@ -19,7 +20,7 @@ function Shop() {
   const updateBalance = async (newBalance: number) => {
     if (user) {
       try {
-        await axios.put(`http://localhost:5000/api/user/${user.id}/balance`, { balance: newBalance });
+        await axios.put(`${API_BASE_URL}/api/user/${user.id}/balance`, { balance: newBalance });
         setUser({ ...user, balance: newBalance });
       } catch (error) {
         console.error("Error updating balance:", error);
@@ -30,7 +31,7 @@ function Shop() {
   const addItemToInventory = async (itemId: number, quantity: number) => {
     if (user) {
       try {
-        await axios.post(`http://localhost:5000/api/user/${user.id}/inventory`, { itemId, quantity });
+        await axios.post(`${API_BASE_URL}/api/user/${user.id}/inventory`, { itemId, quantity });
       } catch (error) {
         console.error("Error adding item to inventory:", error);
       }
