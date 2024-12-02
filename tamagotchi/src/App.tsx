@@ -18,7 +18,10 @@ import Header from "./components/Header.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 import { ShopProvider } from "./context/ShopContext.tsx";
 
+import { useUserContext } from "./context/UserContext";
+
 function App() {
+  const { user } = useUserContext();
   return (
     <UserProvider>
       <ShopProvider>
@@ -29,7 +32,7 @@ function App() {
             <Route path="/" element={<><Header title="Home page" /><Home /></>} />
             <Route path="/shop" element={<><Header title="Shop" /><Shop /></>} />
             <Route path="/work" element={<><Header title="Work" /><Work /></>} />
-            <Route path="/tamagotchi" element={<><Header title="<Name>'s Home" /><MyTama /></>} />
+            <Route path="/tamagotchi" element={<><Header title={user?.username ? `${user.username}'s Home` : "Loading..."} /><MyTama /></>} />
             <Route path="/profile" element={<><Header title="My Profile Card" /><MyPage /></>} />
             <Route path="/signUp" element={<><Header title="Sign Up Page" /><SignUp /></>} />
             <Route path="/signIn" element={<><Header title="Sign In Page" /><SignIn /></>} />

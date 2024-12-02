@@ -51,7 +51,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const fetchUserData = async () => {
       //if (!user) return;
       try {
-        const userResponse = await axios.get(`${API_BASE_URL}/api/user/2`);
+        const userResponse = await axios.get(`${API_BASE_URL}/api/user/1`);
         setUser(userResponse.data);
 
         const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userResponse.data.id}/tamagotchis`);
