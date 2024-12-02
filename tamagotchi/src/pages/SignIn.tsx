@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { hashutil } from '../hashutil/typescript/Hashutil.ts';
 import "../css/SignUp.css";
 import { API_BASE_URL } from '../config.tsx';
+import { useUserContext } from '../context/UserContext';
 
 function SignIn({ }) {
 
     const [password, setPassword] = useState(''); //When login -> set password / Not password in the database table
     const [username, setName] = useState('');
     const [isLogin, setLogin] = useState(false);
+    const { setUser } = useUserContext();
 
     async function fetchUser() {
       try {
@@ -54,6 +56,7 @@ function SignIn({ }) {
 
         // Sign-In Successful
         setLogin(true);
+        setUser(user);
         //showPage('home');
         // setProfileImage(user.image);
         alert("User Registered Successfully!");

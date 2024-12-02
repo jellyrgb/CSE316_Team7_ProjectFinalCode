@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config.tsx';
 
 interface User {
   id: number;
@@ -44,13 +45,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+        console.log(user);
+
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!user) return;
       try {
-        const userResponse = await axios.get('http://localhost:5000/api/user/1');
+        const userResponse = await axios.get(`${API_BASE_URL}/api/user/${user.id}`);
         setUser(userResponse.data);
 
-        const petsResponse = await axios.get(`http://localhost:5000/api/user/${userResponse.data.id}/tamagotchis`);
+        const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userResponse.data.id}/tamagotchis`);
         setPets(petsResponse.data);
       } catch (err) {
         setError('Failed to load user data');
