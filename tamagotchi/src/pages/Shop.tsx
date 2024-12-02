@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../css/Shop.css";
 import { useShopContext } from "../context/ShopContext";
 import { useUserContext } from "../context/UserContext";
@@ -6,7 +7,46 @@ import { useUserContext } from "../context/UserContext";
 function Shop() {
   const { items, loading, error } = useShopContext();
   const { user, setUser } = useUserContext();
-  const [balance, setBalance] = useState(user?.balance || 0);
+  const [balance, setBalance] = useState(0);
+
+  // Update balance when user data is changed
+  useEffect(() => {
+    if (user) {
+      setBalance(user.balance);
+    }
+  }, [user]);
+
+  const updateBalance = async (newBalance: number) => {
+    if (user) {
+      try {
+        await axios.put(`http://localhost:5000/api/user/${user.id}/balance`, { balance: newBalance });
+        setUser({ ...user, balance: newBalance });
+      } catch (error) {
+        console.error("Error updating balance:", error);
+      }
+    }
+  };
+
+  const addItemToInventory = async (itemId: number, quantity: number) => {
+    if (user) {
+      try {
+        await axios.post(`http://localhost:5000/api/user/${user.id}/inventory`, { itemId, quantity });
+      } catch (error) {
+        console.error("Error adding item to inventory:", error);
+      }
+    }
+  };
+
+  const handleItemClick = async (itemId: number, price: number) => {
+    if (balance >= price) {
+      const newBalance = balance - price;
+      setBalance(newBalance);
+      await updateBalance(newBalance); // Update balance in backend
+      await addItemToInventory(itemId, 1); // Add item to inventory in backend
+    } else {
+      alert("Not enough balance!");
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -20,34 +60,24 @@ function Shop() {
     return <div>User data unavailable.</div>;
   }
 
-  const handleItemClick = (price: number) => {
-    if (balance >= price) {
-      setBalance(balance - price);
-      setUser({ ...user, balance: balance - price });
-    } else {
-      alert("Not enough balance!");
-    }
-  };
-
   const foodItems = items.filter(item => item.type === 1);
   const toyItems = items.filter(item => item.type === 2);
   const miscItems = items.filter(item => item.type === 3);
 
-  // TODO: 유형별로 아이템 나누기
   return (
     <div className="shop fullscreen">
       <div className="balance">
-        <p>💰 {user.balance}G</p>
+        <p>💰 {balance}G</p>
       </div>
       <div>
         {/* Food */}
         <h2>Food</h2>
         <div className="items">
           {foodItems.map(item => (
-            <div key={item.id} className="item" onClick={() => handleItemClick(item.buy_price)}>
+            <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
               <img src={item.image_source} />
               <div className="item-info">
-                <p>Stat: {item.stat}</p>
+                <p>🍖+{item.stat}</p>
                 <p>Buy: {item.buy_price}G</p>
                 <p>Sell: {item.sell_price}G</p>
               </div>
@@ -61,10 +91,10 @@ function Shop() {
         <h2>Toys</h2>
         <div className="items">
           {toyItems.map(item => (
-            <div key={item.id} className="item" onClick={() => handleItemClick(item.buy_price)}>
+            <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
               <img src={item.image_source} />
               <div className="item-info">
-                <p>Stat: {item.stat}</p>
+                <p>🚀+{item.stat}</p>
                 <p>Buy: {item.buy_price}G</p>
                 <p>Sell: {item.sell_price}G</p>
               </div>
@@ -72,16 +102,16 @@ function Shop() {
           ))}
         </div>
       </div>
-      
-      {/* Clean and medicine */}
+
+      {/* Misc */}
       <div>
-        <h2>Miscellaneous</h2>
+        <h2>Misc</h2>
         <div className="items">
           {miscItems.map(item => (
-            <div key={item.id} className="item" onClick={() => handleItemClick(item.buy_price)}>
+            <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
               <img src={item.image_source} />
               <div className="item-info">
-                <p>Stat: {item.stat}</p>
+                <p>✨+{item.stat}</p>
                 <p>Buy: {item.buy_price}G</p>
                 <p>Sell: {item.sell_price}G</p>
               </div>
