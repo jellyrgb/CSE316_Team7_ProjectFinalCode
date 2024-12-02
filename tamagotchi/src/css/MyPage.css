@@ -1,7 +1,4 @@
 .my-page {
-    width: 150%;
-    min-height: 80vh;
-    margin-top: 50px;
     padding: 20px;
     box-sizing: border-box;
     display: flex;
@@ -36,7 +33,7 @@
 .profile-info h2 {
     margin: 0;
     font-size: 28px;
-    color: #333;
+    text-align: left;
 }
 
 .profile-info p {
@@ -90,7 +87,7 @@
 .pet-info h4 {
     margin: 0;
     font-size: 1.2rem;
-    color: #333;
+    text-align: left;
 }
 
 .pet-info p {

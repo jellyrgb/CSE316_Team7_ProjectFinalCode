@@ -4,3 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+
+.fullscreen {
+  margin-top: 2.5rem;
+  width: 100vh;
+  margin-left: 150px;
+}

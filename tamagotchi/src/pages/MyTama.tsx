@@ -53,7 +53,7 @@ function MyTama() {
 
 
   return (
-    <div className="my-pet-page">
+    <div className="my-pet-page fullscreen">
       <main className="MyTama-content">
         <div className="pet-Inventory">
           {/* Pet Display */}

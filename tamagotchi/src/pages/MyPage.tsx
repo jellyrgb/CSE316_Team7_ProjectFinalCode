@@ -1,6 +1,5 @@
-import React from "react";
 import "../css/MyPage.css";
-import { useUserContext } from "../contexts/UserContext";
+import { useUserContext } from "../context/UserContext";
 
 function MyPage() {
   const { user, pets, loading, error } = useUserContext();
@@ -23,7 +22,7 @@ function MyPage() {
   };
 
   return (
-    <div className="my-page">
+    <div className="my-page fullscreen">
       <div className="profile-section">
         <img
           src={user.profile_image || "https://via.placeholder.com/200"}

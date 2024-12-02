@@ -1,58 +1,80 @@
-import React, { useState } from "react";
 import "../css/Shop.css";
-import appleImage from "../Images/apple.png";
+import { useShopContext } from "../context/ShopContext";
+import { useUserContext } from "../context/UserContext";
 
 function Shop() {
-    // tbale을 toys, food, clean따로 만드는게 편할지도? 
-    // 아니면 type value하나 만들어서 toy,food,clean저장. type=food. type=toys. type=clean
-  const categories = [
-    { id: 1, name: "Toys" },
-    { id: 2, name: "Food" },
-    { id: 3, name: "Clean" },
-  ];
+  const { items, loading, error } = useShopContext();
+  const { user } = useUserContext();
 
-  const items = [
-    { id: 1, name: "Apple", image: appleImage, price: 10 },
-    { id: 1, name: "Apple", image: appleImage, price: 10 },
-    { id: 1, name: "Apple", image: appleImage, price: 10 },
-    { id: 1, name: "Apple", image: appleImage, price: 10 }
-  ]; // 임시. 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const [gold, setGold] = useState(320); // 임시. 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-  const handlePurchase = (price: number, itemName: any) => {
-    if (gold >= price) {
-      setGold(gold - price); // Deduct the item's price from the user's gold balance
-      alert(`You purchased ${itemName} for ${price} gold!
-             Current gold: ${gold-price}`);
-    } else {
-      alert("You don't have enough gold to buy this item!");
-    }
-  };
+  if (!user) {
+    return <div>User data unavailable.</div>;
+  }
 
+  // TODO: 유저 잔고 업데이트 로직
+  // TODO: 유형별로 아이템 나누기
   return (
-    <div className="shop-page">
-
-      <main className="Shop-content">
-        {categories.map((category) => (
-          <section key={category.id} className="shop-category">
-            <div className="category-header">
-              <h3>{category.name}</h3>
+    <div className="shop fullscreen">
+      <div className="balance">
+        <p>💰 {user.balance}G</p>
+      </div>
+      <div>
+        {/* Food */}
+        <h2>Food</h2>
+        <div className="items">
+          {items.map(item => (
+            <div key={item.id} className="item">
+              <img src={item.image_source} />
+              <div className="item-info">
+                <p>Stat: {item.stat}</p>
+                <p>Buy: {item.buy_price}G</p>
+                <p>Sell: {item.sell_price}G</p>
+              </div>
             </div>
+          ))}
+        </div>
+      </div>
 
-            <div className="category-items">
-              {items.map((item) => (
-                <div key={item.id} className="item" onClick={() => handlePurchase(item.price, item.name)}>
-                    <img src={item.image} alt={item.name} className="item-image" />
-                    <p className="item-name">{item.name}</p>
-                    <p className="item-price">{item.price} G</p>
-                </div>
-                ))}
+      {/* Toys */}
+      <div>
+        <h2>Toys</h2>
+        <div className="items">
+          {items.map(item => (
+            <div key={item.id} className="item">
+              <img src={item.image_source} />
+              <div className="item-info">
+                <p>Stat: {item.stat}</p>
+                <p>Buy: {item.buy_price}G</p>
+                <p>Sell: {item.sell_price}G</p>
+              </div>
             </div>
-
-          </section>
-        ))}
-      </main>
+          ))}
+        </div>
+      </div>
+      
+      {/* Clean and medicine */}
+      <div>
+        <h2>Miscellaneous</h2>
+        <div className="items">
+          {items.map(item => (
+            <div key={item.id} className="item">
+              <img src={item.image_source} />
+              <div className="item-info">
+                <p>Stat: {item.stat}</p>
+                <p>Buy: {item.buy_price}G</p>
+                <p>Sell: {item.sell_price}G</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

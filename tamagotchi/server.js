@@ -62,6 +62,22 @@ app.get('/api/user/:id/tamagotchis', (req, res) => {
   });
 });
 
+// Get item data
+app.get('/api/items', (req, res) => {
+  // TODO: 유저별로 인벤토리 다르게 하는 건 login 이후에 구현
+  const query = 'SELECT * FROM item';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching items data:', err);
+      res.status(500).send('Error fetching items data');
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
 // Initalize server
 app.listen(port, () => {
   console.log(`Server is running on ${port}...`);
