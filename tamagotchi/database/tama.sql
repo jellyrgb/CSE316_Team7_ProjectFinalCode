@@ -69,10 +69,11 @@ CREATE TABLE `tamagotchi` (
   `is_sick` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   `adoption_date` date DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_tamagotchi_user` (`user_id`),
   CONSTRAINT `fk_tamagotchi_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +82,7 @@ CREATE TABLE `tamagotchi` (
 
 LOCK TABLES `tamagotchi` WRITE;
 /*!40000 ALTER TABLE `tamagotchi` DISABLE KEYS */;
-INSERT INTO `tamagotchi` VALUES (1,'Fluffy','fluffy.png',50,80,70,0,1,'2024-12-02'),(2,'Cutie','https://placehold.co/400',50,80,70,1,1,'2024-12-03');
+INSERT INTO `tamagotchi` VALUES (1,'Fluffy','fluffy.png',50,80,70,0,1,'2024-12-02',1),(2,'Cutie','https://placehold.co/400',50,80,70,1,1,'2024-12-03',0),(3,'Buddy','https://placehold.co/200',80,90,70,0,1,'2024-11-01',0);
 /*!40000 ALTER TABLE `tamagotchi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,4 +123,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-02 18:38:01
+-- Dump completed on 2024-12-02 18:55:01
