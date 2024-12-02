@@ -8,7 +8,6 @@ interface Item {
   stat: number;
   buy_price: number;
   sell_price: number;
-  user_id: number;
 }
 
 interface ShopContextType {

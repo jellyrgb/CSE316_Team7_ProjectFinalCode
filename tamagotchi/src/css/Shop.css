@@ -16,8 +16,9 @@
 }
 
 .item:hover {
-  transform: translateY(-5px); /* 위로 살짝 이동 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .balance {
