@@ -9,6 +9,7 @@ import Work from "./pages/Work.tsx";
 import MyPage from "./pages/MyPage.tsx"
 import MyTama from "./pages/MyTama.tsx";
 import Test from "./pages/Test.tsx";
+
 import Navbar from "./components/Navbar.tsx";
 import Header from "./components/Header.tsx";
 

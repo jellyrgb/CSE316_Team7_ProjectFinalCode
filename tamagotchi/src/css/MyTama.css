@@ -1,7 +1,6 @@
 .my-tama {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
 }
 
 .pet-section {
@@ -14,7 +13,7 @@
 
 .pet-image {
     width: 100%;
-    height: 80%;
+    height: 100%;
     object-fit: cover;
     margin-bottom: 20px;
 }
@@ -79,7 +78,7 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 20px;
-    max-height: 100vh; /* TODO: 아이템 여러 개 넣어서 적절한 값 찾기 */
+    max-height: 60vh;
     overflow-y: auto;
 }
 
