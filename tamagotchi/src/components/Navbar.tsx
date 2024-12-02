@@ -10,6 +10,7 @@ function Navbar() {
         <li className="menu-item"><a href="/shop">Shop</a></li>
         <li className="menu-item"><a href="/work">Work</a></li>
         <li className="menu-item"><a href="/profile">Profile Card</a></li>
+        <li className="menu-item"><a href="/signUp">Sign Up</a></li>
       </ul>
     </nav>
   );
