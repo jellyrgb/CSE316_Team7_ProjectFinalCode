@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = 'leesin'; // 비밀번호 바꿔서 테스트
+const password = '12345678'; // 비밀번호 바꿔서 테스트
 
 dotenv.config(); 
 
@@ -171,35 +171,32 @@ app.get('/api/items', async (req, res) => {
 });
 
 // Get tamagochi templates data
-app.get('/api/tamagotchi_templates', (req, res) => {
-  const query = 'SELECT * FROM tamagotchi_templates';
-
-  db.query(query, (err, results) => {
-    if (err) {
+app.get('/api/tamagotchi_templates', async (req, res) => {
+  try{
+    const [results] = await db.query('SELECT * FROM tamagotchi_templates');
+    res.json(results);
+  }
+  catch{
       console.error('Error fetching tamagotchi_templates data:', err);
       res.status(500).send('Error fetching tamagotchi_templates data');
-      return;
-    }
+  }
 
-    res.json(results);
-  });
+  const query = 'SELECT * FROM tamagotchi_templates';
+
 });
 
 // Post pet data
-app.post('/api/user/:id/tamagotchis', (req, res) => {
+app.post('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
   const { name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id } = req.body;
-  const query = 'INSERT INTO tamagotchi (name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id) VALUES (?, ?, ?,?,?,?,?,?,?)';
 
-  db.query(query, [name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id], (err, results) => {
-    if (err) {
+  try {
+    const [results] = await db.query('INSERT INTO tamagotchi (name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id) VALUES (?, ?, ?,?,?,?,?,?,?)', [name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id]);
+    res.sendStatus(200);
+  } catch (err) {
       console.error('Error adding tama to inventory:', err);
       res.status(500).send('Error adding tama to inventory');
-      return;
-    }
-
-    res.sendStatus(200);
-  });
+  }
 });
 
 // Initalize server
