@@ -4,6 +4,7 @@ import { hashutil } from '../hashutil/Hashutil.ts';
 import "../css/SignUp.css";
 import { API_BASE_URL } from '../config.tsx';
 import { useUserContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function SignIn({ }) {
 
@@ -11,6 +12,7 @@ function SignIn({ }) {
     const [username, setName] = useState('');
     const [isLogin, setLogin] = useState(false);
     const { setUser } = useUserContext();
+    const navigate = useNavigate();
 
     async function fetchUser() {
       try {
@@ -60,6 +62,7 @@ function SignIn({ }) {
         //showPage('home');
         // setProfileImage(user.image);
         alert("User Registered Successfully!");
+        return navigate('/');
     };
 
     const handleName = (e: { target: { value: any; }; }) => {
