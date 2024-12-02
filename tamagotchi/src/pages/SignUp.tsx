@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { hashutil } from '../hashutil/typescript/Hashutil.ts';
+import { hashutil } from '../hashutil/Hashutil.ts';
 import "../css/SignUp.css";
 import { API_BASE_URL } from '../config.tsx';
 
@@ -22,8 +22,6 @@ function SignUp({ }) {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         console.log(API_BASE_URL);
-
-
 
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match");
