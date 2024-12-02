@@ -1,0 +1,64 @@
+.adopt-page {
+    text-align: center;
+    padding: 20px;
+    margin-left: 150px;
+}
+
+.tamagotchi-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tamagotchi-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.tamagotchi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.tamagotchi-card.selected {
+    border-color: #141415;
+}
+
+.tamagotchi-card img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.name-input {
+    margin-top: 20px;
+}
+
+.name-input input {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    background-color: #355e8b;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

@@ -11,6 +11,7 @@ import MyTama from "./pages/MyTama.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import Test from "./pages/Test.tsx";
+import AdoptPage from "./pages/AdoptPage.tsx";
 
 import Navbar from "./components/Navbar.tsx";
 import Header from "./components/Header.tsx";
@@ -37,6 +38,7 @@ function App() {
             <Route path="/signUp" element={<><Header title="Sign Up Page" /><SignUp /></>} />
             <Route path="/signIn" element={<><Header title="Sign In Page" /><SignIn /></>} />
             <Route path="/test" element={<><Header title="Test" /><Test /></>} />
+            <Route path="/tamalist" element={<><Header title="Adopt your pet!" /><AdoptPage /></>} />
           </Routes>
         </Router>
       </ShopProvider>

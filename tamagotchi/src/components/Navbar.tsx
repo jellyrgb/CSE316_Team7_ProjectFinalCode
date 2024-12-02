@@ -13,6 +13,7 @@ function Navbar() {
         <li className="menu-item"><a href="/profile">Profile Card</a></li>
         <li className="menu-item"><a href="/signIn">Sign In</a></li>
         <li className="menu-item"><a href="/test">Test</a></li>
+        <li className="menu-item"><a href="/tamaList">Adopt</a></li>
       </ul>
     </nav>
   );
