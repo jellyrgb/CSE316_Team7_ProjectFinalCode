@@ -62,7 +62,18 @@ function Shop() {
 
   const foodItems = items.filter(item => item.type === 1);
   const toyItems = items.filter(item => item.type === 2);
-  const miscItems = items.filter(item => item.type === 3);
+  const miscItems = items.filter(item => item.type === 3 || item.type === 4);
+
+  const getEmoji = (type: number) => {
+    switch (type) {
+      case 3:
+        return "✨";
+      case 4:
+        return "💊";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="shop fullscreen">
@@ -111,7 +122,7 @@ function Shop() {
             <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
               <img src={item.image_source} />
               <div className="item-info">
-                <p>✨+{item.stat}</p>
+                <p>{getEmoji(item.type)}{item.type === 4 ? ` ${item.stat}%` : `+${item.stat}`}</p>
                 <p>Buy: {item.buy_price}G</p>
                 <p>Sell: {item.sell_price}G</p>
               </div>

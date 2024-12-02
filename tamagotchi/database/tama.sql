@@ -47,7 +47,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,1,'/images/apple.png',30,10,7),(2,1,'/images/hotpot.png',60,20,14),(3,1,'/images/peach.png',25,8,5),(4,1,'/images/sushi.png',60,20,14),(5,2,'/images/toys1.png',10,4,3),(6,2,'/images/toys2.png',20,10,7),(7,2,'/images/toys3.png',30,15,11),(8,2,'/images/toys4.png',50,25,20),(9,3,'/images/soap.png',30,10,7),(10,3,'/images/soap2.png',60,20,14),(11,3,'/images/syringe.png',50,15,12),(12,3,'/images/syringe2.png',25,8,5);
+INSERT INTO `item` VALUES (1,1,'/images/apple.png',30,10,7),(2,1,'/images/hotpot.png',60,20,14),(3,1,'/images/peach.png',25,8,5),(4,1,'/images/sushi.png',60,20,14),(5,2,'/images/toys1.png',10,4,3),(6,2,'/images/toys2.png',20,10,7),(7,2,'/images/toys3.png',30,15,11),(8,2,'/images/toys4.png',50,25,20),(9,3,'/images/soap.png',30,10,7),(10,3,'/images/soap2.png',60,20,14),(11,4,'/images/syringe.png',50,15,12),(12,4,'/images/syringe2.png',25,8,5);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
