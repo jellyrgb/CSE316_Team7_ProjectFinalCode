@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { API_BASE_URL } from '../config.tsx';
 
 interface User {
@@ -45,19 +46,23 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-      console.log(user);
-
   useEffect(() => {
     const fetchUserData = async () => {
-      //if (!user) return;
-      try {
-        const userResponse = await axios.get(`${API_BASE_URL}/api/user/2`);
-        setUser(userResponse.data);
+      const userToken = Cookies.get('userToken');
+      if (!userToken) {
+        setLoading(false);
+        return;
+      }
 
-        const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userResponse.data.id}/tamagotchis`);
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/user/${userToken}`);
+        setUser(response.data);
+
+        const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userToken}/tamagotchis`);
         setPets(petsResponse.data);
-      } catch (err) {
-        setError('Failed to load user data');
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setError('Error fetching user data');
       } finally {
         setLoading(false);
       }

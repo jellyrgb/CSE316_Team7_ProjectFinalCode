@@ -1,26 +1,23 @@
 .sign-container {
-    padding-top: 50px;
-    max-width: 300px;
-    margin: 0 auto;
-    text-align: center;
+    width: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    height: 100vh;
-    margin-left: 150px;
+    margin-left: 80px;
 }
 
-
 .sign-form {
+    width: 100%;
     display: flex;
-    padding-top: 50px;
     flex-direction: column;
     gap: 15px;
 }
 
 .sign-form label {
     text-align: left;
-    padding-top: 30px;
-    font-size: 14px;
+    padding-top: 20px;
+    font-size: 16px;
 }
 
 .sign-form input {
@@ -32,26 +29,14 @@
 
 .button-group {
     display: flex;
-    gap: 20px;
     justify-content: center;
     padding-top: 30px;
+    gap: 20px;
 }
 
-.button-group button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: transparent;
-    border: 2px solid rgb(41, 141, 217);
-    color: rgb(41, 141, 217);
-    cursor: pointer;
-}
-
-.button-group button:hover {
-    background-color: #7fa57d !important;
-}
-
-
-.button-group button:nth-child(2) {
-    border: 2px solid rgb(55, 55, 60);
-    color: rgb(55, 55, 60);
+.sign-up-button,
+.sign-in-button {
+    height: 50px;
+    background-color: white;
+    border: 1px solid #ccc;
 }

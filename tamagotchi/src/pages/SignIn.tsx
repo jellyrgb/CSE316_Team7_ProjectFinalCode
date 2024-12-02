@@ -1,98 +1,66 @@
-
-import React, { useState } from 'react';
-import { hashutil } from '../hashutil/Hashutil.ts';
-import "../css/SignUp.css";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
-import { useUserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-function SignIn({ }) {
-
-    const [password, setPassword] = useState(''); //When login -> set password / Not password in the database table
-    const [username, setName] = useState('');
-    const [isLogin, setLogin] = useState(false);
-    const { setUser } = useUserContext();
+function SignIn() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    async function fetchUser() {
-      try {
-          const response = await fetch(`${API_BASE_URL}/api/user`);
-          if (!response.ok) {
-              throw new Error('Failed to fetch registers');
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(e.target.value);
+    };
+
+    const handlePassWord = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+    
+        try {
+          const response = await axios.post(`${API_BASE_URL}/api/signin`, {
+            username,
+            password,
+          });
+    
+          if (response.status === 200) {
+            Cookies.set('userToken', response.data.id, { expires: 1 });
+            alert("Successfully signed in!");
+            navigate("/");
           }
-          const data = await response.json();
-          return data;
-      } catch (error) {
-          console.error("Error fetching regiater:", error);
-           return []; 
-      }
-  }
-
-    const handleSubmit = async (e: { preventDefault: () => void; }) => {
-
-      e.preventDefault();
-      const fetchedUser = await fetchUser();
-      console.log(fetchedUser);
-
-      if (!Array.isArray(fetchedUser)) {
-          alert("Cannot load users.");
-          return;
-      }
-
-      // Check if email exists in the fetchedUsers 
-      const user = fetchedUser.find(user => user.username === username);
-      
-        if (!user) {
-            alert('Wrong User');
-            return;
+        } catch (error) {
+          if (
+            axios.isAxiosError(error) &&
+            error.response &&
+            error.response.status === 401
+          ) {
+            alert("Wrong email or wrong password.");
+          } else {
+            console.error("Error signing in:", error);
+            alert("Error signing in");
+          }
         }
-
-      setName(user.username);
-
-        const hashedPassword = hashutil(username, password); // hashing
-        // Validate password
-        if (user.password !== hashedPassword) {
-            alert('Wrong password');
-            return;
-        }
-
-        // Sign-In Successful
-        setLogin(true);
-        setUser(user);
-        //showPage('home');
-        // setProfileImage(user.image);
-        alert("User Registered Successfully!");
-        return navigate('/');
-    };
-
-    const handleName = (e: { target: { value: any; }; }) => {
-        setName(e.target.value); 
-    };
-
-    const handlePassWord = (e: { target: { value: any; }; }) => {
-        setPassword(e.target.value); 
-    };
+      };
 
     return (
-        <div>
-            <div id="SignIn">
-                <div className="sign-container">
-                    <h2>Sign In</h2>
-                    <form className="sign-form" onSubmit={handleSubmit}>
-                        <label htmlFor="username">User Name</label>
-                        <input type="username" id="username" onChange={handleName} value={username}/>
+      <div className="sign-container fullscreen">
+        <h2>Please Log In Here!</h2>
+        <form className="sign-form" onSubmit={handleSubmit}>
+            <label htmlFor="username">User Name</label>
+            <input type="username" id="username" onChange={handleName} value={username}/>
 
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" onChange={handlePassWord} value={password}/>
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" onChange={handlePassWord} value={password}/>
 
-                        <div className="button-group">
-                        <button type="submit">Sign in</button>
-                        <button type="button"><a href="/signUp">Sign up</a></button>
-                        </div>
-                    </form>
-                </div>
+            <div className="button-group">
+            <button type="submit" className="sign-in-button">Sign In</button>
+            <button type="button" className="sign-up-button"><a href="/signUp">Sign Up</a></button>
             </div>
-        </div>
+        </form>
+      </div>  
     );
 }
 
