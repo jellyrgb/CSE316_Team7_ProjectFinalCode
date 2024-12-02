@@ -81,6 +81,27 @@ app.post('/api/user/:id/inventory', (req, res) => {
   });
 });
 
+// Get user inventory data
+app.get('/api/user/:id/inventory', (req, res) => {
+  const userId = req.params.id;
+  const query = `
+    SELECT item.id, item.type, item.image_source, item.stat, item.buy_price, item.sell_price, user_inventory.quantity
+    FROM user_inventory
+    JOIN item ON user_inventory.item_id = item.id
+    WHERE user_inventory.user_id = ?
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching inventory data:', err);
+      res.status(500).send('Error fetching inventory data');
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
 // Get pet data
 app.get('/api/user/:id/tamagotchis', (req, res) => {
   const userId = req.params.id;
