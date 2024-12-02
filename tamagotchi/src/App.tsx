@@ -11,19 +11,23 @@ import MyTama from "./pages/MyTama.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Header from "./components/Header.tsx";
 
+import { UserProvider } from "./contexts/UserContext.tsx";
+
 function App() {
   return (
-    <Router>
-      <Navbar />
+    <UserProvider>
+      <Router>
+        <Navbar />
 
-      <Routes>  
-        <Route path="/" element={<><Header title="Home page" /><Home /></>} />
-        <Route path="/shop" element={<><Header title="Shop" /><Shop /></>} />
-        <Route path="/work" element={<><Header title="Work" /><Work /></>} />
-        <Route path="/tamagotchi" element={<><Header title="<Name>'s Home" /><MyTama /></>} />
-        <Route path="/about" element={<><Header title="My Page" /><MyPage /></>} />
-      </Routes>
-    </Router>
+        <Routes>  
+          <Route path="/" element={<><Header title="Home page" /><Home /></>} />
+          <Route path="/shop" element={<><Header title="Shop" /><Shop /></>} />
+          <Route path="/work" element={<><Header title="Work" /><Work /></>} />
+          <Route path="/tamagotchi" element={<><Header title="<Name>'s Home" /><MyTama /></>} />
+          <Route path="/profile" element={<><Header title="My Profile Card" /><MyPage /></>} />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

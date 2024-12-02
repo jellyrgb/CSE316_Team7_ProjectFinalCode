@@ -1,15 +1,12 @@
 .my-pet-page {
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 100vh;
-    margin: 0;
-    padding-left: 150px;
+    margin-left: 150px;
 }
 
 .pet-Inventory {
     display: flex;
-    padding-top: 20px;
     justify-content: space-between;
     align-items: center;
     height: 70vh;
@@ -28,21 +25,18 @@
 .inventory {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     padding: 20px;
     background-color: #f0f0f0;
     border-radius: 10px;
-    width: 40%;
-    height: 80%;
-    /* 높이 자동 조정 */
-    max-height: 70vh;
-    /* 최대 높이 제한 */
-    overflow-y: auto;
-    /* 스크롤 가능 */
+    width: 30%;
+    height: 90%;
+    max-height: none;
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    position: fixed; /* 고정 위치 */
+    right: 0;
+    margin-top: 220px;
 }
-
-
 
 .inventory h2 {
     font-size: 1.5rem;
@@ -63,8 +57,7 @@
 
 .inventory-item {
     width: calc(25% - 10px);
-    /* 한 줄에 5개가 들어가도록 너비를 설정 (20%) */
-    height: 70px;
+    height: 75px;
 
     /* 아이템 높이 */
     background-color: #fff;
@@ -83,6 +76,7 @@
     background-color: #f0f0f0;
     color: #d4a712;
     -webkit-text-stroke: 2px rgb(87, 87, 87);
+    padding-top: 10px;
 }
 
 /* Status Bars */
@@ -91,7 +85,7 @@
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    padding-top: 30px;
+    margin-top: 35px;
 }
 
 .status span {
@@ -105,12 +99,12 @@
     align-items: center;
     gap: 1rem;
     font-size: 1rem;
-    width: 100%;
+    width: 55%;
 }
 
 .status-bar {
     height: 20px;
-    width: 70%;
+    width: 100%;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;

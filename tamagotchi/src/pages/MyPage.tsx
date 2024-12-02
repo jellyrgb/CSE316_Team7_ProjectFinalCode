@@ -1,47 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../css/MyPage.css";
+import { useUserContext } from "../contexts/UserContext";
 
 function MyPage() {
-  // 프로필 데이터 이름/프로필 못바꾸게.
-  const [profile, setProfile] = useState({
-    name: "Alice",
-  });
+  const { user, pets, loading, error } = useUserContext();
 
-  // 히스토리 데이터 tamagochi table에서 불러오기.
-  const [history, setHistory] = useState([
-    { image: "", id: 1, tama_name: "first tama" },
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    { image: "",id: 2, tama_name: "sec tama"},
-    
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  ]);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!user) {
+    return <div>User data unavailable.</div>;
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-CA'); // Make it YYYY-MM-DD format
+  };
 
   return (
     <div className="my-page">
-      {/* 프로필 섹션 */}
       <div className="profile-section">
-        <h2 className="profile-name">{profile.name}</h2>
+        <img
+          src={user.profile_image || "https://via.placeholder.com/200"}
+          alt="Profile"
+          className="profile-picture"
+        />
+        <div className="profile-info">
+          <h2>{user.username}</h2>
+          <p>Member since {formatDate(user.creation_date)}</p>
+        </div>
       </div>
-
-      {/* 히스토리 섹션 */}
-      <div className="history-section">
-        <h3>History</h3>
-            <div className="tama-type">
-              {history.map((tama) => (
-                <div key={tama.id} className="tama">
-                    <img src={tama.image} alt={"tama img"} className="tama-image" />
-                    <p className="tama-name">{tama.tama_name}</p>
-                </div>
-                ))}
+      <div className="records-section">
+        <h3>Pets History</h3>
+        <div className="pets-container">
+          {pets.map(pet => (
+            <div key={pet.id} className="pet-card">
+              <img src={pet.image_source} alt={pet.name} className="pet-image" />
+              <div className="pet-info">
+                <h4>{pet.name}</h4>
+                <p>Adopted on {formatDate(pet.adoption_date)}</p>
+              </div>
             </div>
+          ))}
+        </div>
       </div>
     </div>
   );
