@@ -8,15 +8,15 @@ dotenv.config(); // .env 파일 로드
 const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
+const port = 5000;
+const password = 'leesin'; // 비밀번호 바꿔서 테스트
 
 const db = createConnection({
   host: 'localhost',
   user: 'root',
   password: password,
   database: 'tama',
-    socketPath: '/tmp/mysql.sock' // 얘 indent 왜이래?
+  socketPath: '/tmp/mysql.sock'
 });
 
 app.use(cors());
