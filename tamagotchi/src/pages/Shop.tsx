@@ -4,18 +4,31 @@ import "../css/Shop.css";
 import { useShopContext } from "../context/ShopContext";
 import { useUserContext } from "../context/UserContext";
 import { API_BASE_URL } from '../config.tsx';
+import { useNavigate } from "react-router-dom";
 
 function Shop() {
-  const { items, loading, error } = useShopContext();
-  const { user, setUser } = useUserContext();
+  const { items } = useShopContext();
+  const { user, pets, loading, error, setUser } = useUserContext();
   const [balance, setBalance] = useState(0);
+  const navigate = useNavigate();
 
   // Update balance when user data is changed
   useEffect(() => {
+    if (!user && !loading) {
+      navigate("/signIn");
+    }
     if (user) {
       setBalance(user.balance);
     }
-  }, [user]);
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
 
   const updateBalance = async (newBalance: number) => {
     if (user) {
@@ -48,14 +61,6 @@ function Shop() {
       alert("Not enough balance!");
     }
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (!user) {
     return <div>User data unavailable.</div>;

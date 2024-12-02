@@ -1,17 +1,20 @@
 import express from 'express';
-import { createConnection } from 'mysql2';
+import mysql from 'mysql2/promise';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import { hashutil } from './src/hashutil/Hashutil.js';
 
-dotenv.config(); // .env 파일 로드
+const port = 5001;
+const password = 'leesin'; // 비밀번호 바꿔서 테스트
+
+dotenv.config(); 
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
 
-const db = createConnection({
+const db = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: password,
@@ -19,124 +22,91 @@ const db = createConnection({
   socketPath: '/tmp/mysql.sock'
 });
 
-app.use(cors());
-app.use(express.json());
+// User sign up
+app.post('/api/signup', async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-// Connect to db
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
+    const [existingUser] = await db.query('SELECT * FROM user WHERE username = ?', [username]);
+    if (existingUser.length > 0) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    const hashedPassword = hashutil(username, password);
+
+    const query = 'INSERT INTO user (username, password) VALUES (?, ?)';
+    const values = [username, hashedPassword];
+    const [result] = await db.query(query, values);
+
+    res.status(201).json({ id: result.insertId });
+  } catch (err) {
+    console.error('Error signing up:', err);
+    res.status(500).json({ error: 'Failed to sign up' });
   }
-  console.log('Connected to the database!');
+});
+
+// User sign in
+app.post('/api/signin', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const [users] = await db.query('SELECT * FROM user WHERE username = ?', [username]);
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'Incorrect username or password' });
+    }
+
+    const user = users[0];
+    const hashedPassword = hashutil(username, password);
+    if (user.password !== hashedPassword) {
+      return res.status(401).json({ error: 'Incorrect username or password' });
+    }
+
+    res.json({
+      id: user.id,
+      username: user.username,
+      profile_image: user.profile_image,
+      creation_date: user.creation_date,
+      balance: user.balance,
+    });
+  } catch (err) {
+    console.error('Error signing in:', err);
+    res.status(500).json({ error: 'Failed to sign in' });
+  }
 });
 
 // Get user data
-app.get('/api/user/:id', (req, res) => {
-  const userId = req.params.id;
-  const query = 'SELECT * FROM user WHERE id = ?';
+app.get('/api/user/:id', async (req, res) => {
+  try {
+    const [users] = await db.query('SELECT id, username, profile_image, balance, creation_date FROM user WHERE id = ?', [req.params.id]);
 
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Error fetching user data:', err);
-      res.status(500).send('Error fetching user data');
-      return;
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    if (results.length === 0) {
-      res.status(404).send('User not found');
-      return;
-    }
-
-    res.json(results[0]);
-  });
-});
-
-
-app.post('/api/user', (req, res) => {
-    const { username, password, profile_image, balance } = req.body;
-    if (!username || !password || !profile_image || balance===null) {
-        console.error('Missing required fields:', { username, password, profile_image, balance });
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
-    else{
-        console.log("not missing");
-    }    
-
-    // Check if email already exists
-    const checkQuery = 'SELECT * FROM user WHERE username = ?';
-    db.query(checkQuery, [username], (err, results) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ message: 'Database error' });
-        }
-
-        if (results.length > 0) {
-            return res.status(400).json({ message: 'Username already exists' });
-        }
-
-        // Insert new user
-        const insertQuery = 'INSERT INTO user (username, password, profile_image, balance) VALUES (?, ?, ?, ?)';
-        db.query(insertQuery, [username, password, profile_image, balance], (err, results) => {
-            
-            if (err) {
-                console.error('Error inserting user:', err);
-                return res.status(500).json({ message: 'Failed to create user...' });
-            }
-
-            res.status(201).json({ message: 'User registered successfully' });
-        });
-    });
-});
-
-app.get('/api/user', (req, res) => {
-    const selectQuery = "SELECT * FROM user";
-    db.query(selectQuery, (err, results) => {
-        if (err) {
-            console.error("Error in getting register:", err);
-            res.status(500).send('Error in getting register...');
-            return;
-        }
-        res.json(results); 
-    });
+    res.json(users[0]);
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
 });
 
 // Update user balance
-app.put('/api/user/:id/balance', (req, res) => {
+app.put('/api/user/:id/balance', async (req, res) => {
   const userId = req.params.id;
   const { balance } = req.body;
-  const query = 'UPDATE user SET balance = ? WHERE id = ?';
 
-  db.query(query, [balance, userId], (err, results) => {
-    if (err) {
-      console.error('Error updating user balance:', err);
-      res.status(500).send('Error updating user balance');
-      return;
-    }
-
+  try {
+    const query = 'UPDATE user SET balance = ? WHERE id = ?';
+    await db.query(query, [balance, userId]);
     res.sendStatus(200);
-  });
-});
-
-// Add item to user inventory
-app.post('/api/user/:id/inventory', (req, res) => {
-  const userId = req.params.id;
-  const { itemId, quantity } = req.body;
-  const query = 'INSERT INTO user_inventory (user_id, item_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?';
-
-  db.query(query, [userId, itemId, quantity, quantity], (err, results) => {
-    if (err) {
-      console.error('Error adding item to inventory:', err);
-      res.status(500).send('Error adding item to inventory');
-      return;
-    }
-
-    res.sendStatus(200);
-  });
+  } catch (err) {
+    console.error('Error updating balance:', err);
+    res.status(500).json({ error: 'Failed to update balance' });
+  }
 });
 
 // Get user inventory data
-app.get('/api/user/:id/inventory', (req, res) => {
+app.get('/api/user/:id/inventory', async (req, res) => {
   const userId = req.params.id;
   const query = `
     SELECT item.id, item.type, item.image_source, item.stat, item.buy_price, item.sell_price, user_inventory.quantity
@@ -145,47 +115,59 @@ app.get('/api/user/:id/inventory', (req, res) => {
     WHERE user_inventory.user_id = ?
   `;
 
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Error fetching inventory data:', err);
-      res.status(500).send('Error fetching inventory data');
-      return;
+  try {
+    const [results] = await db.query(query, [userId]);
+    res.json(results);
+  } catch (err) {
+    console.error('Error fetching inventory data:', err);
+    res.status(500).send('Error fetching inventory data');
+  }
+});
+
+// Add item to inventory
+app.post('/api/user/:id/inventory', async (req, res) => {
+  const userId = req.params.id;
+  const { itemId, quantity } = req.body;
+
+  try {
+    const [existingItem] = await db.query('SELECT * FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    
+    if (existingItem.length > 0) {
+      const query = 'UPDATE user_inventory SET quantity = quantity + ? WHERE user_id = ? AND item_id = ?';
+      await db.query(query, [quantity, userId, itemId]);
+      return res.sendStatus(200);
     }
 
-    res.json(results);
-  });
+    const query = 'INSERT INTO user_inventory (user_id, item_id, quantity) VALUES (?, ?, ?)';
+    await db.query(query, [userId, itemId, quantity]);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Error adding item to inventory:', err);
+    res.status(500).json({ error: 'Failed to add item to inventory' });
+  }
 });
 
 // Get pet data
-app.get('/api/user/:id/tamagotchis', (req, res) => {
+app.get('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
-  const query = 'SELECT * FROM tamagotchi WHERE user_id = ?';
-
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Error fetching pets data:', err);
-      res.status(500).send('Error fetching pets data');
-      return;
-    }
-
+  try {
+    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ?', [userId]);
     res.json(results);
-  });
+  } catch (err) {
+    console.error('Error fetching pets data:', err);
+    res.status(500).send('Error fetching pets data');
+  }
 });
 
 // Get item data
-app.get('/api/items', (req, res) => {
-  // TODO: 유저별로 인벤토리 다르게 하는 건 login 이후에 구현
-  const query = 'SELECT * FROM item';
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Error fetching items data:', err);
-      res.status(500).send('Error fetching items data');
-      return;
-    }
-
-    res.json(results);
-  });
+app.get('/api/items', async (req, res) => {
+  try {
+    const [items] = await db.query('SELECT * FROM item');
+    res.json(items);
+  } catch (err) {
+    console.error('Error fetching items data:', err);
+    res.status(500).send('Error fetching items data');
+  }
 });
 
 // Get tamagochi templates data

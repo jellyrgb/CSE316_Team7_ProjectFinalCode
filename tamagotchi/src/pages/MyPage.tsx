@@ -1,19 +1,24 @@
 import "../css/MyPage.css";
+import { useEffect } from 'react';
 import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function MyPage() {
-  const { user, pets, loading, error } = useUserContext();
+  const { user, pets, loading } = useUserContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      navigate("/signIn");
+    }
+  }, [user, loading, navigate]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   if (!user) {
-    return <div>User data unavailable.</div>;
+    return null;
   }
 
   const formatDate = (dateString: string) => {

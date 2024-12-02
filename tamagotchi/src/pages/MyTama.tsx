@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
 import "../css/MyTama.css";
-import { useUserContext } from "../context/UserContext";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Tamagotchi, useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
 
 interface InventoryItem {
@@ -15,12 +16,19 @@ interface InventoryItem {
 }
 
 function MyTama() {
-  const { user, pets } = useUserContext();
+  const { user, pets, loading } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [activePet, setActivePet] = useState(pets.find((pet) => pet.is_active));
+  const [activePet, setActivePet] = useState<Tamagotchi | null>();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const activePet = pets.find((pet) => pet.is_active);
+    setActivePet(activePet);
+
     const fetchInventory = async () => {
+      if (!user && !loading) {
+        navigate("/signIn");
+      }
       if (user) {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/user/${user.id}/inventory`);
@@ -32,10 +40,19 @@ function MyTama() {
     };
 
     fetchInventory();
-  }, [user]);
+  }, [user, loading, navigate]);
 
-  if (!user || pets.length === 0) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (!pets.length) {
+    // TODO: Go to adoption page  
+    return <div>No pets found</div>;
   }
 
   const pet = activePet;
