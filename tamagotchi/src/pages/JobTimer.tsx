@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
 
-// JobTimer 컴포넌트에 전달할 props 타입 정의
 interface JobTimerProps {
   job: {
     name: string;
-    duration: number;
+    duration: number; // 소요 시간 (분)
+    time_elapsed: number;
   };
-  onComplete: () => void;
 }
 
-const JobTimer: React.FC<JobTimerProps> = ({ job, onComplete }) => {
-  const [remainingTime, setRemainingTime] = useState(job.duration ); 
+const JobTimer: React.FC<JobTimerProps> = ({ job }) => {
+  const [remainingTime, setRemainingTime] = useState(job.duration - (job.time_elapsed||0)); // 초 단위로 변환
 
- useEffect(() => {
-    console.log(remainingTime);
-  if (remainingTime > 0) {
+  useEffect(() => {
     const interval = setInterval(() => {
-      setRemainingTime((prev) => Math.max(prev - 1, 0)); // 0 이하로 내려가지 않음
+      setRemainingTime((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(interval); // 클린업
-  } else if (remainingTime === 0) {
-    onComplete(); // 종료 작업 한 번만 실행
-  }
-}, [remainingTime]);
+    // 타이머가 0이 되면 interval 정리
+    if (remainingTime <= 0) {
+      clearInterval(interval); 
+    }
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
+  }, [remainingTime]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -33,7 +32,6 @@ const JobTimer: React.FC<JobTimerProps> = ({ job, onComplete }) => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <h3>Job: {job.name}</h3>
       <p>Remaining Time: {formatTime(remainingTime)}</p>
     </div>
   );

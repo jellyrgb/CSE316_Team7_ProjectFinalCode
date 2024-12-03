@@ -112,16 +112,7 @@ function Work() {
     setBalance(newBalance); // Add gold
     await updateBalance(newBalance);
     await addItemToInventory(randomItem.id, 1);
-    let updatedPet = { ...pet };
-    updatedPet.hunger = Math.max(updatedPet.hunger -30,0);
-    updatedPet.clean = Math.max(updatedPet.clean - 30, 0);
-    updatedPet.fun = Math.max(updatedPet.fun - 30, 0);
-    setActivePet(updatedPet);
 
-    // Update the pet status
-    await axios.put(`${API_BASE_URL}/api/user/${pet.id}/statusChange`, updatedPet)
-      .catch(error => console.error("Error updating pet status:", error));
-      
     if (isSick) {
       await updateSick();
       alert("Youe pet got sick !! 🤒 Please threat your pet.");
@@ -164,9 +155,18 @@ function Work() {
       return;
     }
 
+    updatedPet.hunger = Math.max(updatedPet.hunger -30,0);
+    updatedPet.clean = Math.max(updatedPet.clean - 30, 0);
+    updatedPet.fun = Math.max(updatedPet.fun - 30, 0);
+    setActivePet(updatedPet);
+
+    // Update the pet status
+    await axios.put(`${API_BASE_URL}/api/user/${pet.id}/statusChange`, updatedPet)
+      .catch(error => console.error("Error updating pet status:", error));
+      
+
     setSelectedJob(job); // 선택한 작업 설정
     await postJob(job);
-    console.log(selectedJob);
     setEndWorking(false)
 
   };
@@ -221,7 +221,7 @@ function Work() {
       </div>
 
       <div className="earned-item">
-        {endWorking ? <p>Choose where you want to work !</p>:<p></p>}
+        {endWorking ? <p>Choose where you want to work !</p>:<JobTimer job={selectedJob} />}
       </div>
     </div>
   );
