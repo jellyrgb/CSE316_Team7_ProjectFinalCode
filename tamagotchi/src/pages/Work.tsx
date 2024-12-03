@@ -121,10 +121,10 @@ function Work() {
     // Update the pet status
     await axios.put(`${API_BASE_URL}/api/user/${pet.id}/statusChange`, updatedPet)
       .catch(error => console.error("Error updating pet status:", error));
-
+      
     if (isSick) {
       await updateSick();
-      alert("You got sick! Please check the debug page.");
+      alert("Youe pet got sick !! 🤒 Please threat your pet.");
     } else {
       alert(`You earned ${job.reward} gold and found a random item!`);
     }

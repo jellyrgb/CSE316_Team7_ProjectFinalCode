@@ -191,11 +191,11 @@ app.get('/api/user/:id/tamagotchis', async (req, res) => {
 // Update pet status
 app.put('/api/pet/:id/status', async (req, res) => {
   const petId = req.params.id;
-  const { hunger, clean, fun } = req.body;
+  const { hunger, clean, fun, is_sick } = req.body;
 
   try {
-    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ? WHERE id = ?';
-    await db.query(query, [hunger, clean, fun, petId]);
+    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ?, is_sick = ? WHERE id = ?';
+    await db.query(query, [hunger, clean, fun,is_sick, petId]);
     res.sendStatus(200);
   } catch (err) {
     console.error('Error updating pet status:', err);

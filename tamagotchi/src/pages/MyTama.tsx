@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { Tamagotchi, useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
+import germImage from '../Images/germ.png';
+import germ2Image from '../Images/germ2.png';
+
 
 interface InventoryItem {
   id: number;
@@ -64,6 +67,7 @@ function MyTama() {
   const handleItemClick = async (item: InventoryItem) => {
     let updatedPet = { ...pet };
 
+
     switch (item.type) {
       case 1: // Food
         updatedPet.hunger = Math.min(updatedPet.hunger + item.stat, 100);
@@ -75,7 +79,14 @@ function MyTama() {
         updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
         break;
       case 4: // Medicine
-        updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
+        if(pet.is_sick){
+          updatedPet.is_sick=false;
+          alert("Treat success");
+        }
+        else{
+          updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
+          updatedPet.is_sick=false;
+        }
         break;
       default:
         break;
@@ -89,6 +100,7 @@ function MyTama() {
         hunger: updatedPet.hunger,
         clean: updatedPet.clean,
         fun: updatedPet.fun,
+        is_sick: updatedPet.is_sick
       });
     } catch (error) {
       console.error("Error updating pet status:", error);
@@ -109,6 +121,7 @@ function MyTama() {
         return invItem;
       }).filter(invItem => invItem.quantity > 0);
 
+      
       return updatedInventory;
     });
   };
@@ -128,10 +141,19 @@ function MyTama() {
     }
   };
 
+  
+
   return (
     <div className="my-tama fullscreen">
       <div className="pet-section">
-        <img src={pet.image_source} alt={pet.name} className="pet-image" />
+        {pet.is_sick ? (
+          <>
+            <img src={germImage} className="germ-image icon-overlay" />
+            <img src={germ2Image} className="germ-image icon-overlay2" />
+          </>
+        ) : null}
+
+        <img src={pet.image_source} alt={pet.name} className="pet-image main-image" />
         <div className="status-container">
           <div className="status">
             <span>Hunger</span>
