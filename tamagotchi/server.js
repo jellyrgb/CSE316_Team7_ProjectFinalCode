@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
+const password = 'leesin'; // 비밀번호 바꿔서 테스트
 
 dotenv.config(); 
 
@@ -147,6 +147,35 @@ app.post('/api/user/:id/inventory', async (req, res) => {
   }
 });
 
+// Remove item from inventory
+app.put('/api/user/:id/inventory/use', async (req, res) => {
+  const userId = req.params.id;
+  const { itemId } = req.body;
+
+  try {
+    const [existingItem] = await db.query('SELECT quantity FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    
+    if (existingItem.length === 0) {
+      return res.status(404).json({ error: 'Item not found in inventory' });
+    }
+
+    const currentQuantity = existingItem[0].quantity;
+
+    if (currentQuantity > 1) {
+      const query = 'UPDATE user_inventory SET quantity = quantity - 1 WHERE user_id = ? AND item_id = ?';
+      await db.query(query, [userId, itemId]);
+    } else {
+      const query = 'DELETE FROM user_inventory WHERE user_id = ? AND item_id = ?';
+      await db.query(query, [userId, itemId]);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating inventory:', err);
+    res.status(500).json({ error: 'Failed to update inventory' });
+  }
+});
+
 // Get pet data
 app.get('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
@@ -156,6 +185,21 @@ app.get('/api/user/:id/tamagotchis', async (req, res) => {
   } catch (err) {
     console.error('Error fetching pets data:', err);
     res.status(500).send('Error fetching pets data');
+  }
+});
+
+// Update pet status
+app.put('/api/pet/:id/status', async (req, res) => {
+  const petId = req.params.id;
+  const { hunger, clean, fun } = req.body;
+
+  try {
+    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ? WHERE id = ?';
+    await db.query(query, [hunger, clean, fun, petId]);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating pet status:', err);
+    res.status(500).json({ error: 'Failed to update pet status' });
   }
 });
 
