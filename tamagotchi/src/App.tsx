@@ -30,15 +30,15 @@ function App() {
           <Navbar />
 
           <Routes>  
-            <Route path="/" element={<><Header title="Home page" /><Home /></>} />
+            <Route path="/" element={<><Header title="Home Page" /><Home /></>} />
             <Route path="/shop" element={<><Header title="Shop" /><Shop /></>} />
             <Route path="/work" element={<><Header title="Work" /><Work /></>} />
-            <Route path="/tamagotchi" element={<><Header title="My Home" /><MyTama /></>} />
+            <Route path="/tamagotchi" element={<><Header title="My Tamagotchi" /><MyTama /></>} />
             <Route path="/profile" element={<><Header title="My Profile Card" /><MyPage /></>} />
             <Route path="/signUp" element={<><Header title="Sign Up" /><SignUp /></>} />
             <Route path="/signIn" element={<><Header title="Sign In" /><SignIn /></>} />
-            <Route path="/test" element={<><Header title="Test" /><Test /></>} />
-            <Route path="/tamalist" element={<><Header title="Adopt your pet!" /><AdoptPage /></>} />
+            <Route path="/test" element={<><Header title="Test and Debug Page" /><Test /></>} />
+            <Route path="/adopt" element={<><Header title="Adopt a new Tamagotchi" /><AdoptPage /></>} />
           </Routes>
         </Router>
         </JobProvider>

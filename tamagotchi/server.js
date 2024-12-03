@@ -254,7 +254,6 @@ app.put('/api/user/:id/profile-image', async (req, res) => {
   }
 });
 
-
 // Get jobs data
 app.get('/api/jobList', async (req, res) => {
   try {
@@ -309,6 +308,7 @@ app.post('/api/user/:id/jobs', async (req, res) => {
   }
 });
 
+// Get working data
 app.get('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
   const query = `
@@ -327,6 +327,7 @@ app.get('/api/user/:id/jobs', async (req, res) => {
   }
 });
 
+// Delete working data
 app.delete('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
 
@@ -342,6 +343,22 @@ app.delete('/api/user/:id/jobs', async (req, res) => {
   } catch (error) {
     console.error('Error deleting job:', error);
     res.status(500).send('Database error');
+  }
+});
+
+// Get active tamagotchi
+app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ? AND is_active = true', [userId]);
+    if (results.length > 0) {
+      return res.json({ hasActiveTamagotchi: true });
+    } else {
+      return res.json({ hasActiveTamagotchi: false });
+    }
+  } catch (err) {
+    console.error('Error fetching active tamagotchi:', err);
+    res.status(500).send('Error fetching active tamagotchi');
   }
 });
 

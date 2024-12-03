@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Shop() {
   const { items } = useShopContext();
-  const { user, pets, loading, error, setUser } = useUserContext();
+  const { user, loading, setUser } = useUserContext();
   const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
 
@@ -83,8 +83,8 @@ function Shop() {
 
   return (
     <div className="shop fullscreen">
-      <div className="balance">
-        <p>💰 {balance}G</p>
+      <div id="balance">
+        <span>💰 {balance}G</span>
       </div>
       <div>
         {/* Food */}
