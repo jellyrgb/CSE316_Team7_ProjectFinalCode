@@ -46,7 +46,7 @@
     margin-left: 20px;
 }
 
-button {
+.adopt-page-button {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
@@ -58,7 +58,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:disabled {
+.adopt-page-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
