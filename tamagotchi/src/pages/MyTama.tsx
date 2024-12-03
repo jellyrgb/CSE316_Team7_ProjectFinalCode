@@ -52,14 +52,20 @@ function MyTama() {
   }
 
   if (!pets.length) {
-    // TODO: Go to adoption page  
-    return <div>No pets found</div>;
+    // Redirect user to adopt page after 3 seconds
+    setTimeout(() => {
+      navigate("/adopt");
+    }, 3000);
+    return <div>No Tamagotchi found. Please adopt one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;
   }
 
   const pet = activePet;
 
   if (!pet) {
-    return <div>No active pet found</div>;
+    setTimeout(() => {
+      natvigate("/adopt");
+    }, 3000);
+    return <div>No active Tamagotchi found. Please adopt a new one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;
   }
 
   const handleItemClick = async (item: InventoryItem) => {
