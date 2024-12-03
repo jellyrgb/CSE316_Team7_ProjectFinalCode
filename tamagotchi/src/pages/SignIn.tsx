@@ -3,10 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
 import Cookies from 'js-cookie';
+import { useUserContext } from "../context/UserContext";
 
 function SignIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { setUser } = useUserContext();
     const navigate = useNavigate();
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +31,15 @@ function SignIn() {
           if (response.status === 200) {
             Cookies.set('userToken', response.data.id, { expires: 1 });
             alert("Successfully signed in!");
+            
+            setUser({
+              id: response.data.id,
+              username: response.data.username,
+              profile_image: response.data.profile_image,
+              creation_date: response.data.creation_date,
+              balance: response.data.balance,
+            });
+            
             navigate("/");
           }
         } catch (error) {

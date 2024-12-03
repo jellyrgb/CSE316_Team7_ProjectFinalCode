@@ -1,18 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../context/UserContext';
 import { API_BASE_URL } from '../config.tsx';
+import { useNavigate } from 'react-router-dom';
 import '../css/Home.css'; 
 import axios from 'axios';
 
 function Home() {
-    const { user, setUser } = useUserContext();
+    const { user, loading, setUser } = useUserContext();
     const [balance, setBalance] = useState(user?.balance);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
             setBalance(user.balance);
         }
-    }, [user]);
+
+        if (!user && !loading) {
+            navigate("/signIn");
+        }
+    }, [user, loading, navigate]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!user) {
+        return null;
+    }
 
     const getRandomIncrement = (): number => {
         return Math.floor(Math.random() * 3) + 1;
