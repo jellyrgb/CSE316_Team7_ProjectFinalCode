@@ -20,11 +20,11 @@
     padding: 30px;
     margin: 10px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .tamagotchi-card:hover {
-    transform: translateY(-5px);
+    transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
