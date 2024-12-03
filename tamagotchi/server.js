@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
+const password = 'leesin'; // 비밀번호 바꿔서 테스트
 
 dotenv.config(); 
 

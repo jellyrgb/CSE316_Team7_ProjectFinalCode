@@ -260,7 +260,7 @@ function MyPage() {
           </div>
 
           <div className="records-section">
-            <h3>Pets History</h3>
+            <h3>Tamagotchi History</h3>
             <div className="pets-container">
               {pets.map((pet) => (
                 <div key={pet.id} className="pet-card">

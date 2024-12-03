@@ -26,13 +26,11 @@ export function JobProvider({ children }: { children: ReactNode }) {
   const [jobs, setJobs] = useState<Jobs[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  console.log("jobs");
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/jobList`);
-        console.log(jobs);
 
         setJobs(response.data);
       } catch (err) {

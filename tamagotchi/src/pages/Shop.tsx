@@ -88,7 +88,7 @@ function Shop() {
       </div>
       <div>
         {/* Food */}
-        <h2>Food</h2>
+        <h2 className="category-title">Food</h2>
         <div className="items">
           {foodItems.map(item => (
             <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
@@ -105,7 +105,7 @@ function Shop() {
 
       {/* Toys */}
       <div>
-        <h2>Toys</h2>
+        <h2 className="category-title">Toys</h2>
         <div className="items">
           {toyItems.map(item => (
             <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>
@@ -122,7 +122,7 @@ function Shop() {
 
       {/* Misc */}
       <div>
-        <h2>Misc</h2>
+        <h2 className="category-title">Misc</h2>
         <div className="items">
           {miscItems.map(item => (
             <div key={item.id} className="item" onClick={() => handleItemClick(item.id, item.buy_price)}>

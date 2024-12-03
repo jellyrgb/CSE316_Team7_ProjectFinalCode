@@ -177,7 +177,7 @@ function MyTama() {
           <div className="status">
             <span>Lvl. 1</span>
             <div className="status-bar">
-              <div className="cleanliness-filled" style={{ width: `${pet.clean}%` }}></div>
+              <div className="exp-filled" style={{ width: `${pet.clean}%` }}></div>
             </div>
           </div>
         </div>

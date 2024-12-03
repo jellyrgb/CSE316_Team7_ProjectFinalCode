@@ -16,6 +16,15 @@
     height: auto;
 }
 
+.hamburger-menu {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
 .navbar-title {
     color: white;
     font-size: 24px;
@@ -57,4 +66,60 @@
     color: inherit;
     text-decoration: none;
     display: block;
+}
+
+@media (max-width: 600px) {
+    .navbar-logo {
+        display: none;
+    }
+
+    .navbar-title {
+        margin: 10px 0;
+        margin-left: 20px;
+    }
+
+    .navbar-container {
+        width: 100%;
+        height: 50px;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #314252;
+    }
+
+    .hamburger-menu {
+        display: block;
+        margin-bottom: 7px;
+        padding-right: 20px;
+    }
+
+    .menu-list {
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        z-index: 10;
+        transition: transform 0.5s ease, opacity 0.3s ease, visibility 0.5s ease;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .menu-list.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }    
+
+    .menu-item {
+        text-align: center;
+        height: 50px;
+    }
+
+    #navbar-profile {
+        height: 80px;
+    }
 }

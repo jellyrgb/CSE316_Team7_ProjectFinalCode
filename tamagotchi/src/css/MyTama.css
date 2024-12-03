@@ -28,7 +28,7 @@
     margin-bottom: 20px;
 }
 
-/* 오버레이 아이콘 스타일 */
+
 .icon-overlay {
     position: absolute;
     left: 65%;
@@ -46,6 +46,7 @@
 .hidden {
     display: none;
 }
+
 
 .status-container {
     width: 100%;
@@ -74,7 +75,8 @@
 
 .hunger-filled,
 .happiness-filled,
-.cleanliness-filled {
+.cleanliness-filled,
+.exp-filled {
     height: 100%;
     transition: width 0.5s ease;
 }
@@ -92,6 +94,11 @@
 .cleanliness-filled {
     height: 100%;
     background-color: #76c7c0;
+}
+
+.exp-filled {
+    height: 100%;
+    background-color: #76c776;
 }
 
 .inventory-section {
@@ -143,4 +150,36 @@
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-  }
+}
+
+@media (max-width: 1000px) {
+    .inventory-item {
+        width: calc(33.33% - 10px);
+    }
+
+    .status span {
+        width: 40%;
+    }
+}
+
+@media (max-width: 800px) {
+    .my-tama {
+        flex-direction: column;
+    }
+
+    .inventory-item {
+        width: calc(25% - 10px);
+    }
+
+    .pet-image {
+        width: 60%;
+    }
+
+    .pet-section {
+        margin-right: 0;
+    }
+
+    .inventory-section {
+        margin-top: 20px;
+    }
+}
