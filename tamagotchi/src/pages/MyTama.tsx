@@ -61,7 +61,7 @@ function MyTama() {
     return <div>No active pet found</div>;
   }
 
-  const handleItemClick = (item: InventoryItem) => {
+  const handleItemClick = async (item: InventoryItem) => {
     let updatedPet = { ...pet };
 
     switch (item.type) {
@@ -83,13 +83,23 @@ function MyTama() {
 
     setActivePet(updatedPet);
 
-    // Update the pet status
-    axios.put(`${API_BASE_URL}/api/pet/${pet.id}`, updatedPet)
-      .catch(error => console.error("Error updating pet status:", error));
+    // Update the pet status accordingly
+    try {
+      await axios.put(`${API_BASE_URL}/api/pet/${activePet.id}/status`, {
+        hunger: updatedPet.hunger,
+        clean: updatedPet.clean,
+        fun: updatedPet.fun,
+      });
+    } catch (error) {
+      console.error("Error updating pet status:", error);
+    }
 
     // Update the inventory
-    axios.post(`${API_BASE_URL}/api/user/${user.id}/inventory/use`, { itemId: item.id })
-      .catch(error => console.error("Error updating inventory:", error));
+    try {
+      await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/use`, { itemId: item.id });
+    } catch (error) {
+      console.error("Error updating inventory:", error);
+    }
 
     setInventory(prevInventory => {
       const updatedInventory = prevInventory.map(invItem => {
