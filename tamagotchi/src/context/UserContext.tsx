@@ -29,7 +29,7 @@ interface UserContextType {
   pets: Tamagotchi[];
   loading: boolean;
   error: string | null;
-  setUser: (user: User | null) => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   setPets: (pets: Tamagotchi[]) => void;
 }
 

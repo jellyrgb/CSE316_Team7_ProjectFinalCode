@@ -52,7 +52,7 @@ app.post('/api/signin', async (req, res) => {
 
     const [users] = await db.query('SELECT * FROM user WHERE username = ?', [username]);
     if (users.length === 0) {
-      return res.status(404).json({ error: 'Incorrect username or password' });
+      return res.status(401).json({ error: 'Incorrect username or password' });
     }
 
     const user = users[0];
@@ -69,7 +69,6 @@ app.post('/api/signin', async (req, res) => {
       balance: user.balance,
     });
   } catch (err) {
-    console.error('Error signing in:', err);
     res.status(500).json({ error: 'Failed to sign in' });
   }
 });
@@ -240,6 +239,20 @@ app.post('/api/user/:id/tamagotchis', async (req, res) => {
   } catch (err) {
       console.error('Error adding tama to inventory:', err);
       res.status(500).send('Error adding tama to inventory');
+  }
+});
+
+app.put('/api/user/:id/profile-image', async (req, res) => {
+  const userId = req.params.id;
+  const { profile_image } = req.body;
+
+  try {
+    const query = 'UPDATE user SET profile_image = ? WHERE id = ?';
+    await db.query(query, [profile_image, userId]);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating profile image:', err);
+    res.status(500).json({ error: 'Failed to update profile image' });
   }
 });
 

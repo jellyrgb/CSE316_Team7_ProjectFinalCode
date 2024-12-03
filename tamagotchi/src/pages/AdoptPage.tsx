@@ -16,13 +16,14 @@ function AdoptPage() {
     const [selectedTamagotchi, setSelectedTamagotchi] = useState<number | null>(null);
     const [tamagotchiName, setTamagotchiName] = useState("");
 
-    const { user } = useUserContext();
+    const { user, loading } = useUserContext();
     const navigate = useNavigate();
-
-
 
     // Fetch Tamagotchi templates from the server
     useEffect(() => {
+        if (!user && !loading) {
+            navigate("/signIn");
+        }
         async function fetchTamagotchiTemplates() {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/tamagotchi_templates`);
@@ -37,11 +38,11 @@ function AdoptPage() {
         }
 
         fetchTamagotchiTemplates();
-    }, []);
+    }, [user, loading, navigate]);
 
     // Handle Tamagotchi selection
     const handleSelect = (id: number) => {
-        setSelectedTamagotchi(id); // 이제 오류 없이 작동
+        setSelectedTamagotchi(id);
     };
 
     // Handle adopt action
@@ -103,7 +104,7 @@ function AdoptPage() {
                 <label htmlFor="tamagotchi-name">Enter Your Pet Name:</label>
                 <input id="tamagotchi-name" type="text" value={tamagotchiName} onChange={(e) => setTamagotchiName(e.target.value)} placeholder="Enter a name"/>
             </div>
-            <button onClick={handleAdopt} disabled={!selectedTamagotchi || !tamagotchiName}>
+            <button className="adopt-page-button" onClick={handleAdopt} disabled={!selectedTamagotchi || !tamagotchiName}>
                 Adopt Tamagotchi
             </button>
         </div>
