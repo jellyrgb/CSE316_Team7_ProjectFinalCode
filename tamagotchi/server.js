@@ -300,7 +300,6 @@ app.put('/api/user/:id/statusChange', async (req, res) => {
 app.post('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
   const { user_id, job_name, duration, reward} = req.body;
-  console.log("???");
   try {
     const [results] = await db.query('INSERT INTO jobs (user_id, job_name, duration, reward) VALUES (?, ?, ?,?)', [userId, job_name, duration, reward]);
     res.sendStatus(200);
@@ -330,7 +329,6 @@ app.get('/api/user/:id/jobs', async (req, res) => {
 
 app.delete('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
-  console.log(`Job ID to delete: ${userId}`);
 
   try {
     const query= `DELETE FROM jobs WHERE user_id = ?`;
