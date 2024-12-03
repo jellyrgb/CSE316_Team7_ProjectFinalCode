@@ -99,6 +99,32 @@ LOCK TABLES `jobs` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `level`
+--
+
+DROP TABLE IF EXISTS `level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `level` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tamagotchi_id` int NOT NULL,
+  `level` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `tamagotchi_id` (`tamagotchi_id`),
+  CONSTRAINT `level_ibfk_1` FOREIGN KEY (`tamagotchi_id`) REFERENCES `tamagotchi` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `level`
+--
+
+LOCK TABLES `level` WRITE;
+/*!40000 ALTER TABLE `level` DISABLE KEYS */;
+/*!40000 ALTER TABLE `level` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tamagotchi`
 --
 
@@ -222,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-03 18:54:27
+-- Dump completed on 2024-12-03 23:04:34
