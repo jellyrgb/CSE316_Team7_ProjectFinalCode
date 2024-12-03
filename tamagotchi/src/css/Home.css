@@ -1,39 +1,54 @@
-.fullscreen-home {
-    position: relative;
-    height: 90vh;
-    align-items: center;
-    display: flex;
-    gap: 10px;
-    margin-left: 150px;
+.home-page {
+    max-height: 100vh;
 }
 
-.fullscreen-home img {
+.home-page-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-logo {
+    width: 400px;
+    height: auto;
+}
+
+.home-cat {
     /* 절대 위치 지정 */
-    width: 350px;
+    width: 250px;
     height: auto;
     border-radius: 8px;
-    margin-top: 15%;
-    margin-left: 10%;
 }
 
-.fullscreen-home p {
+.home-welcome {
+    margin-bottom: 20px;
+}
+
+.home-explanation {
+    text-align: left;
+    padding: 0 10px;
+}
+
+.home-p {
     display: flex;
     width: auto;
     white-space: nowrap;
     padding: 20px 20px;
 }
 
-.fullscreen-home button {
+.earn-gold-button {
+    width: auto;
+}
+
+.button-and-balance {
     display: flex;
     width: auto;
     white-space: nowrap;
     padding: 20px 20px;
-}
-
-.btnAndBalance {
-    margin-left: 10%;
-    margin-right: 10%;
-    padding: 10px 50px
+    margin-right: 20px;
+    align-items: center;
+    flex-direction: column;
 }
 
 

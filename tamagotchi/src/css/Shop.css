@@ -26,13 +26,13 @@
   cursor: pointer;
 }
 
-.balance {
+#balance {
   position: absolute;
-  top: 70px;
+  top: 80px;
   right: 20px;
-  background-color: #ffffff;
-  padding: 0 20px;
+  padding: 10px 20px;
   border-radius: 8px;
+  border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
 }
