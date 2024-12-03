@@ -33,11 +33,3 @@
     padding-top: 30px;
     gap: 20px;
 }
-
-.sign-up-button,
-.sign-in-button {
-    height: 50px;
-    background-color: white;
-    border: 1px solid #ccc;
-    color: black;
-}

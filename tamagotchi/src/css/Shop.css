@@ -51,3 +51,18 @@
 .item p {
   margin: 5px 0;
 }
+
+/* Screen size < 800px */
+@media (max-width: 800px) {
+  .items {
+    grid-template-columns: repeat(2, 1fr);
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .items {
+    grid-template-columns: 1fr;
+    width: 40%;
+  }
+}

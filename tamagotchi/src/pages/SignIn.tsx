@@ -45,8 +45,13 @@ function SignIn() {
         }
       };
 
+    const handleSignUpNavigate = () => {
+      navigate("/signUp");
+    };
+
     return (
-      <div className="sign-container fullscreen">
+      <div className="container mt-4">
+        <div className="sign-container fullscreen">
         <h2>Please Log In Here!</h2>
         <form className="sign-form" onSubmit={handleSubmit}>
             <label htmlFor="username">User Name</label>
@@ -56,11 +61,12 @@ function SignIn() {
             <input type="password" id="password" onChange={handlePassWord} value={password}/>
 
             <div className="button-group">
-            <button type="submit" className="sign-in-button">Sign In</button>
-            <button type="button" className="sign-up-button"><a href="/signUp">Sign Up</a></button>
+            <button type="submit" className="sign-in-button btn btn-outline-success">Sign In</button>
+            <button type="button" className="sign-up-button btn btn-outline-primary" onClick={handleSignUpNavigate}>Sign Up</button>
             </div>
         </form>
       </div>  
+      </div>
     );
 }
 
