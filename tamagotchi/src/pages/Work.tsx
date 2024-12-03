@@ -17,7 +17,7 @@ function Work() {
   const [activePet, setActivePet] = useState<Tamagotchi | null>();
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
-  const [endWorking, setEndWorking] = useState(false);
+  const [endWorking, setEndWorking] = useState(true);
 
   const navigate = useNavigate();
 
@@ -45,6 +45,9 @@ function Work() {
           if (data[0].time_elapsed >= data[0].duration) {
             console.log(data[0].id);
             setEndWorking(true); // 작업 완료 처리     
+          }
+          else{
+          setEndWorking(false);
           }
         }
       } catch (error) {
@@ -123,17 +126,17 @@ function Work() {
       await updateSick();
       alert("You got sick! Please check the debug page.");
     } else {
-      alert(`You earned ${job.reward} gold and found a ${randomItem.image_source}!`);
+      alert(`You earned ${job.reward} gold and found a random item!`);
     }
 
-    console.log(selectedJob.id);
     try {
         await axios.delete(`${API_BASE_URL}/api/user/${user.id}/jobs`);
       } catch (error) {
         console.error("Error deleting work:", error);
     }
     setSelectedJob(null);
-    setEndWorking(false);
+    setEndWorking(true);
+    navigate("/work");
   };
 
 
@@ -150,7 +153,6 @@ function Work() {
   };
 
   const handleJobStart = async (job: any) => {
-    console.log("click");
     let updatedPet = { ...pet };
     if(updatedPet.hunger<30 || updatedPet.hunger<30 || updatedPet.hunger<30){
       alert("Not Enough Status!!");
@@ -158,7 +160,6 @@ function Work() {
     }
 
     if(updatedPet.is_sick){
-      console.log(updatedPet);
       alert("Your Pet is sick 🤒");
       return;
     }
@@ -166,13 +167,14 @@ function Work() {
     setSelectedJob(job); // 선택한 작업 설정
     await postJob(job);
     console.log(selectedJob);
+    setEndWorking(false)
 
   };
 
   return (
     <div className="work-page fullscreen">
       <div className="work_Header">
-        {endWorking ? <h1>Your pet is Working...</h1>:<h1>Resting...</h1>}
+        {endWorking ? <h1>Resting...</h1>:<h1>Your pet is Working...</h1>}
       </div>
         <div className="work-status-container">
           <div className="work-status">
@@ -219,7 +221,7 @@ function Work() {
       </div>
 
       <div className="earned-item">
-        {<p>Choose where you want to work !</p>}
+        {endWorking ? <p>Choose where you want to work !</p>:<p></p>}
       </div>
     </div>
   );
