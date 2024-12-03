@@ -18,6 +18,7 @@ function Work() {
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
+  const [levelData, setLevelData] = useState(Number);
 
   const navigate = useNavigate();
   jobs.sort((a, b) => a.duration - b.duration);
@@ -102,6 +103,7 @@ function Work() {
     }
   };
 
+
   // function after finish working
   const handleJobCompletion = async (job:any) => {
     const randomItem = items[Math.floor(Math.random() * 12)];
@@ -110,6 +112,22 @@ function Work() {
     setBalance(newBalance); // Add gold
     await updateBalance(newBalance);
     await addItemToInventory(randomItem.id, 1);
+
+    // Update or create level
+  try {
+    // Fetch current level
+    let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/user/${user.id}/tamagotchi/${activePet?.id}/level`);
+
+    const currentLevel = currentLevelResponse.data.level; 
+    const newLevel = Math.min(currentLevel + 30, 100); // Increase by 30, cap at 100
+
+      await axios.put(`${API_BASE_URL}/api/user/${user.id}/tamagotchi/${activePet?.id}/level`, { level: newLevel });
+      alert(`Your pet's level increased to ${newLevel}!`);
+      setLevelData(newLevel);
+    
+  } catch (error) {
+    console.error("Error updating or creating level:", error);
+  }
 
     if (isSick) {
       await updateSick();
