@@ -65,7 +65,6 @@ function MyTama() {
   const handleItemClick = async (item: InventoryItem) => {
     let updatedPet = { ...pet };
 
-
     switch (item.type) {
       case 1: // Food
         updatedPet.hunger = Math.min(updatedPet.hunger + item.stat, 100);
@@ -90,7 +89,7 @@ function MyTama() {
         break;
     }
 
-    setActivePet(updatedPet);
+    setActivePet(updatedPet);   
 
     // Update the pet status accordingly
     try {
@@ -187,7 +186,7 @@ function MyTama() {
           <div className="inventory-items">
             {inventory.map((item) =>
               Array.from({ length: item.quantity }).map((_, index) => (
-                <div key={`${item.id}-${index}`} className="inventory-item" onClick={() => handleItemClick(item)}>
+                <div key={`${item.id}-${index}`} className={`inventory-item ${item.isDisappearing ? 'disappearing' : ''}`} onClick={() => handleItemClick(item)}>
                   <img src={item.image_source} />
                   <div className="item-info">
                     <span>{getEmoji(item.type)}{item.type === 4 ? ` ${item.stat}%` : `+${item.stat}`}</span>
