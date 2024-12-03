@@ -25,7 +25,8 @@ function Navbar() {
         <li className="menu-item"><a href="/shop">Shop</a></li>
         <li className="menu-item"><a href="/work">Work</a></li>
         <li className="menu-item"><a href="/adopt">Adopt</a></li>
-        <li className="menu-item"><a href="/test">Test Page</a></li>
+        <br></br>
+        <br></br>
         <br></br>
         <br></br>
         <br></br>

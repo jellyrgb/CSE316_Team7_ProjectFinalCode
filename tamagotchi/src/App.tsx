@@ -1,5 +1,3 @@
-// npm install react-router-dom
-// npm install @types/react-router-dom
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css'
 
@@ -10,7 +8,6 @@ import MyPage from "./pages/MyPage.tsx"
 import MyTama from "./pages/MyTama.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
-import Test from "./pages/Test.tsx";
 import AdoptPage from "./pages/AdoptPage.tsx";
 
 import Navbar from "./components/Navbar.tsx";
@@ -37,7 +34,6 @@ function App() {
             <Route path="/profile" element={<><Header title="My Profile Card" /><MyPage /></>} />
             <Route path="/signUp" element={<><Header title="Sign Up" /><SignUp /></>} />
             <Route path="/signIn" element={<><Header title="Sign In" /><SignIn /></>} />
-            <Route path="/test" element={<><Header title="Test and Debug Page" /><Test /></>} />
             <Route path="/adopt" element={<><Header title="Adopt a new Tamagotchi" /><AdoptPage /></>} />
           </Routes>
         </Router>

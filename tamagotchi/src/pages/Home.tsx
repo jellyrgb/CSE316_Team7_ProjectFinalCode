@@ -54,7 +54,6 @@ function Home() {
                                     <li className="home-explanation">You can get sick while working.</li>
                                     <li className="home-explanation">Alternatively, you can fastly earn money by clicking the button below.</li>
                                 </ul>
-                                <li className="home-explanation">Check out <a href="/test">Test Page</a> to test the application features.</li>
                             </ol>
                         </div>
                         <div className="button-and-balance">
