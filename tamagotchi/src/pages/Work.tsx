@@ -6,20 +6,21 @@ import { useShopContext } from "../context/ShopContext";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
 import axios from "axios";
-import JobTimer from "./JobTimer";
+import JobTimer from "../components/JobTimer.tsx";
 
 
 
 function Work() {
   const { jobs } = useJobContext();
   const { items } = useShopContext();
-  const { user, pets, loading, error, setUser,setPets } = useUserContext();
+  const { user, pets, loading, setUser } = useUserContext();
   const [activePet, setActivePet] = useState<Tamagotchi | null>();
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
 
   const navigate = useNavigate();
+  jobs.sort((a, b) => a.duration - b.duration);
 
   useEffect(() => {
     const activePet = pets.find((pet) => pet.is_active);
@@ -37,14 +38,11 @@ function Work() {
     }
     const fetchJob = async () => {
       try {
-        // 사용자 작업 데이터 가져오기
         const { data } = await axios.get(`${API_BASE_URL}/api/user/${user.id}/jobs`);
-        console.log(data);
         setSelectedJob(data[0]);
         if(data.length>0){
           if (data[0].time_elapsed >= data[0].duration) {
-            console.log(data[0].id);
-            setEndWorking(true); // 작업 완료 처리     
+            setEndWorking(true);  
           }
           else{
           setEndWorking(false);
@@ -115,7 +113,7 @@ function Work() {
 
     if (isSick) {
       await updateSick();
-      alert("Youe pet got sick !! 🤒 Please threat your pet.");
+      alert("Your pet got sick! 🤒 Please treat your pet.");
     } else {
       alert(`You earned ${job.reward} gold and found a random item!`);
     }
@@ -127,11 +125,12 @@ function Work() {
     }
     setSelectedJob(null);
     setEndWorking(true);
+
     navigate("/work");
   };
 
 
-  //Post job to API
+  // Post job to API
   const postJob = async (job:any) => {
     if (activePet) {
       try {
@@ -145,19 +144,27 @@ function Work() {
 
   const handleJobStart = async (job: any) => {
     let updatedPet = { ...pet };
-    if(updatedPet.hunger<30 || updatedPet.hunger<30 || updatedPet.hunger<30){
-      alert("Not Enough Status!!");
+    if (updatedPet.hunger < 50) {
+      alert("Not enough hunger!");
+      return;
+    }
+    if (updatedPet.clean < 40) {
+      alert("Not enough cleanliness!");
+      return;
+    }
+    if (updatedPet.fun < 60) {
+      alert("Not enough happiness!");
       return;
     }
 
     if(updatedPet.is_sick){
-      alert("Your Pet is sick 🤒");
+      alert("Your pet is sick! Please treat your pet first.");
       return;
     }
 
-    updatedPet.hunger = Math.max(updatedPet.hunger -30,0);
-    updatedPet.clean = Math.max(updatedPet.clean - 30, 0);
-    updatedPet.fun = Math.max(updatedPet.fun - 30, 0);
+    updatedPet.hunger = Math.max(updatedPet.hunger - 50,0);
+    updatedPet.clean = Math.max(updatedPet.clean - 40, 0);
+    updatedPet.fun = Math.max(updatedPet.fun - 60, 0);
     setActivePet(updatedPet);
 
     // Update the pet status
@@ -165,7 +172,7 @@ function Work() {
       .catch(error => console.error("Error updating pet status:", error));
       
 
-    setSelectedJob(job); // 선택한 작업 설정
+    setSelectedJob(job);
     await postJob(job);
     setEndWorking(false)
 
@@ -174,7 +181,7 @@ function Work() {
   return (
     <div className="work-page fullscreen">
       <div className="work_Header">
-        {endWorking ? <h1>Resting...</h1>:<h1>Your pet is Working...</h1>}
+        {endWorking ? <h2>Your pet is resting...</h2>:<h2>Your pet is working...</h2>}
       </div>
         <div className="work-status-container">
           <div className="work-status">
@@ -202,7 +209,7 @@ function Work() {
       <div className="jobs-container">
         {selectedJob ? (
           <div>
-            {endWorking ? <button onClick={()=>handleJobCompletion(selectedJob)}>Get a reward!</button>:<p>Your pet is working now.</p>}
+            {endWorking ? <button className="claim-reward-button" onClick={()=>handleJobCompletion(selectedJob)}>Claim the reward</button>:<p>Your pet is working now.</p>}
         </div>
       ) : (
         // 작업 목록 표시
@@ -221,7 +228,7 @@ function Work() {
       </div>
 
       <div className="earned-item">
-        {endWorking ? <p>Choose where you want to work !</p>:<JobTimer job={selectedJob} />}
+        {endWorking ? <p>Choose a workplace.</p>:<JobTimer job={selectedJob} />}
       </div>
     </div>
   );

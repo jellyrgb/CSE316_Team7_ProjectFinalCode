@@ -46,9 +46,13 @@ function Home() {
                             <h1 className="home-welcome">Welcome, {user.username}!</h1>
                             <ol>
                                 <li className="home-explanation">Go to <a href="/adopt">Adopt</a> page to get a new Tamagotchi.</li>
-                                <li className="home-explanation">Feed and play with your Tamagotchi in <a href="/tamagotchi">My Pet</a> page.</li>
+                                <li className="home-explanation">Feed and play with your Tamagotchi in <a href="/tamagotchi">My Tamagotchi</a> page.</li>
                                 <li className="home-explanation">Buy items from <a href="/shop">Shop</a> page for your Tamagotchi.</li>
                                 <li className="home-explanation">Work part time in <a href="/work">Work</a> page to earn gold.</li>
+                                <ul>
+                                    <li className="home-explanation">If you don't have enough status, you can't work.</li>
+                                    <li className="home-explanation">Alternatively, you can fastly earn money by clicking the button below.</li>
+                                </ul>
                                 <li className="home-explanation">Check out <a href="/test">Test Page</a> to test the application features.</li>
                             </ol>
                         </div>

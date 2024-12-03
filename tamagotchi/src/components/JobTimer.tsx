@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 interface JobTimerProps {
   job: {
     name: string;
-    duration: number; // 소요 시간 (분)
+    duration: number;
     time_elapsed: number;
   };
 }
@@ -16,12 +16,11 @@ const JobTimer: React.FC<JobTimerProps> = ({ job }) => {
       setRemainingTime((prev) => prev - 1);
     }, 1000);
 
-    // 타이머가 0이 되면 interval 정리
     if (remainingTime <= 0) {
       clearInterval(interval); 
     }
 
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(interval); 
   }, [remainingTime]);
 
   const formatTime = (seconds: number) => {
