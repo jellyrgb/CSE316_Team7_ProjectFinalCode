@@ -187,6 +187,7 @@ function Work() {
           <div className="work-status">
             <span>Hunger</span>
             <div className="work-status-bar">
+              <div className="tooltip-hunger">{activePet?.hunger}/100</div>
               <div className="hunger-filled" style={{ width: `${activePet?.hunger}%` }}></div>
             </div>
           </div>
@@ -194,6 +195,7 @@ function Work() {
           <div className="work-status">
             <span>Happiness</span>
             <div className="work-status-bar">
+            <div className="tooltip-fun">{activePet?.fun}/100</div>
               <div className="happiness-filled" style={{ width: `${activePet?.fun}%` }}></div>
             </div>
           </div>
@@ -201,6 +203,7 @@ function Work() {
           <div className="work-status">
             <span>Cleanliness</span>
             <div className="work-status-bar">
+            <div className="tooltip-clean">{activePet?.clean}/100</div>
               <div className="cleanliness-filled" style={{ width: `${activePet?.clean}%` }}></div>
             </div>
           </div>

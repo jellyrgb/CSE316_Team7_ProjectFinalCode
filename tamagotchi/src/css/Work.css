@@ -100,3 +100,44 @@
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
+
+/* Tooltip style */
+.tooltip-hunger,
+.tooltip-fun,
+.tooltip-clean {
+  position: absolute;
+  transform: translateX(-50%);
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  -webkit-text-stroke: 1px black;
+}
+
+.tooltip-hunger {
+  top: 243px; 
+  left: 64%;
+}
+
+.tooltip-fun {
+  top: 298px;
+  left: 64%;
+}
+
+.tooltip-clean {
+  top: 351px;
+  left: 64%;
+}
+
+/* Tooltip visible */
+.work-status-bar:hover .tooltip-hunger,
+.work-status-bar:hover .tooltip-fun,
+.work-status-bar:hover .tooltip-clean {
+  opacity: 1; /* hover 시 표시 */
+}

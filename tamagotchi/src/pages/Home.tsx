@@ -50,7 +50,8 @@ function Home() {
                                 <li className="home-explanation">Buy items from <a href="/shop">Shop</a> page for your Tamagotchi.</li>
                                 <li className="home-explanation">Work part time in <a href="/work">Work</a> page to earn gold.</li>
                                 <ul>
-                                    <li className="home-explanation">If you don't have enough status, you can't work.</li>
+                                    <li className="home-explanation">If you don't have enough status, you can't work. You can check the exact status if you hover cursor on the status bar.</li>
+                                    <li className="home-explanation">You can get sick while working.</li>
                                     <li className="home-explanation">Alternatively, you can fastly earn money by clicking the button below.</li>
                                 </ul>
                                 <li className="home-explanation">Check out <a href="/test">Test Page</a> to test the application features.</li>
