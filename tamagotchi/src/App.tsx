@@ -18,12 +18,14 @@ import Header from "./components/Header.tsx";
 
 import { UserProvider } from "./context/UserContext.tsx";
 import { ShopProvider } from "./context/ShopContext.tsx";
+import { JobProvider } from "./context/JobContext.tsx";
 
 function App() {
 
   return (
     <UserProvider>
       <ShopProvider>
+        <JobProvider>
         <Router>
           <Navbar />
 
@@ -39,6 +41,7 @@ function App() {
             <Route path="/tamalist" element={<><Header title="Adopt your pet!" /><AdoptPage /></>} />
           </Routes>
         </Router>
+        </JobProvider>
       </ShopProvider>
     </UserProvider>
   );

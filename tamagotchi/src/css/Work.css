@@ -1,0 +1,91 @@
+
+
+/* 제목 스타일 */
+.work_Header {
+  font-size: 1.5rem;
+  color: #333;
+  padding-bottom: 30px;
+}
+
+.work-status-container {
+    width: 100%;
+    text-align: left;
+}
+
+.work-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    margin-right: 20px;
+}
+
+.work-status span {
+    width: 30%;
+    font-size: 1.2rem;
+}
+
+.work-status-bar {
+    flex: 1;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* 작업 컨테이너 스타일 */
+.jobs-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  width: 200px;
+  border: 1px solid #2e4357;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.job-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.job-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.job-card p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #9cd4ea;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(1);
+}
+
+

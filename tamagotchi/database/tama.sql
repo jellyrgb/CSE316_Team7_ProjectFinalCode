@@ -44,6 +44,32 @@ INSERT INTO `item` VALUES (1,1,'/images/apple.png',15,10,5),(2,1,'/images/hotpot
 UNLOCK TABLES;
 
 --
+-- Table structure for table `jobList`
+--
+
+DROP TABLE IF EXISTS `jobList`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobList` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `job_name` varchar(100) DEFAULT NULL,
+  `duration` int DEFAULT NULL,
+  `reward` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jobList`
+--
+
+LOCK TABLES `jobList` WRITE;
+/*!40000 ALTER TABLE `jobList` DISABLE KEYS */;
+INSERT INTO `jobList` VALUES (1,'Delivery',10,50),(2,'Library',300,300),(3,'Box Folding',15,70);
+/*!40000 ALTER TABLE `jobList` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jobs`
 --
 
@@ -56,11 +82,11 @@ CREATE TABLE `jobs` (
   `job_name` varchar(100) DEFAULT NULL,
   `duration` int DEFAULT NULL,
   `reward` int DEFAULT NULL,
-  `start_time` datetime DEFAULT NULL,
+  `start_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +119,7 @@ CREATE TABLE `tamagotchi` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `tamagotchi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +128,7 @@ CREATE TABLE `tamagotchi` (
 
 LOCK TABLES `tamagotchi` WRITE;
 /*!40000 ALTER TABLE `tamagotchi` DISABLE KEYS */;
-INSERT INTO `tamagotchi` VALUES (1,'Fluffy','/images/dog1.webp',80,90,70,0,'2024-01-01 00:00:00',0,1),(2,'Max','/images/dog2.avif',80,90,70,0,'2024-07-15 00:00:00',0,1),(3,'Buddy','/images/dog3.webp',80,90,70,0,'2024-12-02 00:00:00',1,1);
+INSERT INTO `tamagotchi` VALUES (1,'Fluffy','/images/dog1.webp',80,90,70,0,'2024-01-01 00:00:00',0,1),(2,'Max','/images/dog2.avif',80,90,70,0,'2024-07-15 00:00:00',0,1),(3,'Buddy','/images/dog3.webp',80,90,70,0,'2024-12-02 00:00:00',1,1),(4,'first pet','/images/dog1.webp',50,50,50,1,'2024-12-03 00:00:00',1,2);
 /*!40000 ALTER TABLE `tamagotchi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +181,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'John Doe','password123','/images/user.png',300,'2024-12-02 20:51:30'),(2,'nah','df8086362f6541f72136ff4ea3a69e85646d0137c4af9b64e7d554f218ad85','http://res.cloudinary.com/dkeneeift/image/upload/v1730882083/user_gyjnlf.png',0,'2024-12-03 02:30:08');
+INSERT INTO `user` VALUES (1,'John Doe','password123','/images/user.png',300,'2024-12-02 20:51:30'),(2,'nah','df8086362f6541f72136ff4ea3a69e85646d0137c4af9b64e7d554f218ad85','http://res.cloudinary.com/dkeneeift/image/upload/v1730882083/user_gyjnlf.png',327,'2024-12-03 02:30:08');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +209,7 @@ CREATE TABLE `user_inventory` (
 
 LOCK TABLES `user_inventory` WRITE;
 /*!40000 ALTER TABLE `user_inventory` DISABLE KEYS */;
-INSERT INTO `user_inventory` VALUES (1,1,3);
+INSERT INTO `user_inventory` VALUES (1,1,3),(2,4,1);
 /*!40000 ALTER TABLE `user_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -196,4 +222,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-03  3:13:49
+-- Dump completed on 2024-12-03 18:54:27

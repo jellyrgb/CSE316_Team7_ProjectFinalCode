@@ -41,7 +41,7 @@ function AdoptPage() {
 
     // Handle Tamagotchi selection
     const handleSelect = (id: number) => {
-        setSelectedTamagotchi(id); // 이제 오류 없이 작동
+        setSelectedTamagotchi(id); 
     };
 
     // Handle adopt action

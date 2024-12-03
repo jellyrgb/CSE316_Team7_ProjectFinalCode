@@ -181,8 +181,6 @@ app.get('/api/tamagotchi_templates', async (req, res) => {
       res.status(500).send('Error fetching tamagotchi_templates data');
   }
 
-  const query = 'SELECT * FROM tamagotchi_templates';
-
 });
 
 // Post pet data
@@ -198,6 +196,100 @@ app.post('/api/user/:id/tamagotchis', async (req, res) => {
       res.status(500).send('Error adding tama to inventory');
   }
 });
+
+// Get jobs data
+app.get('/api/jobList', async (req, res) => {
+  try {
+    const [result] = await db.query('SELECT * FROM jobList');
+    res.json(result);
+  } catch (err) {
+    console.error('Error fetching jobsList data:', err);
+    res.status(500).send('Error fetching jobsList data');
+  }
+});
+
+// Update tama's is_sick
+app.put('/api/user/:id/is_sick', async (req, res) => {
+  const userId = req.params.id;
+  const { is_sick } = req.body;
+
+  try {
+    const query = 'UPDATE tamagotchi SET is_sick = ? WHERE user_id = ?';
+    await db.query(query, [is_sick, userId]);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating is_sick:', err);
+    res.status(500).json({ error: 'Failed to update is_sick' });
+  }
+});
+
+// Update tama's status
+app.put('/api/user/:id/statusChange', async (req, res) => {
+  const userId = req.params.id;
+  const { hunger, clean, fun } = req.body;
+
+  try {
+    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ? WHERE id = ?';
+    await db.query(query, [hunger, clean, fun, userId]);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating status:', err);
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+});
+
+// Post working data
+app.post('/api/user/:id/jobs', async (req, res) => {
+  const userId = req.params.id;
+  const { user_id, job_name, duration, reward} = req.body;
+  console.log("???");
+  try {
+    const [results] = await db.query('INSERT INTO jobs (user_id, job_name, duration, reward) VALUES (?, ?, ?,?)', [userId, job_name, duration, reward]);
+    res.sendStatus(200);
+  } catch (err) {
+      console.error('Error adding jobs:', err);
+      res.status(500).send('Error adding jobs');
+  }
+});
+
+app.get('/api/user/:id/jobs', async (req, res) => {
+  const userId = req.params.id;
+  const query = `
+    SELECT id, job_name, TIMESTAMPDIFF(SECOND, start_time, CURRENT_TIMESTAMP) AS time_elapsed, duration, reward
+    FROM jobs
+    WHERE user_id = ?;
+  `;
+
+  try {
+    const [results] = await db.query(query, [userId]);
+    //console.log(results);
+    res.json(results);
+  } catch (err) {
+    console.error('Error to find a diff data:', err);
+    res.status(500).send('Error to find a diff data');
+  }
+});
+
+app.delete('/api/user/:id/jobs', async (req, res) => {
+  const userId = req.params.id;
+  console.log(`Job ID to delete: ${userId}`);
+
+  try {
+    const query= `DELETE FROM jobs WHERE user_id = ?`;
+    const result = await db.query(query, [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Job not found.');
+    }
+
+    res.send('Job completed and deleted.');
+  } catch (error) {
+    console.error('Error deleting job:', error);
+    res.status(500).send('Database error');
+  }
+});
+
+
 
 // Initalize server
 app.listen(port, () => {
