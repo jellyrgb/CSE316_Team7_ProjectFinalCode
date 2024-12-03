@@ -57,14 +57,20 @@ function MyTama() {
   }
 
   if (!pets.length) {
-    // TODO: Go to adoption page  
-    return <div>No pets found</div>;
+    // Redirect user to adopt page after 3 seconds
+    setTimeout(() => {
+      navigate("/adopt");
+    }, 3000);
+    return <div>No Tamagotchi found. Please adopt one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;
   }
 
   const pet = activePet;
 
   if (!pet) {
-    return <div>No active pet found</div>;
+    setTimeout(() => {
+      natvigate("/adopt");
+    }, 3000);
+    return <div>No active Tamagotchi found. Please adopt a new one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;
   }
 
   const updateActive = async () => {
@@ -80,7 +86,6 @@ function MyTama() {
 
   const handleItemClick = async (item: InventoryItem) => {
     let updatedPet = { ...pet };
-
 
     switch (item.type) {
       case 1: // Food
@@ -222,7 +227,7 @@ function MyTama() {
           <div className="inventory-items">
             {inventory.map((item) =>
               Array.from({ length: item.quantity }).map((_, index) => (
-                <div key={`${item.id}-${index}`} className="inventory-item" onClick={() => handleItemClick(item)}>
+                <div key={`${item.id}-${index}`} className={`inventory-item ${item.isDisappearing ? 'disappearing' : ''}`} onClick={() => handleItemClick(item)}>
                   <img src={item.image_source} />
                   <div className="item-info">
                     <span>{getEmoji(item.type)}{item.type === 4 ? ` ${item.stat}%` : `+${item.stat}`}</span>

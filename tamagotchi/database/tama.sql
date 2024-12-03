@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 9.1.0, for macos14 (x86_64)
 --
 -- Host: localhost    Database: tama
 -- ------------------------------------------------------
--- Server version	8.0.40
+-- Server version	9.0.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `tama`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `tama` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `tama`;
 
 --
 -- Table structure for table `item`
@@ -179,7 +187,7 @@ CREATE TABLE `tamagotchi_templates` (
 
 LOCK TABLES `tamagotchi_templates` WRITE;
 /*!40000 ALTER TABLE `tamagotchi_templates` DISABLE KEYS */;
-INSERT INTO `tamagotchi_templates` VALUES (1,'/images/dog1.webp','Tamagotchi 1.'),(2,'/images/dog1.webp','Tamagotchi 2.'),(3,'/images/dog1.webp','Tamagotchi 3.');
+INSERT INTO `tamagotchi_templates` VALUES (1,'/images/dog1.webp','Tamagotchi 1'),(2,'/images/dog1.webp','Tamagotchi 2'),(3,'/images/dog1.webp','Tamagotchi 3');
 /*!40000 ALTER TABLE `tamagotchi_templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +206,7 @@ CREATE TABLE `user` (
   `balance` int DEFAULT '0',
   `creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +215,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'John Doe','password123','/images/user.png',300,'2024-12-02 20:51:30'),(2,'nah','df8086362f6541f72136ff4ea3a69e85646d0137c4af9b64e7d554f218ad85','http://res.cloudinary.com/dkeneeift/image/upload/v1730882083/user_gyjnlf.png',327,'2024-12-03 02:30:08');
+INSERT INTO `user` VALUES (1,'John Doe','password123','/images/user.png',300,'2024-12-02 20:51:30'),(2,'nah','df8086362f6541f72136ff4ea3a69e85646d0137c4af9b64e7d554f218ad85','http://res.cloudinary.com/dkeneeift/image/upload/v1730882083/user_gyjnlf.png',327,'2024-12-03 02:30:08'),(3,'babo','6960acc359d73fea1a7fcee83900293364aa0165a0515ba9474d75dbb4225070',NULL,0,'2024-12-04 03:32:14');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-03 23:04:34
+-- Dump completed on 2024-12-04  3:33:08

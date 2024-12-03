@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
+const password = 'leesin'; // 비밀번호 바꿔서 테스트
 
 dotenv.config(); 
 
@@ -256,6 +256,36 @@ app.put('/api/user/:id/profile-image', async (req, res) => {
   }
 });
 
+// Change password
+app.put('/api/user/:id/change-password', async (req, res) => {
+  const userId = req.params.id;
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const [users] = await db.query('SELECT * FROM user WHERE id = ?', [userId]);
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = users[0];
+
+    const hashedCurrentPassword = hashutil(user.username, currentPassword);
+    if (user.password !== hashedCurrentPassword) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const hashedNewPassword = hashutil(user.username, newPassword);
+
+    const query = 'UPDATE user SET password = ? WHERE id = ?';
+    await db.query(query, [hashedNewPassword, userId]);
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (err) {
+    console.error('Error changing password:', err);
+    res.status(500).json({ error: 'Failed to change password' });
+  }
+});
+
 // Get jobs data
 app.get('/api/jobList', async (req, res) => {
   try {
@@ -377,6 +407,55 @@ app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
   } catch (err) {
     console.error('Error fetching active tamagotchi:', err);
     res.status(500).send('Error fetching active tamagotchi');
+  }
+});
+
+// Post tama's level
+app.post('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
+  const {id, tamaId } = req.params;
+  try {
+    await db.query(
+      'INSERT INTO level (tamagotchi_id,user_id) VALUES (?,?)',
+      [tamaId, id]
+    );
+    res.status(201).send("Level created successfully!");
+  } catch (error) {
+    console.error("Error creating level:", error);
+    res.status(500).send("Error creating level.");
+  }
+});
+
+
+// Get tama's level
+app.get('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
+  const {id, tamaId } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      'SELECT level FROM level WHERE tamagotchi_id = ?',
+      [tamaId]
+    );
+      res.status(200).json(rows[0]); 
+  } catch (error) {
+    console.error('Error fetching level:', error);
+    res.status(500).send('Error fetching level');
+  }
+});
+
+// Update tama's level
+app.put('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
+  const {id, tamaId } = req.params;
+  const { level } = req.body;
+
+  try {
+    await db.query(
+      'UPDATE level SET level = ? WHERE tamagotchi_id = ?',
+      [level, tamaId]
+    );
+    res.status(200).send("Level updated successfully!");
+  } catch (error) {
+    console.error("Error updating level:", error);
+    res.status(500).send("Error updating level.");
   }
 });
 

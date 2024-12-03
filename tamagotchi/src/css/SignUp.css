@@ -34,10 +34,9 @@
     gap: 20px;
 }
 
-.sign-up-button,
-.sign-in-button {
-    height: 50px;
-    background-color: white;
-    border: 1px solid #ccc;
-    color: black;
+@media (max-width: 600px) {
+    .sign-container {
+        margin-left: 0;
+        margin-top: 0;
+    }
 }

@@ -2,6 +2,10 @@
   margin-top: 65px;
 }
 
+.category-title {
+  margin: 10px 0;
+}
+
 .items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -35,6 +39,7 @@
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
+  transition: margin-top 0.5s ease;
 }
 
 .item img {
@@ -50,4 +55,17 @@
 
 .item p {
   margin: 5px 0;
+}
+
+/* Screen size < 800px */
+@media (max-width: 800px) {
+  .items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .items {
+    grid-template-columns: 1fr;
+  }
 }

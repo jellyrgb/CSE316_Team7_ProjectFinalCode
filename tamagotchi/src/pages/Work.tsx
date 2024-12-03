@@ -8,8 +8,6 @@ import { API_BASE_URL } from '../config.tsx';
 import axios from "axios";
 import JobTimer from "../components/JobTimer.tsx";
 
-
-
 function Work() {
   const { jobs } = useJobContext();
   const { items } = useShopContext();
@@ -75,8 +73,11 @@ function Work() {
   }
 
   const pet = activePet;
-    if (!pet) {
-    return <div>No active pet found</div>;
+  if (!pet) {
+    setTimeout(() => {
+      navigate("/adopt");
+    }, 3000);
+    return <div>No active Tamagotchi found. Please adopt a new one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;  
   }
 
   const updateBalance = async (newBalance: number) => {
@@ -218,12 +219,11 @@ function Work() {
     setSelectedJob(job);
     await postJob(job);
     setEndWorking(false)
-
   };
 
   return (
     <div className="work-page fullscreen">
-      <div className="work_Header">
+      <div className="work-header">
         {endWorking ? <h2>Your pet is resting...</h2>:<h2>Your pet is working...</h2>}
       </div>
         <div className="work-status-container">
@@ -263,7 +263,7 @@ function Work() {
       <div className="jobs-container">
         {selectedJob ? (
           <div>
-            {endWorking ? <button className="claim-reward-button" onClick={()=>handleJobCompletion(selectedJob)}>Claim the reward</button>:<p>Your pet is working now.</p>}
+            {endWorking ? <button className="claim-reward-button btn btn-outline-success" onClick={()=>handleJobCompletion(selectedJob)}>Claim the reward</button>:<p>Your pet is working now.</p>}
         </div>
       ) : (
         // 작업 목록 표시

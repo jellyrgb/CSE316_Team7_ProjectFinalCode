@@ -76,7 +76,6 @@ function AdoptPage() {
     };
 
     const addTamagotchi = async (name: string, tama: Tamagotchi, userId: number) => {
-        console.log("ID: "+ userId);
         const adoptionDate = new Date().toISOString(); 
         const formattedAdoptionDate = adoptionDate.toString().split('T')[0]; // 날짜가 잘못됐는데?
         if (userId) {
@@ -116,7 +115,7 @@ function AdoptPage() {
 
     return (
         <div className="adopt-page">
-            <h2>Adopt a Tamagotchi</h2>
+            <h2 className="adopt-page-title">Select a Tamagotchi</h2>
             <div className="tamagotchi-list">
                 {tamagotchiList.map((tamagotchi) => (
                     <div key={tamagotchi.id} className={`tamagotchi-card ${selectedTamagotchi === tamagotchi.id ? 'selected' : ''}`}
@@ -128,10 +127,10 @@ function AdoptPage() {
                 ))}
             </div>
             <div className="name-input">
-                <label htmlFor="tamagotchi-name">Enter Your Pet Name:</label>
+                <label htmlFor="tamagotchi-name">Tamagotchi's Name:</label>
                 <input id="tamagotchi-name" type="text" value={tamagotchiName} onChange={(e) => setTamagotchiName(e.target.value)} placeholder="Enter a name"/>
             </div>
-            <button className="adopt-page-button" onClick={handleAdopt} disabled={!selectedTamagotchi || !tamagotchiName}>
+            <button className="adopt-page-button btn btn-primary" onClick={handleAdopt} disabled={!selectedTamagotchi || !tamagotchiName}>
                 Adopt Tamagotchi
             </button>
         </div>
