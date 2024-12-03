@@ -18,6 +18,7 @@ function Work() {
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
+  const [level, setLevel] = useState(Number);
 
   const navigate = useNavigate();
   jobs.sort((a, b) => a.duration - b.duration);
@@ -53,9 +54,17 @@ function Work() {
       }
     };
 
+    const fetchLevel = async () => {
+      try {
+        const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
+        setLevel(data.level);
+      } catch (error) {
+        console.error('Error fetching job:', error);
+      }
+    };
+    fetchLevel();
     fetchJob();
-  }, [user, loading, navigate]);
-
+  }, [user, loading, navigate,level]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -102,14 +111,48 @@ function Work() {
     }
   };
 
+  const updateActive = async () => {
+    if (activePet) {
+      try {
+        await axios.put(`${API_BASE_URL}/api/user/${user.id}/activeChange`, { is_active: false });
+        setActivePet({ ...activePet, is_active: false });
+      } catch (error) {
+        console.error("Error updating balance:", error);
+      }
+    }
+  };
+
   // function after finish working
   const handleJobCompletion = async (job:any) => {
+
+        // Update or create level
+    try {
+      // Fetch current level
+      let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
+      const currentLevel = currentLevelResponse.data.level; 
+      const newLevel = Math.min(currentLevel + 30, 100); // Increase by 30, cap at 100
+      if(newLevel===100){
+        setEndWorking(true);
+
+        await updateActive();
+        return navigate("/");
+      }
+      else{
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`, { level: newLevel });
+        setLevel(newLevel);
+      }
+    } catch (error) {
+      console.error("Error updating or creating level:", error);
+    }
+    
     const randomItem = items[Math.floor(Math.random() * 12)];
     const isSick = Math.random() < 0.3; // 30% chance to get sick
     const newBalance = balance + job.reward;
     setBalance(newBalance); // Add gold
     await updateBalance(newBalance);
     await addItemToInventory(randomItem.id, 1);
+
+    
 
     if (isSick) {
       await updateSick();
@@ -205,6 +248,14 @@ function Work() {
             <div className="work-status-bar">
             <div className="tooltip-clean">{activePet?.clean}/100</div>
               <div className="cleanliness-filled" style={{ width: `${activePet?.clean}%` }}></div>
+            </div>
+          </div>
+
+          <div className="work-status">
+            <span>Lv.</span>
+            <div className="work-status-bar">
+            <div className="tooltip-clean">{level}/100</div>
+              <div className="level-filled" style={{ width: `${level}%` }}></div>
             </div>
           </div>
         </div>

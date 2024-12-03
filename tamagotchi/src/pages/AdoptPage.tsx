@@ -81,7 +81,7 @@ function AdoptPage() {
         const formattedAdoptionDate = adoptionDate.toString().split('T')[0]; // 날짜가 잘못됐는데?
         if (userId) {
             try {
-            await axios.post(`${API_BASE_URL}/api/user/${userId}/tamagotchis`, {
+            const response = await axios.post(`${API_BASE_URL}/api/user/${userId}/tamagotchis`, {
                 name,
                 image_source: tama.image_source,
                 hunger: 70,         
@@ -92,6 +92,17 @@ function AdoptPage() {
                 is_active: true,   
                 user_id: userId,    
             });
+
+             // Post Level to API
+             
+            const tamagotchiId = response.data.tamagotchiId; 
+            console.log(tamagotchiId);
+            if (tamagotchiId) {
+                await axios.post(`${API_BASE_URL}/api/tamagotchi/${tamagotchiId}/level`, {});
+            }
+            alert("You Successfully Adopted!!");
+            return navigate("/");
+
             } catch (error) {
             console.error("Error adding Tamagotchi:", error);
             }

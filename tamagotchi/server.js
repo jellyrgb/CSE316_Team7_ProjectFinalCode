@@ -190,11 +190,11 @@ app.get('/api/user/:id/tamagotchis', async (req, res) => {
 // Update pet status
 app.put('/api/pet/:id/status', async (req, res) => {
   const petId = req.params.id;
-  const { hunger, clean, fun, is_sick } = req.body;
+  const { hunger, clean, fun, is_sick, is_active } = req.body;
 
   try {
-    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ?, is_sick = ? WHERE id = ?';
-    await db.query(query, [hunger, clean, fun,is_sick, petId]);
+    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ?, is_sick = ?, is_active =? WHERE id = ?';
+    await db.query(query, [hunger, clean, fun,is_sick,is_active, petId]);
     res.sendStatus(200);
   } catch (err) {
     console.error('Error updating pet status:', err);
@@ -233,12 +233,14 @@ app.post('/api/user/:id/tamagotchis', async (req, res) => {
 
   try {
     const [results] = await db.query('INSERT INTO tamagotchi (name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id) VALUES (?, ?, ?,?,?,?,?,?,?)', [name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id]);
-    res.sendStatus(200);
+    const tamagotchiId = results.insertId; // 새로 생성된 Tamagotchi의 ID
+    res.status(201).json({ message: "Tamagotchi created successfully", tamagotchiId });
   } catch (err) {
       console.error('Error adding tama to inventory:', err);
       res.status(500).send('Error adding tama to inventory');
   }
 });
+
 // Change profile image
 app.put('/api/user/:id/profile-image', async (req, res) => {
   const userId = req.params.id;
@@ -280,14 +282,30 @@ app.put('/api/user/:id/is_sick', async (req, res) => {
   }
 });
 
+// Update tama's is_active
+app.put('/api/user/:id/activeChange', async (req, res) => {
+  const userId = req.params.id;
+  const { is_active } = req.body;
+  console.log(userId,is_active);
+
+  try {
+    const query = 'UPDATE tamagotchi SET is_active = ? WHERE user_id = ? And is_active = 1';
+    await db.query(query, [is_active, userId]);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error updating is_active:', err);
+    res.status(500).json({ error: 'Failed to update is_active' });
+  }
+});
+
 // Update tama's status
 app.put('/api/user/:id/statusChange', async (req, res) => {
   const userId = req.params.id;
-  const { hunger, clean, fun } = req.body;
+  const { hunger, clean, fun,is_active } = req.body;
 
   try {
-    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ? WHERE id = ?';
-    await db.query(query, [hunger, clean, fun, userId]);
+    const query = 'UPDATE tamagotchi SET hunger = ?, clean = ?, fun = ?, is_active = ? WHERE id = ?';
+    await db.query(query, [hunger, clean, fun,is_active, userId]);
     res.sendStatus(200);
   } catch (err) {
     console.error('Error updating status:', err);
@@ -359,6 +377,56 @@ app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
   } catch (err) {
     console.error('Error fetching active tamagotchi:', err);
     res.status(500).send('Error fetching active tamagotchi');
+  }
+});
+
+
+// Post tama's level
+app.post('/api/tamagotchi/:tamaId/level', async (req, res) => {
+  const { tamaId } = req.params;
+  try {
+    await db.query(
+      'INSERT INTO level (tamagotchi_id) VALUES (?)',
+      [tamaId]
+    );
+    res.status(201).send("Level created successfully!");
+  } catch (error) {
+    console.error("Error creating level:", error);
+    res.status(500).send("Error creating level.");
+  }
+});
+
+
+// Get tama's level
+app.get('/api/tamagotchi/:tamaId/level', async (req, res) => {
+  const { tamaId } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      'SELECT level FROM level WHERE tamagotchi_id = ?',
+      [tamaId]
+    );
+      res.status(200).json(rows[0]); 
+  } catch (error) {
+    console.error('Error fetching level:', error);
+    res.status(500).send('Error fetching level');
+  }
+});
+
+// Update tama's level
+app.put('/api/tamagotchi/:tamaId/level', async (req, res) => {
+  const { tamaId } = req.params;
+  const { level } = req.body;
+
+  try {
+    await db.query(
+      'UPDATE level SET level = ? WHERE tamagotchi_id = ?',
+      [level, tamaId]
+    );
+    res.status(200).send("Level updated successfully!");
+  } catch (error) {
+    console.error("Error updating level:", error);
+    res.status(500).send("Error updating level.");
   }
 });
 

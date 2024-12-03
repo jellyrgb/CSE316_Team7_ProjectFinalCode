@@ -21,10 +21,15 @@ function MyTama() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [activePet, setActivePet] = useState<Tamagotchi | null>();
   const navigate = useNavigate();
+    const [level, setLevel] = useState(Number);
 
   useEffect(() => {
     const activePet = pets.find((pet) => pet.is_active);
     setActivePet(activePet);
+
+    // if(level==100){
+    //   updateActive();
+    // }
 
     const fetchInventory = async () => {
       if (!user && !loading) {
@@ -62,6 +67,17 @@ function MyTama() {
     return <div>No active pet found</div>;
   }
 
+  const updateActive = async () => {
+    if (activePet) {
+      try {
+        await axios.put(`${API_BASE_URL}/api/user/${user.id}/activeChange`, { is_active: false });
+        setActivePet({ ...activePet, is_active: false });
+      } catch (error) {
+        console.error("Error updating balance:", error);
+      }
+    }
+  };
+
   const handleItemClick = async (item: InventoryItem) => {
     let updatedPet = { ...pet };
 
@@ -89,8 +105,26 @@ function MyTama() {
       default:
         break;
     }
-
     setActivePet(updatedPet);
+
+    try {
+      // Fetch current level
+      let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
+      const currentLevel = currentLevelResponse.data.level; 
+      const newLevel = Math.min(currentLevel + 5, 100); // Increase by 30, cap at 100
+      if(newLevel===100){
+        await updateActive();
+        return navigate("/");
+      }
+      else{
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`, { level: newLevel });
+        setLevel(newLevel);
+      }
+    } catch (error) {
+      console.error("Error updating or creating level:", error);
+    }
+
+   
 
     // Update the pet status accordingly
     try {
@@ -98,7 +132,8 @@ function MyTama() {
         hunger: updatedPet.hunger,
         clean: updatedPet.clean,
         fun: updatedPet.fun,
-        is_sick: updatedPet.is_sick
+        is_sick: updatedPet.is_sick,
+        is_active: updatedPet.is_active
       });
     } catch (error) {
       console.error("Error updating pet status:", error);
@@ -177,7 +212,7 @@ function MyTama() {
           <div className="status">
             <span>Lvl. 1</span>
             <div className="status-bar">
-              <div className="cleanliness-filled" style={{ width: `${pet.clean}%` }}></div>
+              <div className="level-filled" style={{ width: `${level}%` }}></div>
             </div>
           </div>
         </div>

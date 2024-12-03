@@ -94,6 +94,11 @@
     background-color: #76c7c0;
 }
 
+.level-filled{
+        height: 100%;
+        background-color: #de98d5;
+}
+
 .inventory-section {
     flex: 1;
     display: flex;
