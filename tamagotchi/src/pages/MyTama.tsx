@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { Tamagotchi, useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config.tsx';
-import germImage from '../Images/germ.png';
-import germ2Image from '../Images/germ2.png';
 
 
 interface InventoryItem {
@@ -148,8 +146,8 @@ function MyTama() {
       <div className="pet-section">
         {pet.is_sick ? (
           <>
-            <img src={germImage} className="germ-image icon-overlay" />
-            <img src={germ2Image} className="germ-image icon-overlay2" />
+            <img src="/images/germ.png" className="germ-image icon-overlay" />
+            <img src="/images/germ2.png" className="germ-image icon-overlay2" />
           </>
         ) : null}
 

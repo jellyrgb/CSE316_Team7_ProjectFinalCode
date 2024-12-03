@@ -18,13 +18,13 @@ function Navbar() {
   return (
     <nav className="navbar-container">
       <img src="/logos/logo.webp" alt="logo" className="navbar-logo" />
-      <div className="navbar-title">My Pet Simulator</div>
+      <div className="navbar-title">Tamagotchi Online</div>
       <ul className="menu-list">
         <li className="menu-item"><a href="/">Home</a></li>
-        <li className="menu-item"><a href="/tamagotchi">My Pet</a></li>
+        <li className="menu-item"><a href="/tamagotchi">My Tamagotchi</a></li>
         <li className="menu-item"><a href="/shop">Shop</a></li>
         <li className="menu-item"><a href="/work">Work</a></li>
-        <li className="menu-item"><a href="/tamaList">Adopt</a></li>
+        <li className="menu-item"><a href="/adopt">Adopt</a></li>
         <li className="menu-item"><a href="/test">Test Page</a></li>
         <br></br>
         <br></br>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config.tsx';
 import "../css/AdoptPage.css";
 import { useUserContext } from '../context/UserContext';
@@ -15,6 +15,7 @@ function AdoptPage() {
     const [tamagotchiList, setTamagotchiList] = useState<Tamagotchi[]>([]);
     const [selectedTamagotchi, setSelectedTamagotchi] = useState<number | null>(null);
     const [tamagotchiName, setTamagotchiName] = useState("");
+    const [hasActiveTamagotchi, setHasActiveTamagotchi] = useState(false);
 
     const { user, loading } = useUserContext();
     const navigate = useNavigate();
@@ -37,7 +38,19 @@ function AdoptPage() {
             }
         }
 
+        const checkActiveTamagotchi = async () => {
+            if (user) {
+              try {
+                const response = await axios.get(`${API_BASE_URL}/api/user/${user.id}/active-tamagotchi`);
+                setHasActiveTamagotchi(response.data.hasActiveTamagotchi);
+              } catch (error) {
+                console.error('Error checking active tamagotchi:', error);
+              }
+            }
+          };
+
         fetchTamagotchiTemplates();
+        checkActiveTamagotchi();
     }, [user, loading, navigate]);
 
     // Handle Tamagotchi selection
@@ -47,7 +60,10 @@ function AdoptPage() {
 
     // Handle adopt action
     const handleAdopt = async () => {
-
+        if (hasActiveTamagotchi) {
+            alert("You already have an active Tamagotchi!");
+            return;
+        }
         if (!selectedTamagotchi) {
             alert("Please select a Tamagotchi to adopt.");
             return;
@@ -68,9 +84,9 @@ function AdoptPage() {
             await axios.post(`${API_BASE_URL}/api/user/${userId}/tamagotchis`, {
                 name,
                 image_source: tama.image_source,
-                hunger: 80,         
-                clean: 80,          
-                fun: 80,             
+                hunger: 70,         
+                clean: 70,          
+                fun: 70,             
                 is_sick: false,      
                 adoption_date: formattedAdoptionDate,
                 is_active: true,   
@@ -89,7 +105,7 @@ function AdoptPage() {
 
     return (
         <div className="adopt-page">
-            <h1>Adopt Your Tamagotchi</h1>
+            <h2>Adopt a Tamagotchi</h2>
             <div className="tamagotchi-list">
                 {tamagotchiList.map((tamagotchi) => (
                     <div key={tamagotchi.id} className={`tamagotchi-card ${selectedTamagotchi === tamagotchi.id ? 'selected' : ''}`}

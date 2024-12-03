@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import homeImage from '../Images/cat.png';
 import { useUserContext } from '../context/UserContext';
 import { API_BASE_URL } from '../config.tsx';
 import '../css/Home.css'; 
@@ -37,22 +36,31 @@ function Home() {
   };
 
     return (
-        <div>
-            <div style={{ marginLeft: '150px' }}>
-                <h1>Welcome !!</h1>
-
-            </div>
+        <div className="fullscreen home-page">
+            <img src="/logos/tamagotchi_logo.webp" alt="main_logo" className="main-logo" />
             
-            <div className="fullscreen-home">
+            <div className="home-page-content">
                 {user ? (
-                    <div className='btnAndBalance'>
-                        <h2 className='Homebalance'>💰 {balance}G</h2>
-                        <button onClick={() => EarnBtn(user.balance)}>Earn Gold</button>
+                    <div>
+                        <div>
+                            <h1 className="home-welcome">Welcome, {user.username}!</h1>
+                            <ol>
+                                <li className="home-explanation">Go to <a href="/adopt">Adopt</a> page to get a new Tamagotchi.</li>
+                                <li className="home-explanation">Feed and play with your Tamagotchi in <a href="/tamagotchi">My Pet</a> page.</li>
+                                <li className="home-explanation">Buy items from <a href="/shop">Shop</a> page for your Tamagotchi.</li>
+                                <li className="home-explanation">Work part time in <a href="/work">Work</a> page to earn gold.</li>
+                                <li className="home-explanation">Check out <a href="/test">Test Page</a> to test the application features.</li>
+                            </ol>
+                        </div>
+                        <div className="button-and-balance">
+                            <h2 className="home-balance">💰 {balance}G</h2>
+                            <button className="earn-gold-button" onClick={() => EarnBtn(user.balance)}>Earn Gold</button>
+                        </div>
                     </div>
                     ) : (
-                    <p>You can earn gold from here after sign-In</p>
+                    <p className="home-p">You can earn gold from here after sign-In</p>
                 )}
-                <img src={homeImage} alt="Cat" />
+                <img className="home-cat" src="/images/cat.png" alt="Cat" />
             </div>
         </div>
     );

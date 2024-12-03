@@ -254,7 +254,6 @@ app.put('/api/user/:id/profile-image', async (req, res) => {
   }
 });
 
-
 // Get jobs data
 app.get('/api/jobList', async (req, res) => {
   try {
@@ -300,7 +299,6 @@ app.put('/api/user/:id/statusChange', async (req, res) => {
 app.post('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
   const { user_id, job_name, duration, reward} = req.body;
-  console.log("???");
   try {
     const [results] = await db.query('INSERT INTO jobs (user_id, job_name, duration, reward) VALUES (?, ?, ?,?)', [userId, job_name, duration, reward]);
     res.sendStatus(200);
@@ -310,6 +308,7 @@ app.post('/api/user/:id/jobs', async (req, res) => {
   }
 });
 
+// Get working data
 app.get('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
   const query = `
@@ -328,9 +327,9 @@ app.get('/api/user/:id/jobs', async (req, res) => {
   }
 });
 
+// Delete working data
 app.delete('/api/user/:id/jobs', async (req, res) => {
   const userId = req.params.id;
-  console.log(`Job ID to delete: ${userId}`);
 
   try {
     const query= `DELETE FROM jobs WHERE user_id = ?`;
@@ -344,6 +343,22 @@ app.delete('/api/user/:id/jobs', async (req, res) => {
   } catch (error) {
     console.error('Error deleting job:', error);
     res.status(500).send('Database error');
+  }
+});
+
+// Get active tamagotchi
+app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ? AND is_active = true', [userId]);
+    if (results.length > 0) {
+      return res.json({ hasActiveTamagotchi: true });
+    } else {
+      return res.json({ hasActiveTamagotchi: false });
+    }
+  } catch (err) {
+    console.error('Error fetching active tamagotchi:', err);
+    res.status(500).send('Error fetching active tamagotchi');
   }
 });
 
