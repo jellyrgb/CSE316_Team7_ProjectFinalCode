@@ -45,7 +45,7 @@ function SignUp() {
       };
 
     return (
-      <div>
+      <div className="container mt-4">
         <div className="sign-container fullscreen">
           <h2>Let's Get Started!</h2>
           <form className="sign-form" onSubmit={handleSubmit}>
@@ -59,7 +59,7 @@ function SignUp() {
             <input type="password" id="confirmPassword" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}/>
 
             <div className="button-group">
-            <button type="submit" className="sign-up-button">Sign Up</button>
+            <button type="submit" className="sign-up-button btn btn-outline-primary">Sign Up</button>
             </div>
           </form>
         </div>
