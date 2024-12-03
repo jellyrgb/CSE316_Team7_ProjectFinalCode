@@ -108,10 +108,12 @@ DROP TABLE IF EXISTS `level`;
 CREATE TABLE `level` (
   `id` int NOT NULL AUTO_INCREMENT,
   `tamagotchi_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `level` int DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `tamagotchi_id` (`tamagotchi_id`),
-  CONSTRAINT `level_ibfk_1` FOREIGN KEY (`tamagotchi_id`) REFERENCES `tamagotchi` (`id`) ON DELETE CASCADE
+  CONSTRAINT `level_ibfk_1` FOREIGN KEY (`tamagotchi_id`) REFERENCES `tamagotchi` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `level_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tamagotchi` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
