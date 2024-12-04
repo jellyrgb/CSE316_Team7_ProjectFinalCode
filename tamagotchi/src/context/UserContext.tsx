@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { API_BASE_URL } from '../config.tsx';
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { API_BASE_URL } from "../config.tsx";
 
 interface User {
   id: number;
@@ -47,11 +47,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [pets, setPets] = useState<Tamagotchi[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] =useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userToken = Cookies.get('userToken');
+      // Check if the user is logged in
+      const userToken = Cookies.get("userToken");
       if (!userToken) {
         setLoading(false);
         return;
@@ -59,26 +60,35 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         // Fetch user data
-        const response = await axios.get(`${API_BASE_URL}/api/user/${userToken}`);
+        const response = await axios.get(
+          `${API_BASE_URL}/api/user/${userToken}`
+        );
         setUser(response.data);
 
         // Fetch pets data
-        const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userToken}/tamagotchis`);
+        const petsResponse = await axios.get(
+          `${API_BASE_URL}/api/user/${userToken}/tamagotchis`
+        );
         const petsWithLevels = await Promise.all(
           petsResponse.data.map(async (pet: Tamagotchi) => {
             try {
-              const levelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${pet.id}/level`);
+              const levelResponse = await axios.get(
+                `${API_BASE_URL}/api/tamagotchi/${pet.id}/level`
+              );
               return { ...pet, level: levelResponse.data.level }; // Add level to each pet
             } catch (error) {
-              console.error(`Error fetching level for Tamagotchi ${pet.id}:`, error);
+              console.error(
+                `Error fetching level for Tamagotchi ${pet.id}:`,
+                error
+              );
               return { ...pet, level: null }; // Default level to null on error
             }
           })
         );
         setPets(petsWithLevels);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Error fetching user data');
+        console.error("Error fetching user data:", error);
+        setError("Error fetching user data");
       } finally {
         setLoading(false);
       }
@@ -88,7 +98,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, pets, loading, error, setUser, setPets }}>
+    <UserContext.Provider
+      value={{ user, pets, loading, error, setUser, setPets }}
+    >
       {children}
     </UserContext.Provider>
   );

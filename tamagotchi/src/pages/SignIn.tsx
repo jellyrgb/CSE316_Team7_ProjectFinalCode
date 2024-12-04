@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config.tsx";
-import Cookies from "js-cookie";
 import { useUserContext } from "../context/UserContext";
 
 function SignIn() {
@@ -11,14 +11,17 @@ function SignIn() {
   const { setUser } = useUserContext();
   const navigate = useNavigate();
 
+  // Handle the input of the username
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
+  // Handle the input of the password
   const handlePassWord = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
+  // Handle the submit of the form
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -29,7 +32,7 @@ function SignIn() {
       });
 
       if (response.status === 200) {
-        Cookies.set("userToken", response.data.id, { expires: 1 });
+        Cookies.set("userToken", response.data.id, { expires: 1 }); // Set the token in the cookie
         alert("Successfully signed in!");
 
         setUser({
@@ -56,6 +59,7 @@ function SignIn() {
     }
   };
 
+  // Handle the navigation to the sign up page
   const handleSignUpNavigate = () => {
     navigate("/signUp");
   };

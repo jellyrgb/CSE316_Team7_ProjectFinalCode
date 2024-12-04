@@ -1,11 +1,11 @@
 import "../css/MyPage.css";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { API_BASE_URL } from "../config.tsx";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function MyPage() {
   const { user, pets, loading, setUser } = useUserContext();
@@ -13,7 +13,6 @@ function MyPage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,11 +29,13 @@ function MyPage() {
     return null;
   }
 
+  // Function to format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-CA"); // Make it YYYY-MM-DD format
   };
 
+  // Function to handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
@@ -67,14 +68,15 @@ function MyPage() {
     }
   };
 
+  // Function to handle changing password
   const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (newPassword !== confirmPassword) {
       alert("New password and confirmation do not match.");
       return;
     }
-  
+
     try {
       setUploading(true);
       await axios.put(`${API_BASE_URL}/api/user/${user.id}/change-password`, {
@@ -91,7 +93,7 @@ function MyPage() {
       setNewPassword("");
       setConfirmPassword("");
     }
-  };  
+  };
 
   return (
     <div className="container mt-4">
@@ -124,6 +126,7 @@ function MyPage() {
               </div>
             </div>
           </div>
+          
           {/* Change Image Modal */}
           <div
             id="image-modal"
@@ -241,10 +244,7 @@ function MyPage() {
                   </form>
                 </div>
                 <div className="modal-footer">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                  >
+                  <button type="submit" className="btn btn-primary">
                     Save changes
                   </button>
                   <button

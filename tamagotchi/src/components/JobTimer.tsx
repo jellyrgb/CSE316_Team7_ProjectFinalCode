@@ -10,21 +10,26 @@ interface JobTimerProps {
 }
 
 const JobTimer: React.FC<JobTimerProps> = ({ job, setEndWorking }) => {
-  const [remainingTime, setRemainingTime] = useState(job.duration - (job.time_elapsed||0)); // 초 단위로 변환
+  // Remaining time in seconds
+  const [remainingTime, setRemainingTime] = useState(
+    job.duration - (job.time_elapsed || 0)
+  );
 
   useEffect(() => {
+    // Update the remaining time every second
     const interval = setInterval(() => {
       setRemainingTime((prev) => prev - 1);
     }, 1000);
 
     if (remainingTime <= 0) {
-      clearInterval(interval); 
+      clearInterval(interval);
       setEndWorking(true);
     }
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [remainingTime]);
 
+  // Format the time in minutes and seconds
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;

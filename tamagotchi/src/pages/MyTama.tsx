@@ -18,14 +18,15 @@ interface InventoryItem {
 function MyTama() {
   const { user, loading } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const navigate = useNavigate();
+  const [isSellMode, setIsSellMode] = useState(false);
   const [activePet, setActivePet] = useState<Tamagotchi | null | undefined>(
     undefined
   );
-  const navigate = useNavigate();
   const [level, setLevel] = useState(activePet?.level); 
-  const [isSellMode, setIsSellMode] = useState(false);
 
   useEffect(() => {
+    // Fetch active Tamagotchi
     const fetchActivePet = async () => {
       if (user) {
         try {
@@ -42,6 +43,7 @@ function MyTama() {
       }
     };
 
+    // Fetch user inventory
     const fetchInventory = async () => {
       if (user) {
         try {
@@ -55,6 +57,7 @@ function MyTama() {
       }
     };
 
+    // Fetch Tamagotchi's level
     const fetchLevel = async () => {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
@@ -75,6 +78,7 @@ function MyTama() {
   }, [user, loading, navigate, level]);
 
   useEffect(() => {
+    // Redirect to adopt page if no active pet
     if (activePet === null) {
       const timer = setTimeout(() => {
         navigate("/adopt");
@@ -101,6 +105,7 @@ function MyTama() {
     );
   }
 
+  // Update active status to false
   const updateActive = async () => {
     if (activePet) {
       try {
@@ -114,6 +119,7 @@ function MyTama() {
     }
   };
 
+  // Handle item click
   const handleItemClick = async (item: InventoryItem) => {
     // When in sell mode, sell the item
     if (isSellMode) {
@@ -184,6 +190,7 @@ function MyTama() {
       const currentLevel = currentLevelResponse.data.level;
       const newLevel = Math.min(currentLevel + 5);
       if (newLevel >= 100) {
+        alert("Congratulations, your Tamagotchi has reached the maximum level!");
         await updateActive();
         return navigate("/");
       } else {
