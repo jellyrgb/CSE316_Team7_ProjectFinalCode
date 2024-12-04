@@ -24,7 +24,7 @@ function MyTama() {
     undefined
   );
   const [level, setLevel] = useState(activePet?.level);
-    const [updatedSource, setUpdatedSource] = useState<string>("");
+  const [updatedSource, setUpdatedSource] = useState<string>("");
 
   useEffect(() => {
     // Fetch active Tamagotchi
@@ -122,11 +122,8 @@ function MyTama() {
   };
 
       const updateImageSource = (step:number) => {
-      // 정규식을 사용해 숫자를 찾아서 2로 대체
-      console.log(activePet.image_source);
       const updated = activePet.image_source.replace(/(\d+)/, `${step}`);
       setUpdatedSource(updated);
-      console.log(updated);
       return updated;
     };
 
@@ -207,15 +204,15 @@ function MyTama() {
       );
       const currentLevel = currentLevelResponse.data.level;
       const newLevel = Math.min(currentLevel + 5);
+
       let tamaImg = '';
-      if(30<=newLevel && newLevel<60){
-        tamaImg=updateImageSource(2);
-        console.log(activePet?.id);
-        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+      if(30 <= newLevel && newLevel < 60){
+        tamaImg = updateImageSource(2);
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, { tamaId: activePet.id, image_source: tamaImg });
       }
-      else if(60<=newLevel){
-        tamaImg=updateImageSource(3);
-        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+      else if(60 <= newLevel){
+        tamaImg = updateImageSource(3);
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, { tamaId: activePet.id, image_source: tamaImg });
       }
       else if (newLevel >= 100) {
         alert(
@@ -223,13 +220,13 @@ function MyTama() {
         );
         await updateActive();
         return navigate("/");
-      } else {
-        await axios.put(
-          `${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`,
-          { level: newLevel }
-        );
-        setLevel(newLevel);
       }
+
+      await axios.put(
+        `${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`,
+        { level: newLevel }
+      );
+      setLevel(newLevel);
     } catch (error) {
       console.error("Error updating or creating level:", error);
     }

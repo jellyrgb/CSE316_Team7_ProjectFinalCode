@@ -605,10 +605,8 @@ app.put('/api/tamagotchi/:tamaId/level', async (req, res) => {
 });
 
 //Update tama's img when level 20, 50, 80
-app.put('/api/tamagotchi/:id/changeImg', async (req, res) => {
-    const tamaId = req.params;
-    const { image_source } = req.body;
-    console.log(req.body,tamaId);
+app.put('/api/tamagotchi/changeImg', async (req, res) => {
+    const { tamaId, image_source } = req.body;
     if (!image_source) {
         return res.status(400).json({ error: 'image_source is required' });
     }
@@ -618,33 +616,11 @@ app.put('/api/tamagotchi/:id/changeImg', async (req, res) => {
       'UPDATE tamagotchi SET image_source = ? WHERE id = ?',
       [image_source, tamaId]
     );
-      console.log("please");
       res.status(200).send("Img updated successfully!");
     } catch (error) {
       console.error("Error updating Img:", error);
       res.status(500).send("Error updating level.");
     }
-
-    // try {
-    //     // Promise를 사용하는 쿼리 실행
-    //     const query = 'UPDATE tamagotchi SET image_source = ? WHERE id = ?';
-    //     const result = await new Promise((resolve, reject) => {
-    //         db.query(query, [image_source, tamaId], (err, result) => {
-    //             if (err) return reject(err);
-    //             resolve(result);
-    //         });
-    //     });
-
-    //     // 업데이트된 행이 없는 경우
-    //     if (result.affectedRows === 0) {
-    //         return res.status(404).json({ error: 'Tamagotchi not found' });
-    //     }
-
-    //     res.json({ message: 'image_source updated successfully' });
-    // } catch (err) {
-    //     console.error('Error updating image_source:', err);
-    //     res.status(500).json({ error: 'Database error' });
-    // }
 });
 
 
