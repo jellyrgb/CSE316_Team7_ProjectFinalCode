@@ -16,14 +16,14 @@ interface InventoryItem {
 }
 
 function MyTama() {
-  const { user, loading } = useUserContext();
+  const { user, loading, setUser } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const navigate = useNavigate();
   const [isSellMode, setIsSellMode] = useState(false);
   const [activePet, setActivePet] = useState<Tamagotchi | null | undefined>(
     undefined
   );
-  const [level, setLevel] = useState(activePet?.level); 
+  const [level, setLevel] = useState(activePet?.level);
 
   useEffect(() => {
     // Fetch active Tamagotchi
@@ -60,11 +60,12 @@ function MyTama() {
     // Fetch Tamagotchi's level
     const fetchLevel = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
+        const { data } = await axios.get(
+          `${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`
+        );
         setLevel(data.level);
-        console.log(level);
       } catch (error) {
-        console.error('Error fetching job:', error);
+        console.error("Error fetching job:", error);
       }
     };
 
@@ -124,10 +125,13 @@ function MyTama() {
     // When in sell mode, sell the item
     if (isSellMode) {
       try {
-        await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/sell`, {
+        const response = await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/sell`, {
           itemId: item.id,
         });
-  
+
+        const updatedBalance = response.data.balance;
+        setUser((prevUser) => prevUser && { ...prevUser, balance: updatedBalance });
+        
         // Update inventory after selling
         setInventory((prevInventory) =>
           prevInventory
@@ -139,8 +143,12 @@ function MyTama() {
             })
             .filter((invItem) => invItem.quantity > 0)
         );
-  
-        alert(`Sold ${item.type === 4 ? "Medicine" : "Item"} for ${item.sell_price} golds!`);
+
+        alert(
+          `Sold ${item.type === 4 ? "Medicine" : "Item"} for ${
+            item.sell_price
+          } golds!`
+        );
       } catch (error) {
         console.error("Error selling item:", error);
         alert("Failed to sell item.");
@@ -190,7 +198,9 @@ function MyTama() {
       const currentLevel = currentLevelResponse.data.level;
       const newLevel = Math.min(currentLevel + 5);
       if (newLevel >= 100) {
-        alert("Congratulations, your Tamagotchi has reached the maximum level!");
+        alert(
+          "Congratulations, your Tamagotchi has reached the maximum level!"
+        );
         await updateActive();
         return navigate("/");
       } else {
@@ -304,22 +314,22 @@ function MyTama() {
           <div className="status">
             <span>Lvl. {(level ?? 0) / 10}</span>
             <div className="status-bar">
-              <div
-                className="exp-filled"
-                style={{ width: `${level}%` }}
-              ></div>
+              <div className="exp-filled" style={{ width: `${level}%` }}></div>
             </div>
           </div>
         </div>
       </div>
       <div className="inventory-section">
         <h2>Inventory</h2>
-        <button 
-          className="toggle-mode-button btn btn-outline-primary" 
-          onClick={() => setIsSellMode((prev) => !prev)}
-        >
-          {isSellMode ? "Switch to Feed Mode" : "Switch to Sell Mode"}
-        </button>
+        <div className="inventory-header-section">
+          <button
+            className="toggle-mode-button btn btn-outline-primary"
+            onClick={() => setIsSellMode((prev) => !prev)}
+          >
+            {isSellMode ? "Switch to Feed Mode" : "Switch to Sell Mode"}
+          </button>
+          <span className="my-tama-balance">💰 {user.balance}G</span>
+        </div>
         <div className="inventory-items">
           {inventory.map((item) =>
             Array.from({ length: item.quantity }).map((_, index) => (

@@ -153,8 +153,16 @@
     cursor: pointer;
 }
 
-.toggle-mode-button {
-    margin-top: 5px;
+.inventory-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.my-tama-balance {
+    font-size: 1.2rem;
 }
 
 @media (max-width: 1000px) {
