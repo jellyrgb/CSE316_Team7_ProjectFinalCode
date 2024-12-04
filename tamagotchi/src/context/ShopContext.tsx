@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-import { API_BASE_URL } from '../config.tsx';
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../config.tsx";
 
 interface Item {
   id: number;
@@ -29,12 +29,13 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fetch the items from the API
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/items`);
         setItems(response.data);
       } catch (err) {
-        setError('Failed to load items');
+        setError("Failed to load items");
       } finally {
         setLoading(false);
       }

@@ -1,7 +1,7 @@
-import '../css/Header.css';
+import "../css/Header.css";
 
 interface HeaderProps {
-  title: string; 
+  title: string;
 }
 
 function Header({ title }: HeaderProps) {

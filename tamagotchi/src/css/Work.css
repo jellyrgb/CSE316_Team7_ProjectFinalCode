@@ -5,29 +5,29 @@
 }
 
 .work-status-container {
-    width: 100%;
-    text-align: left;
+  width: 100%;
+  text-align: left;
 }
 
 .work-status {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  position: relative;
 }
 
 .work-status span {
-    width: 25%;
-    font-size: 1.2rem;
+  width: 25%;
+  font-size: 1.2rem;
 }
 
 .work-status-bar {
-    flex: 1;
-    height: 20px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
+  flex: 1;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
 }
 
 .jobs-container {
@@ -126,7 +126,7 @@
 .work-status-bar:hover .tooltip-fun,
 .work-status-bar:hover .tooltip-clean,
 .work-status-bar:hover .tooltip-exp {
-  opacity: 1; /* hover 시 표시 */
+  opacity: 1;
 }
 
 @media (max-width: 800px) {

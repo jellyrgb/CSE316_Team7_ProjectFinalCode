@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-import { API_BASE_URL } from '../config.tsx';
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../config.tsx";
 
 interface Jobs {
   id: number;
@@ -28,14 +28,15 @@ export function JobProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fetch the jobList from the API
     const fetchJobs = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/jobList`);
 
         setJobs(response.data);
       } catch (err) {
-        console.error('Error fetching jobList:', err);
-        setError('Failed to load jobList');
+        console.error("Error fetching jobList:", err);
+        setError("Failed to load jobList");
       } finally {
         setLoading(false);
       }

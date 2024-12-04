@@ -57,7 +57,6 @@
   margin: 5px 0;
 }
 
-/* Screen size < 800px */
 @media (max-width: 800px) {
   .items {
     grid-template-columns: repeat(2, 1fr);

@@ -18,11 +18,12 @@ function Work() {
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
   const [level, setLevel] = useState(activePet?.level);
-
   const navigate = useNavigate();
-  jobs.sort((a, b) => a.duration - b.duration);
+
+  jobs.sort((a, b) => a.duration - b.duration); // Sort jobs by duration
 
   useEffect(() => {
+    // Fetch active pet from backend
     const fetchActivePet = async () => {
       if (user) {
         try {
@@ -51,6 +52,8 @@ function Work() {
     if(!user){
       return;
     }
+
+    // Fetch job from backend
     const fetchJob = async () => {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/user/${user.id}/jobs`);
@@ -68,6 +71,7 @@ function Work() {
       }
     };
 
+    // Fetch level from backend
     const fetchLevel = async () => {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
@@ -89,6 +93,7 @@ function Work() {
     return null;
   }
 
+  // Redirect to adopt page if no active pet
   const pet = activePet;
   if (!pet) {
     setTimeout(() => {
@@ -97,6 +102,7 @@ function Work() {
     return <div>No active Tamagotchi found. Please adopt a new one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;  
   }
 
+  // Update balance
   const updateBalance = async (newBalance: number) => {
     if (user) {
       try {
@@ -108,6 +114,7 @@ function Work() {
     }
   };
 
+  // Add item to inventory
   const addItemToInventory = async (itemId: number, quantity: number) => {
     if (user) {
       try {
@@ -118,6 +125,7 @@ function Work() {
     }
   };
 
+  // Update sick status to true
   const updateSick = async () => {
     if (activePet) {
       try {
@@ -129,6 +137,7 @@ function Work() {
     }
   };
 
+  // Update active status to false
   const updateActive = async () => {
     if (activePet) {
       try {
@@ -140,7 +149,7 @@ function Work() {
     }
   };
 
-  // function after finish working
+  // Handle job completion
   const handleJobCompletion = async (job : any) => {
     // Update or create level
     try {
@@ -148,13 +157,14 @@ function Work() {
       let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
       const currentLevel = currentLevelResponse.data.level; 
       const newLevel = Math.min(currentLevel + job.duration);
-      console.log(newLevel);
+
       if (newLevel >= 100) {
         try {
           await axios.delete(`${API_BASE_URL}/api/user/${user.id}/jobs`);
         } catch (error) {
           console.error("Error deleting work:", error);
         }
+        alert("Congratulations, your Tamagotchi has reached the maximum level!");
         setSelectedJob(null);
         setEndWorking(true);
         await updateActive();
@@ -194,8 +204,7 @@ function Work() {
     navigate("/work");
   };
 
-
-  // Post job to API
+  // Post job to backend
   const postJob = async (job:any) => {
     if (activePet) {
       try {
@@ -207,8 +216,11 @@ function Work() {
     }
   };
 
+  // Handle job start
   const handleJobStart = async (job: any) => {
     let updatedPet = { ...pet };
+
+    // Check if pet has enough stats to work
     if (updatedPet.hunger < 50) {
       alert("Not enough hunger!");
       return;
@@ -227,6 +239,7 @@ function Work() {
       return;
     }
 
+    // Reduce pet stats
     updatedPet.hunger = Math.max(updatedPet.hunger - 50,0);
     updatedPet.clean = Math.max(updatedPet.clean - 40, 0);
     updatedPet.fun = Math.max(updatedPet.fun - 60, 0);
