@@ -24,7 +24,6 @@ function MyTama() {
     undefined
   );
   const [level, setLevel] = useState(activePet?.level);
-  const [updatedSource, setUpdatedSource] = useState<string>("");
 
   useEffect(() => {
     // Fetch active Tamagotchi
@@ -123,7 +122,6 @@ function MyTama() {
 
       const updateImageSource = (step:number) => {
       const updated = activePet.image_source.replace(/(\d+)/, `${step}`);
-      setUpdatedSource(updated);
       return updated;
     };
 
@@ -210,7 +208,7 @@ function MyTama() {
         tamaImg = updateImageSource(2);
         await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, { tamaId: activePet.id, image_source: tamaImg });
       }
-      else if(60 <= newLevel){
+      else if(60 <= newLevel &&newLevel<100){
         tamaImg = updateImageSource(3);
         await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, { tamaId: activePet.id, image_source: tamaImg });
       }

@@ -172,11 +172,11 @@ function Work() {
       let tamaImg = '';
       if(30<=newLevel && newLevel<60){
         tamaImg=updateImageSource(2);
-        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, {tamaId: activePet.id,  image_source: tamaImg });
       }
-      else if(60<=newLevel){
+      else if(60<=newLevel&&newLevel<100){
         tamaImg=updateImageSource(3);
-        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/changeImg`, {tamaId: activePet.id,  image_source: tamaImg });
       }
       else if (newLevel >= 100) {
         try {
