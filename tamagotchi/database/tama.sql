@@ -129,7 +129,6 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
-INSERT INTO `level` VALUES (1,6,95),(2,7,90),(3,8,45),(4,9,10);
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +162,6 @@ CREATE TABLE `tamagotchi` (
 
 LOCK TABLES `tamagotchi` WRITE;
 /*!40000 ALTER TABLE `tamagotchi` DISABLE KEYS */;
-INSERT INTO `tamagotchi` VALUES (1,'Fluffy','/images/dog1.webp',80,90,70,0,'2024-01-01 00:00:00',0,1),(2,'Max','/images/dog2.avif',80,90,70,0,'2024-07-15 00:00:00',0,1),(3,'Buddy','/images/dog3.webp',80,90,70,0,'2024-12-02 00:00:00',1,1),(4,'first pet','/images/dog1.webp',50,50,50,1,'2024-12-03 00:00:00',1,2),(5,'fluffy','/images/dog1.webp',20,30,100,0,'2024-12-03 00:00:00',1,3),(6,'Fluffy','/images/dog1.webp',65,80,80,1,'2024-12-04 00:00:00',0,4),(7,'mk2','/images/dog1.webp',15,60,10,1,'2024-12-04 00:00:00',0,4),(8,'mk3','/images/dog1.webp',20,30,10,0,'2024-12-04 00:00:00',1,4),(9,'tama mk.1','/images/dog1.webp',20,30,10,0,'2024-12-04 00:00:00',1,5);
 /*!40000 ALTER TABLE `tamagotchi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +214,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'John Doe','password123','/images/user.png',300,'2024-12-02 20:51:30'),(2,'nah','df8086362f6541f72136ff4ea3a69e85646d0137c4af9b64e7d554f218ad85','http://res.cloudinary.com/dkeneeift/image/upload/v1730882083/user_gyjnlf.png',327,'2024-12-03 02:30:08'),(3,'babo','6960acc359d73fea1a7fcee83900293364aa0165a0515ba9474d75dbb4225070',NULL,40,'2024-12-04 03:32:14'),(4,'Test','d9b5f58fb38198293971865a14074f59eba3e82595becbeeae51f1d9f1f65e',NULL,119,'2024-12-04 05:22:34'),(5,'taebo','4489ff224e4af77828b14ab2ecae34317ebc2f084be0cf0e4813380232d33277',NULL,50,'2024-12-04 10:11:23');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +241,6 @@ CREATE TABLE `user_inventory` (
 
 LOCK TABLES `user_inventory` WRITE;
 /*!40000 ALTER TABLE `user_inventory` DISABLE KEYS */;
-INSERT INTO `user_inventory` VALUES (1,1,3),(2,4,1),(3,5,10),(4,4,1),(4,12,6),(5,4,1);
 /*!40000 ALTER TABLE `user_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -257,4 +253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-04 20:40:34
+-- Dump completed on 2024-12-04 21:18:30
