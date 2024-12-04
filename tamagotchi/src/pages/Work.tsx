@@ -18,6 +18,7 @@ function Work() {
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
   const [level, setLevel] = useState(activePet?.level);
+  const [updatedSource, setUpdatedSource] = useState<string>("");
   const navigate = useNavigate();
 
   jobs.sort((a, b) => a.duration - b.duration); // Sort jobs by duration
@@ -149,6 +150,17 @@ function Work() {
     }
   };
 
+    //const [imageSource, setImageSource] = useState<string>("/images/pet1.png");
+
+    const updateImageSource = (step:number) => {
+      // 정규식을 사용해 숫자를 찾아서 2로 대체
+      const updated = activePet.image_source.replace(/(\d+)/, `${step}`);
+      setUpdatedSource(updated);
+      console.log(updated);
+      return updated;
+    };
+  
+
   // Handle job completion
   const handleJobCompletion = async (job : any) => {
     // Update or create level
@@ -157,8 +169,16 @@ function Work() {
       let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
       const currentLevel = currentLevelResponse.data.level; 
       const newLevel = Math.min(currentLevel + job.duration);
-
-      if (newLevel >= 100) {
+      let tamaImg = '';
+      if(30<=newLevel && newLevel<60){
+        tamaImg=updateImageSource(2);
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+      }
+      else if(60<=newLevel){
+        tamaImg=updateImageSource(3);
+        await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/changeImg`, { image_source: tamaImg });
+      }
+      else if (newLevel >= 100) {
         try {
           await axios.delete(`${API_BASE_URL}/api/user/${user.id}/jobs`);
         } catch (error) {
