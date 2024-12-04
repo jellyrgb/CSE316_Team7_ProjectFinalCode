@@ -152,3 +152,87 @@
         text-align: center;
     }
 }
+
+@media (max-width: 800px) {
+    .profile-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-picture {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .profile-info h2 {
+        text-align: center;
+    }
+
+    .profile-info p {
+        text-align: center;
+    }
+
+    .records-section {
+        margin-top: 20px;
+    }
+
+    .pet-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-pet-image {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .pet-info h4 {
+        text-align: center;
+    }
+
+    .pet-info p {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-picture {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .profile-info h2 {
+        text-align: center;
+    }
+
+    .profile-info p {
+        text-align: center;
+    }
+
+    .records-section {
+        margin-top: 20px;
+    }
+
+    .pet-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-pet-image {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .pet-info h4 {
+        text-align: center;
+    }
+
+    .pet-info p {
+        text-align: center;
+    }
+}

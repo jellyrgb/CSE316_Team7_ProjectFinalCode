@@ -18,8 +18,9 @@ interface InventoryItem {
 function MyTama() {
   const { user, loading } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [activePet, setActivePet] = useState<Tamagotchi | null>();
-  const [activePetLoading, setActivePetLoading] = useState(true);
+  const [activePet, setActivePet] = useState<Tamagotchi | null | undefined>(
+    undefined
+  );
   const navigate = useNavigate();
   const [level, setLevel] = useState(Number);
 
@@ -30,21 +31,17 @@ function MyTama() {
           const response = await axios.get(
             `${API_BASE_URL}/api/user/${user.id}/active-pet`
           );
-          setActivePet(response.data);
+          setActivePet(response.data || null);
         } catch (error) {
           console.error("Error fetching active pet:", error);
-        } finally {
-          setActivePetLoading(false);
+          setActivePet(null);
         }
       } else {
-        setActivePetLoading(false); 
+        setActivePet(null);
       }
     };
 
     const fetchInventory = async () => {
-      if (!user && !loading) {
-        navigate("/signIn");
-      }
       if (user) {
         try {
           const response = await axios.get(
@@ -57,11 +54,24 @@ function MyTama() {
       }
     };
 
-    fetchActivePet();
-    fetchInventory();
+    if (user) {
+      fetchActivePet();
+      fetchInventory();
+    } else if (!loading) {
+      navigate("/signIn");
+    }
   }, [user, loading, navigate]);
 
-  if (loading || activePetLoading) {
+  useEffect(() => {
+    if (activePet === null) {
+      const timer = setTimeout(() => {
+        navigate("/adopt");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [activePet, navigate]);
+
+  if (loading || activePet === undefined) {
     return <div>Loading...</div>;
   }
 
@@ -69,13 +79,11 @@ function MyTama() {
     return null;
   }
 
-  if (!activePet) {
-    setTimeout(() => {
-      navigate("/adopt");
-    }, 3000);
+  if (activePet === null) {
     return (
       <div>
-        No active Tamagotchi found. Please adopt a new one first.<br></br>
+        No active Tamagotchi found. Please adopt a new one first.
+        <br />
         Redirecting to adopt page in 3 seconds...
       </div>
     );
@@ -109,11 +117,18 @@ function MyTama() {
         break;
       case 4: // Medicine
         if (activePet.is_sick) {
-          updatedPet.is_sick = false;
-          alert("Treat success");
+          // Cure the pet based on the stat (percentage)
+          const cureChance = Math.random() * 100;
+          if (cureChance <= item.stat) {
+            updatedPet.is_sick = false;
+            alert("Treatment successful!");
+          } else {
+            alert("Treatment failed!");
+            return;
+          }
         } else {
-          updatedPet.clean = Math.min(updatedPet.clean + item.stat, 100);
-          updatedPet.is_sick = false;
+          alert("Your pet is not sick!");
+          return;
         }
         break;
       default:
@@ -243,7 +258,7 @@ function MyTama() {
             <span>Lvl. 1</span>
             <div className="status-bar">
               <div
-                className="level-filled"
+                className="exp-filled"
                 style={{ width: `${level}%` }}
               ></div>
             </div>

@@ -11,7 +11,7 @@ import JobTimer from "../components/JobTimer.tsx";
 function Work() {
   const { jobs } = useJobContext();
   const { items } = useShopContext();
-  const { user, pets, loading, setUser } = useUserContext();
+  const { user, loading, setUser } = useUserContext();
   const [activePet, setActivePet] = useState<Tamagotchi | null>();
   const [activePetLoading, setActivePetLoading] = useState(true);
   const [balance, setBalance] = useState(user?.balance);
@@ -55,11 +55,11 @@ function Work() {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/user/${user.id}/jobs`);
         setSelectedJob(data[0]);
-        if(data.length>0){
+        if (data.length > 0) {
           if (data[0].time_elapsed >= data[0].duration) {
             setEndWorking(true);  
           }
-          else{
+          else {
           setEndWorking(false);
           }
         }
@@ -141,15 +141,15 @@ function Work() {
   };
 
   // function after finish working
-  const handleJobCompletion = async (job:any) => {
-
-        // Update or create level
+  const handleJobCompletion = async (job : any) => {
+    // Update or create level
     try {
       // Fetch current level
       let currentLevelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
       const currentLevel = currentLevelResponse.data.level; 
-      const newLevel = Math.min(currentLevel + 30, 100); // Increase by 30, cap at 100
-      if(newLevel===100){
+      const newLevel = Math.min(currentLevel + job.duration);
+      console.log(newLevel);
+      if (newLevel >= 100) {
         setEndWorking(true);
 
         await updateActive();
@@ -170,11 +170,10 @@ function Work() {
     await updateBalance(newBalance);
     await addItemToInventory(randomItem.id, 1);
 
-    
-
     if (isSick) {
       await updateSick();
-      alert("Your pet got sick! 🤒 Please treat your pet.");
+      alert(`You earned ${job.reward} gold and found a random item!`);
+      alert("Your pet got sick! Please treat your pet.");
     } else {
       alert(`You earned ${job.reward} gold and found a random item!`);
     }
@@ -232,7 +231,6 @@ function Work() {
     await axios.put(`${API_BASE_URL}/api/user/${pet.id}/statusChange`, updatedPet)
       .catch(error => console.error("Error updating pet status:", error));
       
-
     setSelectedJob(job);
     await postJob(job);
     setEndWorking(false)
@@ -283,7 +281,6 @@ function Work() {
             {endWorking ? <button className="claim-reward-button btn btn-outline-success" onClick={()=>handleJobCompletion(selectedJob)}>Claim the reward</button>:<p>Your pet is working now.</p>}
         </div>
       ) : (
-        // 작업 목록 표시
         jobs.map((job) => (
           <div
             key={job.id}
