@@ -13,6 +13,7 @@ function Work() {
   const { items } = useShopContext();
   const { user, pets, loading, setUser } = useUserContext();
   const [activePet, setActivePet] = useState<Tamagotchi | null>();
+  const [activePetLoading, setActivePetLoading] = useState(true);
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
@@ -22,12 +23,27 @@ function Work() {
   jobs.sort((a, b) => a.duration - b.duration);
 
   useEffect(() => {
-    const activePet = pets.find((pet) => pet.is_active);
-    setActivePet(activePet);
+    const fetchActivePet = async () => {
+      if (user) {
+        try {
+          const response = await axios.get(
+            `${API_BASE_URL}/api/user/${user.id}/active-pet`
+          );
+          setActivePet(response.data);
+        } catch (error) {
+          console.error("Error fetching active pet:", error);
+        } finally {
+          setActivePetLoading(false);
+        }
+      } else {
+        setActivePetLoading(false); 
+      }
+    };
 
     if (!user && !loading) {
       navigate("/signIn");
     }
+
     if (user) {
       setBalance(user.balance);
     }
@@ -60,11 +76,12 @@ function Work() {
         console.error('Error fetching job:', error);
       }
     };
+    fetchActivePet();
     fetchLevel();
     fetchJob();
-  }, [user, loading, navigate,level]);
+  }, [user, loading, navigate, level]);
 
-  if (loading) {
+  if (loading || activePetLoading) {
     return <div>Loading...</div>;
   }
 
