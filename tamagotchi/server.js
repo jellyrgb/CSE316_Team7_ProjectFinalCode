@@ -188,6 +188,7 @@ app.put('/api/user/:id/inventory/use', async (req, res) => {
 });
 
 // Sell item from inventory
+// Sell item from inventory
 app.put('/api/user/:id/inventory/sell', async (req, res) => {
   const userId = req.params.id;
   const { itemId } = req.body;
@@ -212,6 +213,10 @@ app.put('/api/user/:id/inventory/sell', async (req, res) => {
     // Update user balance
     await db.query('UPDATE user SET balance = balance + ? WHERE id = ?', [sellPrice, userId]);
 
+    // Get updated user balance
+    const [userResults] = await db.query('SELECT balance FROM user WHERE id = ?', [userId]);
+    const updatedBalance = userResults[0].balance;
+
     // Update item quantity or remove item if quantity is 1
     if (item.quantity > 1) {
       await db.query('UPDATE user_inventory SET quantity = quantity - 1 WHERE user_id = ? AND item_id = ?', [userId, itemId]);
@@ -219,7 +224,7 @@ app.put('/api/user/:id/inventory/sell', async (req, res) => {
       await db.query('DELETE FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
     }
 
-    res.sendStatus(200);
+    res.json({ balance: updatedBalance });
   } catch (err) {
     console.error('Error selling item:', err);
     res.status(500).json({ error: 'Failed to sell item' });
