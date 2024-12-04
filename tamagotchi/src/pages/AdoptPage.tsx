@@ -90,7 +90,7 @@ function AdoptPage() {
     userId: number
   ) => {
     const adoptionDate = new Date().toISOString();
-    const formattedAdoptionDate = adoptionDate.toString().split("T")[0]; // 날짜가 잘못됐는데?
+    const formattedAdoptionDate = adoptionDate.toString().split("T")[0];
     if (userId) {
       try {
         const response = await axios.post(

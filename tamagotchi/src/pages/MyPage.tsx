@@ -10,9 +10,6 @@ import { API_BASE_URL } from "../config.tsx";
 function MyPage() {
   const { user, pets, loading, setUser } = useUserContext();
   const [uploading, setUploading] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,33 +65,6 @@ function MyPage() {
     }
   };
 
-  // Function to handle changing password
-  const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirmation do not match.");
-      return;
-    }
-
-    try {
-      setUploading(true);
-      await axios.put(`${API_BASE_URL}/api/user/${user.id}/change-password`, {
-        currentPassword,
-        newPassword,
-      });
-      alert("Password updated successfully!");
-    } catch (error) {
-      console.error("Error updating password:", error);
-      alert("Failed to update password. Please check your current password.");
-    } finally {
-      setUploading(false);
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    }
-  };
-
   return (
     <div className="container mt-4">
       <main>
@@ -115,13 +85,6 @@ function MyPage() {
                   data-bs-target="#image-modal"
                 >
                   Change Picture
-                </button>
-                <button
-                  className="edit-password-button btn btn-outline-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#password-modal"
-                >
-                  Change Password
                 </button>
               </div>
             </div>
@@ -178,87 +141,7 @@ function MyPage() {
               </div>
             </div>
           </div>
-
-          {/* Change Password Modal */}
-          <div
-            id="password-modal"
-            className="modal fade"
-            tabIndex={-1}
-            aria-labelledby="password-modal-label"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="password-modal-label">
-                    Change Password
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form onSubmit={handleChangePassword}>
-                    <div className="mb-3">
-                      <label htmlFor="currentPassword" className="form-label">
-                        Current Password
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="currentPassword"
-                        required
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="newPassword" className="form-label">
-                        New Password
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="newPassword"
-                        required
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="confirmPassword" className="form-label">
-                        Confirm New Password
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="confirmPassword"
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                      />
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button type="submit" className="btn btn-primary">
-                    Save changes
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          
           <div className="records-section">
             <h3>Tamagotchi History</h3>
             <div className="pets-container">
