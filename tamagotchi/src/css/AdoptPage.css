@@ -2,6 +2,8 @@
     text-align: center;
     padding: 20px;
     margin-left: 150px;
+    align-items: center;
+    justify-content: center;
 }
 
 .adopt-page-title {
@@ -9,15 +11,19 @@
 }
 
 .tamagotchi-list {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
     justify-content: center;
+    justify-items: center;
 }
 
 .tamagotchi-card {
+    width: 200px;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
+    padding-bottom: 5px;
     margin: 10px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -66,7 +72,19 @@
     cursor: not-allowed;
 }
 
+@media (max-width: 800px) {
+    .tamagotchi-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 600px) {
+    .tamagotchi-list {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
     .adopt-page {
         margin-left: 0;
     }
