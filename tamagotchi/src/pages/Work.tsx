@@ -306,7 +306,7 @@ function Work() {
           </div>
 
           <div className="work-status">
-            <span>Lvl.</span>
+            <span>Lvl. {(level ?? 0) / 10}</span>
             <div className="work-status-bar">
             <div className="tooltip-exp">{level}/100</div>
               <div className="exp-filled" style={{ width: `${level}%` }}></div>
