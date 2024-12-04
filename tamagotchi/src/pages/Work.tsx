@@ -267,10 +267,10 @@ function Work() {
           </div>
 
           <div className="work-status">
-            <span>Lv.</span>
+            <span>Lvl.</span>
             <div className="work-status-bar">
-            <div className="tooltip-clean">{level}/100</div>
-              <div className="level-filled" style={{ width: `${level}%` }}></div>
+            <div className="tooltip-exp">{level}/100</div>
+              <div className="exp-filled" style={{ width: `${level}%` }}></div>
             </div>
           </div>
         </div>

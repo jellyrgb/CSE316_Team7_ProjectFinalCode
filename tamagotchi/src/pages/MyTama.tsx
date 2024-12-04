@@ -54,13 +54,24 @@ function MyTama() {
       }
     };
 
+    const fetchLevel = async () => {
+      try {
+        const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
+        setLevel(data.level);
+        console.log(level);
+      } catch (error) {
+        console.error('Error fetching job:', error);
+      }
+    };
+
     if (user) {
       fetchActivePet();
       fetchInventory();
+      fetchLevel();
     } else if (!loading) {
       navigate("/signIn");
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, level]);
 
   useEffect(() => {
     if (activePet === null) {
@@ -255,7 +266,7 @@ function MyTama() {
           </div>
 
           <div className="status">
-            <span>Lvl. 1</span>
+            <span>Lvl. `{level}%`</span>
             <div className="status-bar">
               <div
                 className="exp-filled"

@@ -83,7 +83,8 @@
 /* Tooltip style */
 .tooltip-hunger,
 .tooltip-fun,
-.tooltip-clean {
+.tooltip-clean,
+.tooltip-exp {
   position: absolute;
   transform: translateX(-50%);
   background-color: transparent;
@@ -115,10 +116,16 @@
   left: 50%;
 }
 
+.tooltip-exp {
+  top: -30%;
+  left: 50%;
+}
+
 /* Tooltip visible */
 .work-status-bar:hover .tooltip-hunger,
 .work-status-bar:hover .tooltip-fun,
-.work-status-bar:hover .tooltip-clean {
+.work-status-bar:hover .tooltip-clean,
+.work-status-bar:hover .tooltip-exp {
   opacity: 1; /* hover 시 표시 */
 }
 

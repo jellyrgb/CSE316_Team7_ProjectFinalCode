@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = 'leesin'; // 비밀번호 바꿔서 테스트
+const password = '12345678'; // 비밀번호 바꿔서 테스트
 
 dotenv.config(); 
 
@@ -336,7 +336,6 @@ app.put('/api/user/:id/is_sick', async (req, res) => {
 app.put('/api/user/:id/activeChange', async (req, res) => {
   const userId = req.params.id;
   const { is_active } = req.body;
-  console.log(userId,is_active);
 
   try {
     const query = 'UPDATE tamagotchi SET is_active = ? WHERE user_id = ? And is_active = 1';
