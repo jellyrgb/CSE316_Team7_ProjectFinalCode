@@ -266,7 +266,7 @@ function MyTama() {
           </div>
 
           <div className="status">
-            <span>Lvl. `{level}%`</span>
+            <span>Lvl. {(level ?? 0) / 10}</span>
             <div className="status-bar">
               <div
                 className="exp-filled"
