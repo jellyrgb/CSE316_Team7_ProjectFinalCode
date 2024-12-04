@@ -604,6 +604,30 @@ app.put('/api/tamagotchi/:tamaId/level', async (req, res) => {
   }
 });
 
+//Update tama's img when level 20, 50, 80
+app.put('/api/tamagotchi/:tamaId/changeImg', (req, res) => {
+    const tamaId = req.params.id;
+    const { image_source } = req.body;
+
+    if (!image_source) {
+        return res.status(400).json({ error: 'image_source is required' });
+    }
+
+    const query = 'UPDATE tamagotchi SET image_source = ? WHERE id = ?';
+    db.query(query, [image_source, tamagotchiId], (err, result) => {
+        if (err) {
+            console.error('Error updating image_source:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Tamagotchi not found' });
+        }
+
+        res.json({ message: 'image_source updated successfully' });
+    });
+});
+
 
 // Initalize server
 app.listen(port, () => {
