@@ -22,6 +22,7 @@ export interface Tamagotchi {
   adoption_date: string;
   is_active: boolean;
   user_id: number;
+  level?: number; // Level 추가
 }
 
 interface UserContextType {
@@ -46,7 +47,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [pets, setPets] = useState<Tamagotchi[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] =useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -57,11 +58,24 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
+        // Fetch user data
         const response = await axios.get(`${API_BASE_URL}/api/user/${userToken}`);
         setUser(response.data);
 
+        // Fetch pets data
         const petsResponse = await axios.get(`${API_BASE_URL}/api/user/${userToken}/tamagotchis`);
-        setPets(petsResponse.data);
+        const petsWithLevels = await Promise.all(
+          petsResponse.data.map(async (pet: Tamagotchi) => {
+            try {
+              const levelResponse = await axios.get(`${API_BASE_URL}/api/tamagotchi/${pet.id}/level`);
+              return { ...pet, level: levelResponse.data.level }; // Add level to each pet
+            } catch (error) {
+              console.error(`Error fetching level for Tamagotchi ${pet.id}:`, error);
+              return { ...pet, level: null }; // Default level to null on error
+            }
+          })
+        );
+        setPets(petsWithLevels);
       } catch (error) {
         console.error('Error fetching user data:', error);
         setError('Error fetching user data');

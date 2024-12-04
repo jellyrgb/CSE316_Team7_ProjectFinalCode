@@ -17,7 +17,7 @@ function Work() {
   const [balance, setBalance] = useState(user?.balance);
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [endWorking, setEndWorking] = useState(true);
-  const [level, setLevel] = useState(Number);
+  const [level, setLevel] = useState(activePet?.level);
 
   const navigate = useNavigate();
   jobs.sort((a, b) => a.duration - b.duration);

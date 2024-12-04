@@ -22,7 +22,7 @@ function MyTama() {
     undefined
   );
   const navigate = useNavigate();
-  const [level, setLevel] = useState(Number);
+  const [level, setLevel] = useState(activePet?.level); 
 
   useEffect(() => {
     const fetchActivePet = async () => {
