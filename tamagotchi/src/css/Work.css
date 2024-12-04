@@ -144,10 +144,6 @@
   }
 
   .work-header {
-    padding: 15px 0;
-  }
-
-  .work-status span {
-    width: 25%;
+    padding: 15px 80px;
   }
 }
