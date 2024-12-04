@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = '12345678'; // 비밀번호 바꿔서 테스트
+const password = 'leesin'; // MySQL password
 
 dotenv.config(); 
 
@@ -177,6 +177,45 @@ app.put('/api/user/:id/inventory/use', async (req, res) => {
   } catch (err) {
     console.error('Error updating inventory:', err);
     res.status(500).json({ error: 'Failed to update inventory' });
+  }
+});
+
+// Sell item from inventory
+app.put('/api/user/:id/inventory/sell', async (req, res) => {
+  const userId = req.params.id;
+  const { itemId } = req.body;
+
+  try {
+    // Get item details
+    const [itemResults] = await db.query('SELECT * FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    if (itemResults.length === 0) {
+      return res.status(404).json({ error: 'Item not found in inventory' });
+    }
+
+    const item = itemResults[0];
+
+    // Get item sell price
+    const [itemDetails] = await db.query('SELECT sell_price FROM item WHERE id = ?', [itemId]);
+    if (itemDetails.length === 0) {
+      return res.status(404).json({ error: 'Item details not found' });
+    }
+
+    const sellPrice = itemDetails[0].sell_price;
+
+    // Update user balance
+    await db.query('UPDATE user SET balance = balance + ? WHERE id = ?', [sellPrice, userId]);
+
+    // Update item quantity or remove item if quantity is 1
+    if (item.quantity > 1) {
+      await db.query('UPDATE user_inventory SET quantity = quantity - 1 WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    } else {
+      await db.query('DELETE FROM user_inventory WHERE user_id = ? AND item_id = ?', [userId, itemId]);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error selling item:', err);
+    res.status(500).json({ error: 'Failed to sell item' });
   }
 });
 

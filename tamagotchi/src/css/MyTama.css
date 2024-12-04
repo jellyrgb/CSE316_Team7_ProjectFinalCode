@@ -153,6 +153,10 @@
     cursor: pointer;
 }
 
+.toggle-mode-button {
+    margin-top: 5px;
+}
+
 @media (max-width: 1000px) {
     .inventory-item {
         width: calc(33.33% - 10px);

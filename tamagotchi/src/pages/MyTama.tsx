@@ -23,6 +23,7 @@ function MyTama() {
   );
   const navigate = useNavigate();
   const [level, setLevel] = useState(activePet?.level); 
+  const [isSellMode, setIsSellMode] = useState(false);
 
   useEffect(() => {
     const fetchActivePet = async () => {
@@ -114,6 +115,34 @@ function MyTama() {
   };
 
   const handleItemClick = async (item: InventoryItem) => {
+    // When in sell mode, sell the item
+    if (isSellMode) {
+      try {
+        await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/sell`, {
+          itemId: item.id,
+        });
+  
+        // Update inventory after selling
+        setInventory((prevInventory) =>
+          prevInventory
+            .map((invItem) => {
+              if (invItem.id === item.id) {
+                return { ...invItem, quantity: invItem.quantity - 1 };
+              }
+              return invItem;
+            })
+            .filter((invItem) => invItem.quantity > 0)
+        );
+  
+        alert(`Sold ${item.type === 4 ? "Medicine" : "Item"} for ${item.sell_price} golds!`);
+      } catch (error) {
+        console.error("Error selling item:", error);
+        alert("Failed to sell item.");
+      }
+      return;
+    }
+
+    // When in feed mode, feed the item
     let updatedPet = { ...activePet };
 
     switch (item.type) {
@@ -153,8 +182,8 @@ function MyTama() {
         `${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`
       );
       const currentLevel = currentLevelResponse.data.level;
-      const newLevel = Math.min(currentLevel + 5, 100); // Increase by 30, cap at 100
-      if (newLevel === 100) {
+      const newLevel = Math.min(currentLevel + 5);
+      if (newLevel >= 100) {
         await updateActive();
         return navigate("/");
       } else {
@@ -278,6 +307,12 @@ function MyTama() {
       </div>
       <div className="inventory-section">
         <h2>Inventory</h2>
+        <button 
+          className="toggle-mode-button btn btn-outline-primary" 
+          onClick={() => setIsSellMode((prev) => !prev)}
+        >
+          {isSellMode ? "Switch to Feed Mode" : "Switch to Sell Mode"}
+        </button>
         <div className="inventory-items">
           {inventory.map((item) =>
             Array.from({ length: item.quantity }).map((_, index) => (
