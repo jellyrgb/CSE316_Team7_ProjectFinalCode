@@ -109,6 +109,13 @@ app.put('/api/user/:id/balance', async (req, res) => {
   }
 });
 
+
+
+/* * * * * * * * *
+ *                *
+ * Inventory APIs *
+ *                *
+ * * * * * * * * */
 // Get user inventory data
 app.get('/api/user/:id/inventory', async (req, res) => {
   const userId = req.params.id;
@@ -219,7 +226,14 @@ app.put('/api/user/:id/inventory/sell', async (req, res) => {
   }
 });
 
-// Get pet data
+
+
+/* * * * * * * * * *
+ *                 *
+ * Tamagotchi APIs *
+ *                 *
+ * * * * * * * * * */
+// Get Tamagotchi data
 app.get('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
   try {
@@ -231,7 +245,7 @@ app.get('/api/user/:id/tamagotchis', async (req, res) => {
   }
 });
 
-// Get active pet for user
+// Get active Tamgotchi for user
 app.get('/api/user/:id/active-pet', async (req, res) => {
   const userId = req.params.id;
   try {
@@ -246,7 +260,7 @@ app.get('/api/user/:id/active-pet', async (req, res) => {
   }
 });
 
-// Update pet status
+// Update Tamagotchi status
 app.put('/api/pet/:id/status', async (req, res) => {
   const petId = req.params.id;
   const { hunger, clean, fun, is_sick, is_active } = req.body;
@@ -272,7 +286,7 @@ app.get('/api/items', async (req, res) => {
   }
 });
 
-// Get tamagochi templates data
+// Get Tamagotchi templates data
 app.get('/api/tamagotchi_templates', async (req, res) => {
   try{
     const [results] = await db.query('SELECT * FROM tamagotchi_templates');
@@ -285,7 +299,7 @@ app.get('/api/tamagotchi_templates', async (req, res) => {
 
 });
 
-// Post pet data
+// Post Tamagotchi data
 app.post('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
   const { name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id } = req.body;
@@ -300,6 +314,29 @@ app.post('/api/user/:id/tamagotchis', async (req, res) => {
   }
 });
 
+// Get active Tamagotchi
+app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ? AND is_active = true', [userId]);
+    if (results.length > 0) {
+      return res.json({ hasActiveTamagotchi: true });
+    } else {
+      return res.json({ hasActiveTamagotchi: false });
+    }
+  } catch (err) {
+    console.error('Error fetching active tamagotchi:', err);
+    res.status(500).send('Error fetching active tamagotchi');
+  }
+});
+
+
+
+/* * * * * * * *
+ *              *
+ * Profile APIs *
+ *              *
+ * * * * * * * */
 // Change profile image
 app.put('/api/user/:id/profile-image', async (req, res) => {
   const userId = req.params.id;
@@ -345,6 +382,13 @@ app.put('/api/user/:id/change-password', async (req, res) => {
   }
 });
 
+
+
+/* * * * * * *
+ *           *
+ * Work APIs *
+ *           *
+ * * * * * * */
 // Get jobs data
 app.get('/api/jobList', async (req, res) => {
   try {
@@ -371,7 +415,7 @@ app.put('/api/user/:id/is_sick', async (req, res) => {
   }
 });
 
-// Update tama's is_active
+// Update Tamagotchi's is_active
 app.put('/api/user/:id/activeChange', async (req, res) => {
   const userId = req.params.id;
   const { is_active } = req.body;
@@ -386,7 +430,7 @@ app.put('/api/user/:id/activeChange', async (req, res) => {
   }
 });
 
-// Update tama's status
+// Update Tamagotchi's status
 app.put('/api/user/:id/statusChange', async (req, res) => {
   const userId = req.params.id;
   const { hunger, clean, fun,is_active } = req.body;
@@ -425,7 +469,6 @@ app.get('/api/user/:id/jobs', async (req, res) => {
 
   try {
     const [results] = await db.query(query, [userId]);
-    //console.log(results);
     res.json(results);
   } catch (err) {
     console.error('Error to find a diff data:', err);
@@ -452,23 +495,14 @@ app.delete('/api/user/:id/jobs', async (req, res) => {
   }
 });
 
-// Get active tamagotchi
-app.get('/api/user/:id/active-tamagotchi', async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ? AND is_active = true', [userId]);
-    if (results.length > 0) {
-      return res.json({ hasActiveTamagotchi: true });
-    } else {
-      return res.json({ hasActiveTamagotchi: false });
-    }
-  } catch (err) {
-    console.error('Error fetching active tamagotchi:', err);
-    res.status(500).send('Error fetching active tamagotchi');
-  }
-});
 
-// Post tama's level
+
+/* * * * * * *
+ *            *
+ * Level APIs *
+ *            *
+ * * * * * * */
+// Post Tamagotchi's level
 app.post('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   const {id, tamaId } = req.params;
   try {
@@ -483,8 +517,7 @@ app.post('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   }
 });
 
-
-// Get tama's level
+// Get Tamagotchi's level
 app.get('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   const {id, tamaId } = req.params;
 
@@ -500,7 +533,7 @@ app.get('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   }
 });
 
-// Update tama's level
+// Update Tamaogotchi's level
 app.put('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   const {id, tamaId } = req.params;
   const { level } = req.body;
@@ -517,8 +550,7 @@ app.put('/api/user/:id/tamagotchi/:tamaId/level', async (req, res) => {
   }
 });
 
-
-// Post tama's level
+// Post Tamaogotchi's level
 app.post('/api/tamagotchi/:tamaId/level', async (req, res) => {
   const { tamaId } = req.params;
   try {
@@ -534,7 +566,7 @@ app.post('/api/tamagotchi/:tamaId/level', async (req, res) => {
 });
 
 
-// Get tama's level
+// Get Tamagotchi's level
 app.get('/api/tamagotchi/:tamaId/level', async (req, res) => {
   const { tamaId } = req.params;
 
@@ -550,7 +582,7 @@ app.get('/api/tamagotchi/:tamaId/level', async (req, res) => {
   }
 });
 
-// Update tama's level
+// Update Tamagotchi's level
 app.put('/api/tamagotchi/:tamaId/level', async (req, res) => {
   const { tamaId } = req.params;
   const { level } = req.body;
