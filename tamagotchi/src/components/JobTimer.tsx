@@ -6,9 +6,10 @@ interface JobTimerProps {
     duration: number;
     time_elapsed: number;
   };
+  setEndWorking: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const JobTimer: React.FC<JobTimerProps> = ({ job }) => {
+const JobTimer: React.FC<JobTimerProps> = ({ job, setEndWorking }) => {
   const [remainingTime, setRemainingTime] = useState(job.duration - (job.time_elapsed||0)); // 초 단위로 변환
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const JobTimer: React.FC<JobTimerProps> = ({ job }) => {
 
     if (remainingTime <= 0) {
       clearInterval(interval); 
+      setEndWorking(true);
     }
 
     return () => clearInterval(interval); 

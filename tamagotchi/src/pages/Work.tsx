@@ -301,7 +301,7 @@ function Work() {
       </div>
 
       <div className="earned-item">
-        {endWorking ? <p>Choose a workplace.</p>:<JobTimer job={selectedJob} />}
+        {endWorking ? <p>Choose a workplace.</p>:<JobTimer job={selectedJob} setEndWorking={setEndWorking}/>}
       </div>
     </div>
   );
