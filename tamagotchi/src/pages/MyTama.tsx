@@ -24,6 +24,7 @@ function MyTama() {
   const navigate = useNavigate();
   const [level, setLevel] = useState(activePet?.level); 
   const [isSellMode, setIsSellMode] = useState(false);
+    const [balance, setBalance] = useState(user?.balance);
 
   useEffect(() => {
     const fetchActivePet = async () => {
@@ -59,7 +60,6 @@ function MyTama() {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
         setLevel(data.level);
-        console.log(level);
       } catch (error) {
         console.error('Error fetching job:', error);
       }
@@ -69,10 +69,11 @@ function MyTama() {
       fetchActivePet();
       fetchInventory();
       fetchLevel();
+      setBalance(user.balance);
     } else if (!loading) {
       navigate("/signIn");
     }
-  }, [user, loading, navigate, level]);
+  }, [user, loading, navigate, level, balance]);
 
   useEffect(() => {
     if (activePet === null) {
@@ -121,7 +122,7 @@ function MyTama() {
         await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/sell`, {
           itemId: item.id,
         });
-  
+        setBalance(user.balance+item.sell_price);
         // Update inventory after selling
         setInventory((prevInventory) =>
           prevInventory
@@ -215,7 +216,9 @@ function MyTama() {
       await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/use`, {
         itemId: item.id,
       });
-    } catch (error) {
+      setBalance(user.balance);
+      console.log(user.balance);
+        } catch (error) {
       console.error("Error updating inventory:", error);
     }
 
@@ -250,6 +253,9 @@ function MyTama() {
 
   return (
     <div className="my-tama fullscreen">
+            <div id="balance">
+        <span>💰 {balance}G</span>
+      </div>
       <div className="pet-section">
         {activePet.is_sick ? (
           <>

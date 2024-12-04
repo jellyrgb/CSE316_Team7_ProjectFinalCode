@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { hashutil } from './src/hashutil/Hashutil.js';
 
 const port = 5001;
-const password = 'leesin'; // MySQL password
+const password = '12345678'; // MySQL password
 
 dotenv.config(); 
 
