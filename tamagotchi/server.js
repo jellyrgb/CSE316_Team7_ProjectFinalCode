@@ -22,6 +22,11 @@ const db = await mysql.createConnection({
   socketPath: '/tmp/mysql.sock'
 });
 
+/* * * * * * *
+ *           *
+ * User APIs *
+ *           *
+ * * * * * * */
 // User sign up
 app.post('/api/signup', async (req, res) => {
   try {
@@ -184,6 +189,21 @@ app.get('/api/user/:id/tamagotchis', async (req, res) => {
   } catch (err) {
     console.error('Error fetching pets data:', err);
     res.status(500).send('Error fetching pets data');
+  }
+});
+
+// Get active pet for user
+app.get('/api/user/:id/active-pet', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const [results] = await db.query('SELECT * FROM tamagotchi WHERE user_id = ? AND is_active = true', [userId]);
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'No active pet found' });
+    }
+    res.json(results[0]);
+  } catch (err) {
+    console.error('Error fetching active pet:', err);
+    res.status(500).json({ error: 'Failed to fetch active pet' });
   }
 });
 
