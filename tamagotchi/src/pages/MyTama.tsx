@@ -63,7 +63,7 @@ function MyTama() {
 
   if (!pet) {
     setTimeout(() => {
-      natvigate("/adopt");
+      navigate("/adopt");
     }, 3000);
     return <div>No active Tamagotchi found. Please adopt a new one first.<br></br>Redirecting to adopt page in 3 seconds...</div>;
   }
@@ -192,7 +192,7 @@ function MyTama() {
           <div className="inventory-items">
             {inventory.map((item) =>
               Array.from({ length: item.quantity }).map((_, index) => (
-                <div key={`${item.id}-${index}`} className={`inventory-item ${item.isDisappearing ? 'disappearing' : ''}`} onClick={() => handleItemClick(item)}>
+                <div key={`${item.id}-${index}`} className="inventory-item" onClick={() => handleItemClick(item)}>
                   <img src={item.image_source} />
                   <div className="item-info">
                     <span>{getEmoji(item.type)}{item.type === 4 ? ` ${item.stat}%` : `+${item.stat}`}</span>
