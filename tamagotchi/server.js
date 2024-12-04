@@ -307,11 +307,11 @@ app.get('/api/tamagotchi_templates', async (req, res) => {
 // Post Tamagotchi data
 app.post('/api/user/:id/tamagotchis', async (req, res) => {
   const userId = req.params.id;
-  const { name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id } = req.body;
+  const { name, image_source, hunger,clean,fun,is_sick,is_active,user_id } = req.body;
 
   try {
-    const [results] = await db.query('INSERT INTO tamagotchi (name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id) VALUES (?, ?, ?,?,?,?,?,?,?)', [name, image_source, hunger,clean,fun,is_sick,adoption_date,is_active,user_id]);
-    const tamagotchiId = results.insertId; // 새로 생성된 Tamagotchi의 ID
+    const [results] = await db.query('INSERT INTO tamagotchi (name, image_source, hunger,clean,fun,is_sick,is_active,user_id) VALUES (?, ?, ?,?,?,?,?,?)', [name, image_source, hunger,clean,fun,is_sick,is_active,user_id]);
+    const tamagotchiId = results.insertId; 
     res.status(201).json({ message: "Tamagotchi created successfully", tamagotchiId });
   } catch (err) {
       console.error('Error adding tama to inventory:', err);
