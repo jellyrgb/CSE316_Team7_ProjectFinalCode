@@ -357,36 +357,6 @@ app.put('/api/user/:id/profile-image', async (req, res) => {
   }
 });
 
-// Change password
-app.put('/api/user/:id/change-password', async (req, res) => {
-  const userId = req.params.id;
-  const { currentPassword, newPassword } = req.body;
-
-  try {
-    const [users] = await db.query('SELECT * FROM user WHERE id = ?', [userId]);
-    if (users.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const user = users[0];
-
-    const hashedCurrentPassword = hashutil(user.username, currentPassword);
-    if (user.password !== hashedCurrentPassword) {
-      return res.status(401).json({ error: 'Current password is incorrect' });
-    }
-
-    const hashedNewPassword = hashutil(user.username, newPassword);
-
-    const query = 'UPDATE user SET password = ? WHERE id = ?';
-    await db.query(query, [hashedNewPassword, userId]);
-
-    res.status(200).json({ message: 'Password changed successfully' });
-  } catch (err) {
-    console.error('Error changing password:', err);
-    res.status(500).json({ error: 'Failed to change password' });
-  }
-});
-
 
 
 /* * * * * * *
