@@ -190,10 +190,11 @@ function Work() {
         await updateActive();
         return navigate("/");
       }
-      else{
+      
+
         await axios.put(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`, { level: newLevel });
         setLevel(newLevel);
-      }
+
     } catch (error) {
       console.error("Error updating or creating level:", error);
     }
