@@ -18,15 +18,15 @@ interface InventoryItem {
 function MyTama() {
   const { user, loading } = useUserContext();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const navigate = useNavigate();
+  const [isSellMode, setIsSellMode] = useState(false);
   const [activePet, setActivePet] = useState<Tamagotchi | null | undefined>(
     undefined
   );
-  const navigate = useNavigate();
   const [level, setLevel] = useState(activePet?.level); 
-  const [isSellMode, setIsSellMode] = useState(false);
-    const [balance, setBalance] = useState(user?.balance);
 
   useEffect(() => {
+    // Fetch active Tamagotchi
     const fetchActivePet = async () => {
       if (user) {
         try {
@@ -43,6 +43,7 @@ function MyTama() {
       }
     };
 
+    // Fetch user inventory
     const fetchInventory = async () => {
       if (user) {
         try {
@@ -56,10 +57,12 @@ function MyTama() {
       }
     };
 
+    // Fetch Tamagotchi's level
     const fetchLevel = async () => {
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/tamagotchi/${activePet?.id}/level`);
         setLevel(data.level);
+        console.log(level);
       } catch (error) {
         console.error('Error fetching job:', error);
       }
@@ -69,13 +72,13 @@ function MyTama() {
       fetchActivePet();
       fetchInventory();
       fetchLevel();
-      setBalance(user.balance);
     } else if (!loading) {
       navigate("/signIn");
     }
-  }, [user, loading, navigate, level, balance]);
+  }, [user, loading, navigate, level]);
 
   useEffect(() => {
+    // Redirect to adopt page if no active pet
     if (activePet === null) {
       const timer = setTimeout(() => {
         navigate("/adopt");
@@ -102,6 +105,7 @@ function MyTama() {
     );
   }
 
+  // Update active status to false
   const updateActive = async () => {
     if (activePet) {
       try {
@@ -115,6 +119,7 @@ function MyTama() {
     }
   };
 
+  // Handle item click
   const handleItemClick = async (item: InventoryItem) => {
     // When in sell mode, sell the item
     if (isSellMode) {
@@ -122,7 +127,7 @@ function MyTama() {
         await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/sell`, {
           itemId: item.id,
         });
-        setBalance(user.balance+item.sell_price);
+  
         // Update inventory after selling
         setInventory((prevInventory) =>
           prevInventory
@@ -185,6 +190,7 @@ function MyTama() {
       const currentLevel = currentLevelResponse.data.level;
       const newLevel = Math.min(currentLevel + 5);
       if (newLevel >= 100) {
+        alert("Congratulations, your Tamagotchi has reached the maximum level!");
         await updateActive();
         return navigate("/");
       } else {
@@ -216,9 +222,7 @@ function MyTama() {
       await axios.put(`${API_BASE_URL}/api/user/${user.id}/inventory/use`, {
         itemId: item.id,
       });
-      setBalance(user.balance);
-      console.log(user.balance);
-        } catch (error) {
+    } catch (error) {
       console.error("Error updating inventory:", error);
     }
 
@@ -253,9 +257,6 @@ function MyTama() {
 
   return (
     <div className="my-tama fullscreen">
-            <div id="balance">
-        <span>💰 {balance}G</span>
-      </div>
       <div className="pet-section">
         {activePet.is_sick ? (
           <>
