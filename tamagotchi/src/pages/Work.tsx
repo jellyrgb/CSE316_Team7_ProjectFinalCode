@@ -150,8 +150,13 @@ function Work() {
       const newLevel = Math.min(currentLevel + job.duration);
       console.log(newLevel);
       if (newLevel >= 100) {
+        try {
+          await axios.delete(`${API_BASE_URL}/api/user/${user.id}/jobs`);
+        } catch (error) {
+          console.error("Error deleting work:", error);
+        }
+        setSelectedJob(null);
         setEndWorking(true);
-
         await updateActive();
         return navigate("/");
       }
